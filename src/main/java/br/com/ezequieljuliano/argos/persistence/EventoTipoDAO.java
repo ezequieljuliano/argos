@@ -6,6 +6,10 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 
+/**
+ *
+ * @author Ezequiel
+ */
 @PersistenceController
 public class EventoTipoDAO extends JPACrud<EventoTipo, Long> {
 	

@@ -6,36 +6,23 @@
 		<h:form>
 			<p:toolbar>
 				<p:toolbarGroup align="left">
-					<p:commandButton title="#{messages['button.new']}" icon="ui-icon-document" action="#{eventoTipoListMB.getNextView}"
-						actionListener="#{eventoTipoListMB.clear}" ajax="false" />
-
-					<p:commandButton title="#{messages['button.delete']}" icon="ui-icon-trash" onclick="confirmation.show()"
-						type="button" immediate="true" ajax="false" />
-
-					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
-						header="#{messages['label.dialog.alert']}!" severity="alert" widgetVar="confirmation">
-
-						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{eventoTipoListMB.deleteSelection}"
-							actionListener="#{eventoTipoListMB.clear}" />
-						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
-					</p:confirmDialog>
+					<p:commandButton title="#{messages['button.new']}" icon="ui-icon-circle-plus" 
+                                                         action="/evento_tipo_edit.jsf?faces-redirect=true"
+                                                         ajax="false" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:dataTable id="list" var="bean" value="#{eventoTipoListMB.resultList}">
-				<f:facet name="header">#{messages['bookmark.list.table.title']}</f:facet>
-				<p:column style="width:5%;">
-					<h:selectBooleanCheckbox value="#{eventoTipoListMB.selection[bean.id]}" />
+			<p:dataTable id="list" var="bean" value="#{eventoTipoMB.list}">
+				<f:facet name="header">#{messages['eventotipo.label.list']}</f:facet>
+                                <p:column style="width:5%;" sortBy="#{bean.codigo}">
+					<f:facet name="header">#{messages['eventotipo.label.codigo']}</f:facet>
+                                        <h:outputText value="#{bean.codigo}" />
 				</p:column>
-				<p:column style="width:5%;" sortBy="#{bean.id}">
-					<f:facet name="header">#{messages['bookmark.label.id']}</f:facet>
-					<h:outputText value="#{bean.id}" />
-				</p:column>
-				<p:column sortBy="#{bean.descricao}">
-					<f:facet name="header">#{messages['bookmark.label.description']}</f:facet>
-					<h:commandLink action="#{eventoTipoListMB.getNextView}" actionListener="#{eventoTipoListMB.clear}">
-						<h:outputText value="#{bean.descricao}" />
-						<f:param name="id" value="#{bean.id}" />
+                                <p:column sortBy="#{bean.descricao}">
+					<f:facet name="header">#{messages['eventotipo.label.descricao']}</f:facet>
+					<h:commandLink action="/evento_tipo_edit.jsf?faces-redirect=true">
+                                                <h:outputText value="#{bean.descricao}" />
+                                                <f:param name="id" value="#{bean.id}" />
 					</h:commandLink>
 				</p:column>
 			</p:dataTable>

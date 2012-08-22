@@ -4,11 +4,10 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import br.com.ezequieljuliano.argos.util.UniqId;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -23,17 +22,21 @@ public class EventoTipo implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy = SEQUENCE)
-    private Long id;
+    @Column(name = "id")
+    private Long id = new Long(UniqId.getInstance().getUniqTime());
     
-    @Column
+    @Column(name = "codigo")
+    private int codigo;
+    
+    @Column(name = "descricao")
     private String descricao;
-    
+
     public EventoTipo() {
         super();
     }
-    
-    public EventoTipo(String descricao){
+
+    public EventoTipo(int codigo, String descricao) {
+        this.codigo = codigo;
         this.descricao = descricao;
     }
 
@@ -45,6 +48,14 @@ public class EventoTipo implements Serializable {
         this.id = id;
     }
 
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -52,5 +63,5 @@ public class EventoTipo implements Serializable {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
+   
 }
