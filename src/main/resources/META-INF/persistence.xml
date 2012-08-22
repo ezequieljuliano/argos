@@ -6,6 +6,8 @@
         
          <provider>com.impetus.kundera.KunderaPersistence</provider>		
         
+         <class>br.com.br.com.ezequieljuliano.argos.domain.EventoTipo</class>
+
          <properties>			
             <property name="kundera.nodes" value="localhost"/>
             <property name="kundera.port" value="9160"/>

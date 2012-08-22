@@ -6,15 +6,15 @@
 		<h:form prependId="false">
 			<p:toolbar>
 				<p:toolbarGroup align="left">
-					<p:commandButton value="#{messages['button.save']}" action="#{eventoTipoMB.insert}"
-						rendered="#{!eventoTipoMB.updateMode}" ajax="false" />
-					<p:commandButton value="#{messages['button.save']}" action="#{eventoTipoMB.update}"
-						rendered="#{eventoTipoMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{eventoTipoEditMB.insert}"
+						rendered="#{!eventoTipoEditMB.updateMode}" ajax="false" />
+					<p:commandButton value="#{messages['button.save']}" action="#{eventoTipoEditMB.update}"
+						rendered="#{eventoTipoEditMB.updateMode}" ajax="false" />
 					<p:commandButton value="#{messages['button.delete']}" onclick="confirmation.show()"
-						rendered="#{eventoTipoMB.updateMode}" type="button" immediate="true" ajax="false" />
+						rendered="#{eventoTipoEditMB.updateMode}" type="button" immediate="true" ajax="false" />
 					<p:confirmDialog message="#{messages['label.confirm.delete']}" showEffect="bounce" hideEffect="explode"
 						header="#{messages['label.dialog.delete']}" severity="alert" widgetVar="confirmation">
-						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{eventoTipoMB.delete}" immediate="true"
+						<h:commandButton value="#{messages['button.dialog.yes']}" action="#{eventoTipoEditMB.delete}" immediate="true"
 							ajax="false" />
 						<h:commandButton value="#{messages['button.dialog.no']}" onclick="confirmation.hide()" type="button" />
 					</p:confirmDialog>
@@ -26,17 +26,13 @@
 			<p:fieldset legend="#{messages['bookmark.label']}" toggleable="true" toggleSpeed="500">
 				<h:panelGrid id="fields" columns="3">
 					<h:outputLabel value="#{messages['bookmark.label.id']}: " for="id" styleClass="text-input" />
-					<h:outputText id="id" value="#{eventoTipoMB.bean.id}" />
+					<h:outputText id="id" value="#{eventoTipoEditMB.bean.id}" />
 					<p:message for="id" />
 
-					<h:outputLabel value="#{messages['bookmark.label.descricao']}: " for="descricao" styleClass="text-input" />
-					<h:inputText id="descricao" value="#{eventoTipoMB.bean.descricao}"
-						title="#{messages['bookmark.alt.descricao']}" />
-					<p:message for="descricao" />
-
-					<h:outputLabel value="#{messages['bookmark.label.link']}: " for="link" styleClass="text-input" />
-					<h:inputText id="link" value="#{eventoTipoMB.bean.link}" title="#{messages['bookmark.alt.link']}" />
-					<p:message for="link" />
+					<h:outputLabel value="#{messages['bookmark.label.description']}: " for="description" styleClass="text-input" />
+					<h:inputText id="description" value="#{eventoTipoEditMB.bean.descricao}"
+						title="#{messages['bookmark.alt.description']}" />
+					<p:message for="description" />
 				</h:panelGrid>
 			</p:fieldset>
 		</h:form>
