@@ -2,30 +2,30 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
-	<ui:define name="body">
-		<h:form>
-			<p:toolbar>
-				<p:toolbarGroup align="left">
-					<p:commandButton title="#{messages['button.new']}" icon="ui-icon-circle-plus" 
-                                                         action="/evento_tipo_edit.jsf?faces-redirect=true"
-                                                         ajax="false" />
-				</p:toolbarGroup>
-			</p:toolbar>
-
-			<p:dataTable id="list" var="bean" value="#{eventoTipoMB.list}">
-				<f:facet name="header">#{messages['eventotipo.label.list']}</f:facet>
-                                <p:column style="width:5%;" sortBy="#{bean.codigo}">
-					<f:facet name="header">#{messages['eventotipo.label.codigo']}</f:facet>
-                                        <h:outputText value="#{bean.codigo}" />
-				</p:column>
-                                <p:column sortBy="#{bean.descricao}">
-					<f:facet name="header">#{messages['eventotipo.label.descricao']}</f:facet>
-					<h:commandLink action="/evento_tipo_edit.jsf?faces-redirect=true">
-                                                <h:outputText value="#{bean.descricao}" />
-                                                <f:param name="id" value="#{bean.id}" />
-					</h:commandLink>
-				</p:column>
-			</p:dataTable>
-		</h:form>
-	</ui:define>
+    <ui:define name="body">
+        <h:form>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="#{messages['button.new']}" action="/evento_tipo_edit.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-document"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="list" var="bean" value="#{eventoTipoMB.list}" widgetVar="beanTable" emptyMessage="#{messages['reg.empty']}">
+<!--                <f:facet name="header">#{messages['eventotipo.label.list']}</f:facet>-->
+                <f:facet name="search">  
+                    <p:outputPanel>  
+                        <h:outputText value="#{messages['search.all.fields']}" />  
+                        <p:inputText id="globalFilter" onkeyup="beanTable.filter()" style="width:150px" />  
+                    </p:outputPanel>  
+                </f:facet>  
+                <p:column headerText="#{messages['eventotipo.label.codigo']}" sortBy="#{bean.codigo}">
+                    <h:outputText value="#{bean.codigo}" />
+                </p:column>
+                <p:column headerText="#{messages['eventotipo.label.descricao']}" sortBy="#{bean.descricao}">
+                    <h:outputText value="#{bean.descricao}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    
 </ui:composition>

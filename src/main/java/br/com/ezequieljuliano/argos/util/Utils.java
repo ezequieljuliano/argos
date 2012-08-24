@@ -13,19 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.ezequieljuliano.argos.business;
+package br.com.ezequieljuliano.argos.util;
 
-import br.com.ezequieljuliano.argos.domain.EventoTipo;
-import br.com.ezequieljuliano.argos.persistence.EventoTipoDAO;
-import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.Date;
+import java.util.Random;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@BusinessController
-public class EventoTipoBC extends DelegateCrud<EventoTipo, Long, EventoTipoDAO> {
+public class Utils {
 
-    private static final long serialVersionUID = 1L;
+    public static Long getUniqueId() {
+        int newId = new Random(System.currentTimeMillis()).nextInt(99999999);
+        return Long.valueOf(newId);
+    }
+
+    public static long getCurrentTimestamp() {
+        return new Date().getTime();
+    }
 }
