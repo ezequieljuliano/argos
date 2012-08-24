@@ -10,18 +10,16 @@
                 </p:toolbarGroup>
             </p:toolbar>
             
-            <p:dataTable id="list" var="bean" value="#{eventoTipoMB.list}" widgetVar="beanTable" emptyMessage="#{messages['reg.empty']}">
-<!--                <f:facet name="header">#{messages['eventotipo.label.list']}</f:facet>-->
-                <f:facet name="search">  
-                    <p:outputPanel>  
-                        <h:outputText value="#{messages['search.all.fields']}" />  
-                        <p:inputText id="globalFilter" onkeyup="beanTable.filter()" style="width:150px" />  
-                    </p:outputPanel>  
-                </f:facet>  
-                <p:column headerText="#{messages['eventotipo.label.codigo']}" sortBy="#{bean.codigo}">
+            <p:dataTable selectionMode="single" 
+                         rowKey="#{bean.id}" id="list" var="bean" 
+                         value="#{eventoTipoMB.list}" 
+                         emptyMessage="#{messages['reg.empty']}"> 
+                <p:ajax event="rowSelect" listener="#{eventoTipoMB.handleSelect}" />
+                <f:facet name="header">#{messages['eventotipo.label.list']}</f:facet>
+                <p:column headerText="#{messages['eventotipo.label.codigo']}">
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>
-                <p:column headerText="#{messages['eventotipo.label.descricao']}" sortBy="#{bean.descricao}">
+                <p:column headerText="#{messages['eventotipo.label.descricao']}">
                     <h:outputText value="#{bean.descricao}" />
                 </p:column>
             </p:dataTable>

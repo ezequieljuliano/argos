@@ -17,14 +17,18 @@ package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.EventoTipoBC;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.annotation.Name;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.Parameter;
+import br.gov.frameworkdemoiselle.util.Redirector;
 import br.gov.frameworkdemoiselle.util.ResourceBundle;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 
@@ -103,8 +107,12 @@ public class EventoTipoMB {
         return this.bc.findAll();
     }
     
-    public String handleSelect(SelectEvent e){
-        return "/evento_tipo_edit.jsf?faces-redirect=true&id=" + ((EventoTipo) e.getObject()).getId();
+    public void handleSelect(SelectEvent e){
+        try {
+            JsfUtils.redireciona("evento_tipo_edit.jsf?faces-redirect=true&id=" + ((EventoTipo) e.getObject()).getId());
+        } catch (Exception ex) {
+            Logger.getLogger(EventoTipoMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
