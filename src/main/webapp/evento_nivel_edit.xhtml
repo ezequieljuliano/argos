@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm">
+
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Voltar" action="/evento_nivel_list.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
+                    <p:commandButton value="Novo" action="/evento_nivel_edit.jsf?faces-redirect=true" rendered="#{eventoNivelMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
+                    <p:commandButton value="Salvar" action="#{eventoNivelMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
+                    <p:commandButton value="Inativar" action="#{eventoNivelMB.inativar()}" rendered="#{eventoNivelMB.bean.ativo and eventoNivelMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
+                    <p:commandButton value="Ativar" action="#{eventoNivelMB.ativar()}" rendered="#{eventoNivelMB.bean.inativo and eventoNivelMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:panel>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código" for="codigo"/>
+                    <p:inputText value="#{eventoNivelMB.bean.codigo}" id="codigo" />
+
+                    <h:outputLabel value="Descrição" for="descricao"/>
+                    <p:inputText value="#{eventoNivelMB.bean.descricao}" id="descricao" />
+
+                    <h:outputText value="Envia Alertas: " />  
+                    <p:selectBooleanCheckbox value="#{eventoNivelMB.bean.enviaAlerta}" />
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

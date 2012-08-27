@@ -1,28 +1,31 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
         <h:form id="frm">
+            
             <p:toolbar>
                 <p:toolbarGroup>
-                    <p:commandButton value="#{messages['button.back']}" action="/evento_tipo_list.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
-                    <p:commandButton value="#{messages['button.save']}" action="#{eventoTipoMB.insert()}" image="ui-icon ui-icon-disk" update="frm"/>
-                    <p:commandButton value="#{messages['button.save']}" action="#{eventoTipoMB.update()}" image="ui-icon ui-icon-disk" update="frm"/>
-                    <p:commandButton value="#{messages['button.delete']}" action="#{eventoTipoMB.delete()}" image="ui-icon ui-icon-minusthick" update="frm"/>
+                    <p:commandButton value="Voltar" action="/evento_tipo_list.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
+                    <p:commandButton value="Novo" action="/evento_tipo_edit.jsf?faces-redirect=true" rendered="#{eventoTipoMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
+                    <p:commandButton value="Salvar" action="#{eventoTipoMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
+                    <p:commandButton value="Inativar" action="#{eventoTipoMB.inativar()}" rendered="#{eventoTipoMB.bean.ativo and eventoTipoMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
+                    <p:commandButton value="Ativar" action="#{eventoTipoMB.ativar()}" rendered="#{eventoTipoMB.bean.inativo and eventoTipoMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                 </p:toolbarGroup>
             </p:toolbar>
-            
+
             <p:panel>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{messages['eventotipo.label.codigo']}" for="codigo"/>
-                    <p:inputText value="#{eventoTipoMB.bean.codigo}" id="id" />
-                    
-                    <h:outputLabel value="#{messages['eventotipo.label.descricao']}" for="descricao"/>
-                    <p:inputText value="#{eventoTipoMB.bean.descricao}" id="nome" />
+                    <h:outputLabel value="Código" for="codigo"/>
+                    <p:inputText value="#{eventoTipoMB.bean.codigo}" id="codigo" />
+
+                    <h:outputLabel value="Descrição" for="descricao"/>
+                    <p:inputText value="#{eventoTipoMB.bean.descricao}" id="descricao" />
                 </h:panelGrid>
             </p:panel>
+            
         </h:form>
     </ui:define>
-	
+
 </ui:composition>

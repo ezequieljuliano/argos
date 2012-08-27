@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.ezequieljuliano.argos.persistence;
+package br.com.ezequieljuliano.argos.domain;
 
-import br.com.ezequieljuliano.argos.domain.EventoTipo;
-import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import br.gov.frameworkdemoiselle.template.JPACrud;
+import javax.inject.Named;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@PersistenceController
-public class EventoTipoDAO extends JPACrud<EventoTipo, Long> {
 
-    private static final long serialVersionUID = 1L;
+@Named
+public enum Situacao {
+   ativo,
+   inativo;
 }

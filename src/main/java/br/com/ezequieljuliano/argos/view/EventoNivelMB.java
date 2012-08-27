@@ -15,8 +15,8 @@
  */
 package br.com.ezequieljuliano.argos.view;
 
-import br.com.ezequieljuliano.argos.business.EventoTipoBC;
-import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.business.EventoNivelBC;
+import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -34,20 +34,20 @@ import org.primefaces.event.SelectEvent;
  * @author Ezequiel Juliano Müller
  */
 @ViewController
-public class EventoTipoMB {
+public class EventoNivelMB {
 
     private static final long serialVersionUID = 1L;
     @Inject
-    private EventoTipoBC bc;
+    private EventoNivelBC bc;
     @Inject
     private MessageContext messageContext;
     @Inject
     private Parameter<Integer> id;
-    private EventoTipo bean;
+    private EventoNivel bean;
 
-    public EventoTipo getBean() {
+    public EventoNivel getBean() {
         if (bean == null) {
-            bean = new EventoTipo();
+            bean = new EventoNivel();
             if (this.id.getValue() != null) {
                 this.bean = bc.load(Long.valueOf(this.id.getValue()));
             }
@@ -55,7 +55,7 @@ public class EventoTipoMB {
         return bean;
     }
 
-    public void setBean(EventoTipo bean) {
+    public void setBean(EventoNivel bean) {
         this.bean = bean;
     }
 
@@ -89,15 +89,15 @@ public class EventoTipoMB {
         }
     }
 
-    public List<EventoTipo> getList() {
+    public List<EventoNivel> getList() {
         return this.bc.findAll();
     }
 
     public void handleSelect(SelectEvent e) {
         try {
-            JsfUtils.redireciona("evento_tipo_edit.jsf?faces-redirect=true&id=" + ((EventoTipo) e.getObject()).getId());
+            JsfUtils.redireciona("evento_nivel_edit.jsf?faces-redirect=true&id=" + ((EventoNivel) e.getObject()).getId());
         } catch (Exception ex) {
-            Logger.getLogger(EventoTipoMB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EventoNivelMB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

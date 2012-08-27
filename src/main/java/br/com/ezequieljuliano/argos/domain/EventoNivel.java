@@ -26,8 +26,8 @@ import javax.persistence.Table;
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "EventoTipo", schema = "Argos@cassandra_pu")
-public class EventoTipo implements Serializable {
+@Table(name = "EventoNivel", schema = "Argos@cassandra_pu")
+public class EventoNivel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,15 +39,18 @@ public class EventoTipo implements Serializable {
     private String descricao;
     @Column(name = "situacao")
     private Situacao situacao = Situacao.ativo;
+    @Column(name = "envia_alerta")
+    private Boolean enviaAlerta = true;
 
-    public EventoTipo() {
+    public EventoNivel() {
         super();
     }
 
-    public EventoTipo(int codigo, String descricao, Situacao situacao) {
+    public EventoNivel(int codigo, String descricao, Situacao situacao, Boolean enviaAlerta) {
         this.codigo = codigo;
         this.descricao = descricao;
         this.situacao = situacao;
+        this.enviaAlerta = enviaAlerta;
     }
 
     public Long getId() {
@@ -80,6 +83,14 @@ public class EventoTipo implements Serializable {
 
     public void setSituacao(Situacao situacao) {
         this.situacao = situacao;
+    }
+
+    public Boolean getEnviaAlerta() {
+        return enviaAlerta;
+    }
+
+    public void setEnviaAlerta(Boolean enviaAlerta) {
+        this.enviaAlerta = enviaAlerta;
     }
 
     public boolean isAtivo() {

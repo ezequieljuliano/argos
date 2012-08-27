@@ -7,16 +7,16 @@
 
             <p:toolbar>
                 <p:toolbarGroup>
-                    <p:commandButton value="Novo" action="/evento_tipo_edit.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-document"/>
+                    <p:commandButton value="Novo" action="/evento_nivel_edit.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-document"/>
                 </p:toolbarGroup>
             </p:toolbar>
 
             <p:dataTable selectionMode="single" 
                          rowKey="#{bean.id}" id="list" var="bean" 
-                         value="#{eventoTipoMB.list}" 
+                         value="#{eventoNivelMB.list}" 
                          emptyMessage="Não existem registros para exibir"> 
-                <p:ajax event="rowSelect" listener="#{eventoTipoMB.handleSelect}" />
-                <f:facet name="header">Lista de Tipos de Eventos</f:facet>
+                <p:ajax event="rowSelect" listener="#{eventoNivelMB.handleSelect}" />
+                <f:facet name="header">Lista de Níveis de Eventos</f:facet>
                 <p:column headerText="Código">
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>
@@ -25,6 +25,9 @@
                 </p:column>
                 <p:column headerText="Situação">
                     <h:outputText value="#{bean.situacao}" />
+                </p:column>
+                <p:column headerText="Envia Alerta">
+                    <h:outputText converter="booleanConverter" value="#{bean.enviaAlerta}" />
                 </p:column>
             </p:dataTable>
 

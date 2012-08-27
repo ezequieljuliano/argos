@@ -15,9 +15,9 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
-import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.Situacao;
-import br.com.ezequieljuliano.argos.persistence.EventoTipoDAO;
+import br.com.ezequieljuliano.argos.persistence.EventoNivelDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
@@ -27,30 +27,30 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EventoTipoBC extends DelegateCrud<EventoTipo, Long, EventoTipoDAO> {
+public class EventoNivelBC extends DelegateCrud<EventoNivel, Long, EventoNivelDAO> {
 
     private static final long serialVersionUID = 1L;
 
-    public void saveOrUpdate(EventoTipo eventoTipo) {
-        if (eventoTipo.getId() == null) {
-            eventoTipo.setId(Utils.getUniqueId());
-            insert(eventoTipo);
+    public void saveOrUpdate(EventoNivel eventoNivel) {
+        if (eventoNivel.getId() == null) {
+            eventoNivel.setId(Utils.getUniqueId());
+            insert(eventoNivel);
         } else {
-            update(eventoTipo);
+            update(eventoNivel);
         }
     }
 
-    public void inativar(EventoTipo eventoTipo) {
-        if (eventoTipo.isAtivo()) {
-            eventoTipo.setSituacao(Situacao.inativo);
-            update(eventoTipo);
+    public void inativar(EventoNivel eventoNivel) {
+        if (eventoNivel.isAtivo()) {
+            eventoNivel.setSituacao(Situacao.inativo);
+            update(eventoNivel);
         }
     }
 
-    public void ativar(EventoTipo eventoTipo) {
-        if (eventoTipo.isInativo()) {
-            eventoTipo.setSituacao(Situacao.ativo);
-            update(eventoTipo);
+    public void ativar(EventoNivel eventoNivel) {
+        if (eventoNivel.isInativo()) {
+            eventoNivel.setSituacao(Situacao.ativo);
+            update(eventoNivel);
         }
     }
 }
