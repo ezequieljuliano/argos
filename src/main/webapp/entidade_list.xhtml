@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form>
+
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Novo" action="/entidade_edit.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-document"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable selectionMode="single" 
+                         rowKey="#{bean.id}" id="list" var="bean" 
+                         value="#{entidadeMB.list}" 
+                         emptyMessage="Não existem registros para exibir"> 
+                <p:ajax event="rowSelect" listener="#{entidadeMB.handleSelect}" />
+                <f:facet name="header">Lista de Entidades</f:facet>
+
+                <p:columnGroup type="header">  
+                    <p:row>  
+                        <p:column colspan="3" headerText="Entidade" /> 
+                        <p:column colspan="3" headerText="Entidade Pai" />  
+                    </p:row> 
+                    <p:row>
+                        <p:column headerText="Código"/>
+                        <p:column headerText="Descrição"/>
+                        <p:column headerText="Situação"/>
+                        <p:column headerText="Código"/>
+                        <p:column headerText="Nome"/>
+                        <p:column headerText="Situação"/>
+                    </p:row>   
+                </p:columnGroup> 
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{bean.codigo}" />
+                </p:column>
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{bean.nome}" />
+                </p:column>
+                <p:column headerText="Situação">
+                    <h:outputText value="#{bean.situacao}" />
+                </p:column>
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{bean.entidadePai.codigo}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{bean.entidadePai.nome}" />
+                </p:column>
+                <p:column headerText="Situação">
+                    <h:outputText value="#{bean.entidadePai.situacao}" />
+                </p:column>  
+
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
