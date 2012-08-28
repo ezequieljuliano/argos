@@ -30,16 +30,21 @@ import javax.persistence.Table;
 public class EventoNivel implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
-    @Column(name = "id")
+    @Column(name = "Id")
     private Long id;
-    @Column(name = "codigo")
+    
+    @Column(name = "Codigo")
     private int codigo;
-    @Column(name = "descricao")
+    
+    @Column(name = "Descricao")
     private String descricao;
-    @Column(name = "situacao")
+    
+    @Column(name = "Situacao")
     private Situacao situacao = Situacao.ativo;
-    @Column(name = "envia_alerta")
+    
+    @Column(name = "EnviaAlerta")
     private Boolean enviaAlerta = true;
 
     public EventoNivel() {

@@ -16,6 +16,7 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,48 +38,56 @@ public class Entidade implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "id")
+    @Column(name = "Id")
     private Long id;
     
-    @Column(name = "codigo")
+    @Column(name = "Codigo")
     private int codigo;
     
-    @Column(name = "nome")
+    @Column(name = "Nome")
     private String nome;
     
-    @Column(name = "cadastro_nacional")
+    @Column(name = "CadastroNacional")
     private String cadastroNacional;
     
-    @Column(name = "situacao")
+    @Column(name = "Situacao")
     private Situacao situacao = Situacao.ativo;
     
-    @Column(name = "endereco")
+    @Column(name = "Endereco")
     private String endereco;
     
-    @Column(name = "endereco_numero")
+    @Column(name = "EnderecoNumero")
     private String enderecoNumero;
     
-    @Column(name = "bairro")
+    @Column(name = "Bairro")
     private String bairro;
     
-    @Column(name = "cidade")
+    @Column(name = "Cidade")
     private String cidade;
     
-    @Column(name = "estado")
+    @Column(name = "Estado")
     private String estado;
     
-    @Column(name = "pais")
+    @Column(name = "Pais")
     private String pais;
     
-    @Column(name = "cep")
+    @Column(name = "Cep")
     private String cep;
-          
-    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinColumn(name="entidade_filha_id")
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+    @JoinColumn(name = "EntidadeFilhaId")
     private List<Entidade> entidadesFilhas;
-
+          
     public Entidade() {
         super();
+    }
+
+    public boolean isAtivo() {
+        return situacao.equals(Situacao.ativo);
+    }
+
+    public boolean isInativo() {
+        return situacao.equals(Situacao.inativo);
     }
 
     public Long getId() {
@@ -180,17 +189,11 @@ public class Entidade implements Serializable {
     public List<Entidade> getEntidadesFilhas() {
         return entidadesFilhas;
     }
-
-    public void setEntidadesFilhas(List<Entidade> entidadesFilhas) {
-        this.entidadesFilhas = entidadesFilhas;
+ 
+    public void addEntidadeFilha(Entidade entidadeFilha) {
+        if (this.entidadesFilhas == null || this.entidadesFilhas.isEmpty()) {
+            this.entidadesFilhas = new ArrayList<Entidade>();
+        }
+        this.entidadesFilhas.add(entidadeFilha);
     }
-
-    public boolean isAtivo() {
-        return situacao.equals(Situacao.ativo);
-    }
-
-    public boolean isInativo() {
-        return situacao.equals(Situacao.inativo);
-    }
-    
 }

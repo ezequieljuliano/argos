@@ -17,42 +17,18 @@
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{entidadeMB.handleSelect}" />
                 <f:facet name="header">Lista de Entidades</f:facet>
-
-                <p:columnGroup type="header">  
-                    <p:row>  
-                        <p:column colspan="3" headerText="Entidade" /> 
-                        <p:column colspan="3" headerText="Entidade Pai" />  
-                    </p:row> 
-                    <p:row>
-                        <p:column headerText="Código"/>
-                        <p:column headerText="Descrição"/>
-                        <p:column headerText="Situação"/>
-                        <p:column headerText="Código"/>
-                        <p:column headerText="Nome"/>
-                        <p:column headerText="Situação"/>
-                    </p:row>   
-                </p:columnGroup> 
-
                 <p:column headerText="Código">
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>
                 <p:column headerText="Descrição">
                     <h:outputText value="#{bean.nome}" />
                 </p:column>
+                <p:column headerText="Cadastro Nacional">
+                    <h:outputText value="#{bean.cadastroNacional}" />
+                </p:column>
                 <p:column headerText="Situação">
                     <h:outputText value="#{bean.situacao}" />
                 </p:column>
-
-                <p:column headerText="Código">
-                    <h:outputText value="#{bean.entidadePai.codigo}" />
-                </p:column>
-                <p:column headerText="Nome">
-                    <h:outputText value="#{bean.entidadePai.nome}" />
-                </p:column>
-                <p:column headerText="Situação">
-                    <h:outputText value="#{bean.entidadePai.situacao}" />
-                </p:column>  
-
             </p:dataTable>
 
         </h:form>

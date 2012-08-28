@@ -28,9 +28,9 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
  */
 @BusinessController
 public class EntidadeBC extends DelegateCrud<Entidade, Long, EntidadeDAO> {
-
+    
     private static final long serialVersionUID = 1L;
-
+    
     public void saveOrUpdate(Entidade entidade) {
         if (entidade.getId() == null) {
             entidade.setId(Utils.getUniqueId());
@@ -39,18 +39,23 @@ public class EntidadeBC extends DelegateCrud<Entidade, Long, EntidadeDAO> {
             update(entidade);
         }
     }
-
+    
     public void inativar(Entidade entidade) {
         if (entidade.isAtivo()) {
             entidade.setSituacao(Situacao.inativo);
             update(entidade);
         }
     }
-
+    
     public void ativar(Entidade entidade) {
         if (entidade.isInativo()) {
             entidade.setSituacao(Situacao.ativo);
             update(entidade);
         }
+    }
+    
+    public void addEntidadeFilha(Entidade entidade, Entidade entidadeFilha) {
+        entidade.addEntidadeFilha(entidadeFilha);
+        update(entidade);
     }
 }

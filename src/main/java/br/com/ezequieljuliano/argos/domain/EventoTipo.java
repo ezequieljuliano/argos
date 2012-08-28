@@ -30,14 +30,18 @@ import javax.persistence.Table;
 public class EventoTipo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
-    @Column(name = "id")
+    @Column(name = "Id")
     private Long id;
-    @Column(name = "codigo")
+    
+    @Column(name = "Codigo")
     private int codigo;
-    @Column(name = "descricao")
+    
+    @Column(name = "Descricao")
     private String descricao;
-    @Column(name = "situacao")
+    
+    @Column(name = "Situacao")
     private Situacao situacao = Situacao.ativo;
 
     public EventoTipo() {

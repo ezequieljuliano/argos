@@ -37,12 +37,16 @@ import org.primefaces.event.SelectEvent;
 public class EntidadeMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EntidadeBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<Integer> id;
+    
     private Entidade bean;
 
     public Entidade getBean() {
@@ -98,6 +102,17 @@ public class EntidadeMB {
             JsfUtils.redireciona("entidade_edit.jsf?faces-redirect=true&id=" + ((Entidade) e.getObject()).getId());
         } catch (Exception ex) {
             Logger.getLogger(EntidadeMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void addEntidadeFilha(SelectEvent e) {
+        try {
+            EntidadeBC bcEntFilha = new EntidadeBC();
+            Entidade entFilha = bcEntFilha.load(((Entidade) e.getObject()).getId());
+            bc.addEntidadeFilha(bean, entFilha);
+            messageContext.add("Entidade vinculada com sucesso!", SeverityType.INFO);
+        } catch (Exception ex) {
+            messageContext.add("Ocorreu um erro ao vincular a entidade!", SeverityType.ERROR);
         }
     }
 }
