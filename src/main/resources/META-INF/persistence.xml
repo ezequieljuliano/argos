@@ -3,11 +3,10 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
     <persistence-unit name="cassandra_pu">
-   
         <provider>com.impetus.kundera.KunderaPersistence</provider>
-        
-        <class>br.com.ezequieljuliano.argos.domain.EventoTipo</class>		
-        
+        <class>br.com.ezequieljuliano.argos.domain.EventoTipo</class>
+        <class>br.com.ezequieljuliano.argos.domain.EventoNivel</class>
+        <class>br.com.ezequieljuliano.argos.domain.Entidade</class>		
         <properties>	
             <property name="kundera.nodes" value="localhost" />
             <property name="kundera.port" value="9160" />
@@ -18,9 +17,8 @@
             <property name="kundera.cache.provider.class"
                       value="com.impetus.kundera.cache.ehcache.EhCacheProvider" />
             <property name="kundera.cache.config.resource" value="/ehcache-test.xml" />
-            <property name="kundera.ddl.auto.prepare" value="create" />		
-        </properties>	
-        	
+            <property name="kundera.ddl.auto.prepare" value="update" />		
+        </properties>		
     </persistence-unit>
 
 </persistence>

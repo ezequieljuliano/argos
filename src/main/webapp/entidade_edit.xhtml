@@ -15,6 +15,27 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
+            <p:dialog header="Entidade Pai" widgetVar="dlgEntidadePai" modal="true" closable="true">
+                <p:dataTable value="#{entidadeMB.listPai}" var="ent"
+                             selectionMode="single"
+                             selection="#{entidadeMB.bean.pai}"
+                             rowKey="#{ent.id}" id="list">
+                    <p:ajax event="rowSelect" oncomplete="dlgEntidadePai.hide()" update=":frm:entPai"/>
+                    <p:column headerText="Código">
+                        <h:outputText value="#{ent.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{ent.nome}"/>
+                    </p:column>
+                    <p:column headerText="Cadastro Nacional">
+                        <h:outputText value="#{ent.cadastroNacional}"/>
+                    </p:column>
+                    <p:column headerText="Situação">
+                        <h:outputText value="#{ent.situacao}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:dialog>
+
             <p:panel>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Código" for="codigo"/>
@@ -47,52 +68,16 @@
                     <h:outputLabel value="CEP" for="cep"/>
                     <p:inputText value="#{entidadeMB.bean.cep}" id="cep" />
 
-                </h:panelGrid>
+                    <h:outputLabel value="Entidade Pai" for="entPai"/>
+                    <h:panelGrid columns="3" id="entPai">
+                        <p:inputText value="#{entidadeMB.bean.pai.codigo}" id="entPaiCodigo" disabled="true" />
+                        <p:inputText value="#{entidadeMB.bean.pai.nome}" id="entPaiNome" disabled="true" />
+                        <p:button image="ui-icon ui-icon-search" onclick="dlgEntidadePai.show(); return false;" /> 
+                    </h:panelGrid>
 
-                <p:dialog header="Vincular Entidade" widgetVar="dlgVincularEntidade" modal="true" closable="true">
-                    <p:dataTable value="#{entidadeMB.list}" var="ent"                    
-                                 selectionMode="single"
-                                 rowKey="#{ent.id}" id="list">
-                        <p:ajax event="rowSelect" listener="#{entidadeMB.addEntidadeFilha}" oncomplete="dlgVincularEntidade.hide()" update=":frm"/>
-                        <p:column headerText="Código">
-                            <h:outputText value="#{ent.codigo}"/>
-                        </p:column>
-                        <p:column headerText="Nome">
-                            <h:outputText value="#{ent.nome}"/>
-                        </p:column>
-                        <p:column headerText="Cadastro Nacional">
-                            <h:outputText value="#{ent.cadastroNacional}"/>
-                        </p:column>
-                        <p:column headerText="Situação">
-                            <h:outputText value="#{ent.situacao}"/>
-                        </p:column>
-                    </p:dataTable>
-                </p:dialog> 
-
-                <p:toolbar>
-                    <p:toolbarGroup>
-                        <p:button value="Nova" image="ui-icon-circle-plus" onclick="dlgVincularEntidade.show(); return false;" /> 
-                    </p:toolbarGroup>
-                </p:toolbar>  
-
-                <p:dataTable value="#{entidadeMB.bean.entidadesFilhas}" var="entFilhas">
-                    <f:facet name="header">Lista de Entidades Vinculadas</f:facet>
-                    <p:column headerText="Código">
-                        <h:outputText value="#{entFilhas.codigo}" />
-                    </p:column>
-                    <p:column headerText="Nome">
-                        <h:outputText value="#{entFilhas.nome}" />
-                    </p:column>
-                    <p:column headerText="Cadastro Nacional">
-                        <h:outputText value="#{entFilhas.cadastroNacional}" />
-                    </p:column>
-                    <p:column headerText="Situação">
-                        <h:outputText value="#{entFilhas.situacao}" />
-                    </p:column>
-                </p:dataTable>
-
+                </h:panelGrid> 
+               
             </p:panel>
-
         </h:form>
     </ui:define>
 

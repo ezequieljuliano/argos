@@ -27,7 +27,7 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EventoTipoBC extends DelegateCrud<EventoTipo, Long, EventoTipoDAO> {
+public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO> {
 
     private static final long serialVersionUID = 1L;
 

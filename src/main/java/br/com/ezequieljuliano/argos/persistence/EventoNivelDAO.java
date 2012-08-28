@@ -24,7 +24,7 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EventoNivelDAO extends JPACrud<EventoNivel, Long> {
+public class EventoNivelDAO extends JPACrud<EventoNivel, String> {
 
     private static final long serialVersionUID = 1L;
 }

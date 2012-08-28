@@ -16,7 +16,7 @@
 package br.com.ezequieljuliano.argos.util;
 
 import java.util.Date;
-import java.util.Random;
+import java.util.UUID;
 
 /**
  *
@@ -24,9 +24,8 @@ import java.util.Random;
  */
 public class Utils {
 
-    public static Long getUniqueId() {
-        int newId = new Random(System.currentTimeMillis()).nextInt(99999999);
-        return Long.valueOf(newId);
+    public static String getUniqueId() {
+        return UUID.randomUUID().toString();
     }
 
     public static long getCurrentTimestamp() {

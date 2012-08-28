@@ -37,19 +37,23 @@ import org.primefaces.event.SelectEvent;
 public class EventoNivelMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoNivelBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
-    private Parameter<Integer> id;
+    private Parameter<String> id;
+    
     private EventoNivel bean;
 
     public EventoNivel getBean() {
         if (bean == null) {
             bean = new EventoNivel();
             if (this.id.getValue() != null) {
-                this.bean = bc.load(Long.valueOf(this.id.getValue()));
+                this.bean = bc.load(this.id.getValue());
             }
         }
         return bean;

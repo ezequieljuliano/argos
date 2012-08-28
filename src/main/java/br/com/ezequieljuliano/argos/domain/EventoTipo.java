@@ -33,7 +33,7 @@ public class EventoTipo implements Serializable {
     
     @Id
     @Column(name = "Id")
-    private Long id;
+    private String id;
     
     @Column(name = "Codigo")
     private int codigo;
@@ -54,11 +54,11 @@ public class EventoTipo implements Serializable {
         this.situacao = situacao;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

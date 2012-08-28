@@ -16,15 +16,12 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -39,7 +36,7 @@ public class Entidade implements Serializable {
     
     @Id
     @Column(name = "Id")
-    private Long id;
+    private String id;
     
     @Column(name = "Codigo")
     private int codigo;
@@ -74,9 +71,12 @@ public class Entidade implements Serializable {
     @Column(name = "Cep")
     private String cep;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
-    @JoinColumn(name = "EntidadeFilhaId")
-    private List<Entidade> entidadesFilhas;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entidadePai")
+//    private List<Entidade> entidadesFilhas;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PaiId")
+    private Entidade pai;
           
     public Entidade() {
         super();
@@ -90,11 +90,11 @@ public class Entidade implements Serializable {
         return situacao.equals(Situacao.inativo);
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -186,14 +186,22 @@ public class Entidade implements Serializable {
         this.cep = cep;
     }
 
-    public List<Entidade> getEntidadesFilhas() {
-        return entidadesFilhas;
+//    public List<Entidade> getEntidadesFilhas() {
+//        if (this.entidadesFilhas == null || this.entidadesFilhas.isEmpty()){
+//            this.entidadesFilhas = new ArrayList<>();
+//        }
+//        return entidadesFilhas;
+//    }
+//
+//    public void setEntidadesFilhas(List<Entidade> entidadesFilhas) {
+//        this.entidadesFilhas = entidadesFilhas;
+//    }
+
+    public Entidade getPai() {
+        return pai;
     }
- 
-    public void addEntidadeFilha(Entidade entidadeFilha) {
-        if (this.entidadesFilhas == null || this.entidadesFilhas.isEmpty()) {
-            this.entidadesFilhas = new ArrayList<Entidade>();
-        }
-        this.entidadesFilhas.add(entidadeFilha);
+
+    public void setPai(Entidade pai) {
+        this.pai = pai;
     }
 }

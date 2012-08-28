@@ -24,7 +24,7 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EntidadeDAO extends JPACrud<Entidade, Long> {
+public class EntidadeDAO extends JPACrud<Entidade, String> {
 
     private static final long serialVersionUID = 1L;
 }

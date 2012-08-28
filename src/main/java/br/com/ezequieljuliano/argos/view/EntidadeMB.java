@@ -45,7 +45,7 @@ public class EntidadeMB {
     private MessageContext messageContext;
     
     @Inject
-    private Parameter<Integer> id;
+    private Parameter<String> id;
     
     private Entidade bean;
 
@@ -53,7 +53,7 @@ public class EntidadeMB {
         if (bean == null) {
             bean = new Entidade();
             if (this.id.getValue() != null) {
-                this.bean = bc.load(Long.valueOf(this.id.getValue()));
+                this.bean = bc.load(this.id.getValue());
             }
         }
         return bean;
@@ -96,23 +96,17 @@ public class EntidadeMB {
     public List<Entidade> getList() {
         return this.bc.findAll();
     }
+    
+    public List<Entidade> getListPai(){
+        EntidadeBC bcPai = new EntidadeBC();
+        return bcPai.findAll();
+    }
 
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("entidade_edit.jsf?faces-redirect=true&id=" + ((Entidade) e.getObject()).getId());
         } catch (Exception ex) {
             Logger.getLogger(EntidadeMB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void addEntidadeFilha(SelectEvent e) {
-        try {
-            EntidadeBC bcEntFilha = new EntidadeBC();
-            Entidade entFilha = bcEntFilha.load(((Entidade) e.getObject()).getId());
-            bc.addEntidadeFilha(bean, entFilha);
-            messageContext.add("Entidade vinculada com sucesso!", SeverityType.INFO);
-        } catch (Exception ex) {
-            messageContext.add("Ocorreu um erro ao vincular a entidade!", SeverityType.ERROR);
         }
     }
 }

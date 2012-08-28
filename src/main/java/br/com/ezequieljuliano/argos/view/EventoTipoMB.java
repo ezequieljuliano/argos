@@ -37,19 +37,23 @@ import org.primefaces.event.SelectEvent;
 public class EventoTipoMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoTipoBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
-    private Parameter<Integer> id;
+    private Parameter<String> id;
+    
     private EventoTipo bean;
 
     public EventoTipo getBean() {
         if (bean == null) {
             bean = new EventoTipo();
             if (this.id.getValue() != null) {
-                this.bean = bc.load(Long.valueOf(this.id.getValue()));
+                this.bean = bc.load(this.id.getValue());
             }
         }
         return bean;
