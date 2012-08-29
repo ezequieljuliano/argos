@@ -17,7 +17,7 @@
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{entidadeMB.handleSelect}" />
                 <f:facet name="header">Lista de Entidades</f:facet>
-                
+
                 <p:column headerText="Código">
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>
@@ -31,17 +31,18 @@
                     <h:outputText value="#{bean.situacao}" />
                 </p:column>
 
-                <p:column headerText="Código PAI">
-                    <h:outputText value="#{bean.pai.codigo}" />
+                <p:column headerText="Evento Codigo">
+                    <h:outputText value="#{bean.eventoTipo.codigo}" />
                 </p:column>
-                <p:column headerText="Descrição PAI">
-                    <h:outputText value="#{bean.pai.nome}" />
+                <p:column headerText="Evento Descrição">
+                    <h:outputText value="#{bean.eventoTipo.descricao}" />
                 </p:column>
-                <p:column headerText="Cadastro Nacional PAI">
-                    <h:outputText value="#{bean.pai.cadastroNacional}" />
+
+                <p:column headerText="Pai Código">
+                    <h:outputText value="#{bean.entidadePai.codigo}" />
                 </p:column>
-                <p:column headerText="Situação PAI">
-                    <h:outputText value="#{bean.pai.situacao}" />
+                <p:column headerText="Pai Nome">
+                    <h:outputText value="#{bean.entidadePai.nome}" />
                 </p:column>
 
             </p:dataTable>

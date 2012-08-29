@@ -16,12 +16,16 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -71,13 +75,17 @@ public class Entidade implements Serializable {
     @Column(name = "Cep")
     private String cep;
     
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entidadePai")
-//    private List<Entidade> entidadesFilhas;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PaiId")
-    private Entidade pai;
-          
+    @ManyToOne
+    @JoinColumn(name="EventoTipoId")
+    private EventoTipo eventoTipo;
+    
+    @ManyToOne
+    @JoinColumn(name="EntidadePaiId")
+    private Entidade entidadePai;
+    
+    @OneToMany(mappedBy="entidadePai")
+    private Set<Entidade> entidadesFilhas = new HashSet<Entidade>();
+        
     public Entidade() {
         super();
     }
@@ -186,22 +194,28 @@ public class Entidade implements Serializable {
         this.cep = cep;
     }
 
-//    public List<Entidade> getEntidadesFilhas() {
-//        if (this.entidadesFilhas == null || this.entidadesFilhas.isEmpty()){
-//            this.entidadesFilhas = new ArrayList<>();
-//        }
-//        return entidadesFilhas;
-//    }
-//
-//    public void setEntidadesFilhas(List<Entidade> entidadesFilhas) {
-//        this.entidadesFilhas = entidadesFilhas;
-//    }
-
-    public Entidade getPai() {
-        return pai;
+    public EventoTipo getEventoTipo() {
+        return eventoTipo;
     }
 
-    public void setPai(Entidade pai) {
-        this.pai = pai;
+    public void setEventoTipo(EventoTipo eventoTipo) {
+        this.eventoTipo = eventoTipo;
     }
+
+    public Entidade getEntidadePai() {
+        return entidadePai;
+    }
+
+    public void setEntidadePai(Entidade entidadePai) {
+        this.entidadePai = entidadePai;
+    }
+
+    public Set<Entidade> getEntidadesFilhas() {
+        return entidadesFilhas;
+    }
+
+    public void setEntidadesFilhas(Set<Entidade> entidadesFilhas) {
+        this.entidadesFilhas = entidadesFilhas;
+    }
+    
 }
