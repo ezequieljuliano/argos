@@ -16,9 +16,13 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,8 +30,8 @@ import javax.persistence.Table;
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "EVENTO_TIPO", schema = "Argos@cassandra_pu")
-public class EventoTipo implements Serializable {
+@Table(name = "ENTIDADE_ASSOCIACAO", schema = "Argos@cassandra_pu")
+public class EntidadeAssociacao implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -35,17 +39,20 @@ public class EventoTipo implements Serializable {
     @Column(name = "ID")
     private String id;
     
-    @Column(name = "CODIGO")
-    private int codigo;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ENTIDADE_PAI_ID")
+    private Entidade entidadePai;
     
-    @Column(name = "DESCRICAO")
-    private String descricao;
-    
-    @Column(name = "SITUACAO")
-    private Situacao situacao = Situacao.ativo;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ENTIDADE_FILHA_ID")
+    private Entidade entidadeFilha;
 
-    public EventoTipo() {
+    public EntidadeAssociacao() {
         super();
+    }
+
+    public EntidadeAssociacao(Entidade entidadePai) {
+        this.entidadePai = entidadePai;
     }
 
     public String getId() {
@@ -56,35 +63,20 @@ public class EventoTipo implements Serializable {
         this.id = id;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public Entidade getEntidadePai() {
+        return entidadePai;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setEntidadePai(Entidade entidadePai) {
+        this.entidadePai = entidadePai;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Entidade getEntidadeFilha() {
+        return entidadeFilha;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setEntidadeFilha(Entidade entidadeFilha) {
+        this.entidadeFilha = entidadeFilha;
     }
-
-    public Situacao getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(Situacao situacao) {
-        this.situacao = situacao;
-    }
-
-    public boolean isAtivo() {
-        return situacao.equals(Situacao.ativo);
-    }
-
-    public boolean isInativo() {
-        return situacao.equals(Situacao.inativo);
-    }
+    
 }

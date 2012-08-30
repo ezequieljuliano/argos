@@ -26,36 +26,29 @@ import javax.persistence.Table;
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "EventoNivel", schema = "Argos@cassandra_pu")
+@Table(name = "EVENTO_NIVEL", schema = "Argos@cassandra_pu")
 public class EventoNivel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "Id")
+    @Column(name = "ID")
     private String id;
     
-    @Column(name = "Codigo")
+    @Column(name = "CODIGO")
     private int codigo;
     
-    @Column(name = "Descricao")
+    @Column(name = "DESCRICAO")
     private String descricao;
     
-    @Column(name = "Situacao")
+    @Column(name = "SITUACAO")
     private Situacao situacao = Situacao.ativo;
     
-    @Column(name = "EnviaAlerta")
-    private Boolean enviaAlerta = true;
+    @Column(name = "ALERTA")
+    private Boolean alerta = true;
 
     public EventoNivel() {
         super();
-    }
-
-    public EventoNivel(int codigo, String descricao, Situacao situacao, Boolean enviaAlerta) {
-        this.codigo = codigo;
-        this.descricao = descricao;
-        this.situacao = situacao;
-        this.enviaAlerta = enviaAlerta;
     }
 
     public String getId() {
@@ -90,12 +83,12 @@ public class EventoNivel implements Serializable {
         this.situacao = situacao;
     }
 
-    public Boolean getEnviaAlerta() {
-        return enviaAlerta;
+    public Boolean getAlerta() {
+        return alerta;
     }
 
-    public void setEnviaAlerta(Boolean enviaAlerta) {
-        this.enviaAlerta = enviaAlerta;
+    public void setAlerta(Boolean alerta) {
+        this.alerta = alerta;
     }
 
     public boolean isAtivo() {

@@ -16,15 +16,13 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,69 +31,32 @@ import javax.persistence.Table;
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "Entidade", schema = "Argos@cassandra_pu")
+@Table(name = "ENTIDADE", schema = "Argos@cassandra_pu")
 public class Entidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "Id")
+    @Column(name = "ID")
     private String id;
     
-    @Column(name = "Codigo")
+    @Column(name = "CODIGO")
     private int codigo;
     
-    @Column(name = "Nome")
-    private String nome;
-    
-    @Column(name = "CadastroNacional")
+    @Column(name = "CADASTRO_NACIONAL")
     private String cadastroNacional;
     
-    @Column(name = "Situacao")
+    @Column(name = "NOME")
+    private String nome;
+    
+    @Column(name = "SITUACAO")
     private Situacao situacao = Situacao.ativo;
     
-    @Column(name = "Endereco")
-    private String endereco;
-    
-    @Column(name = "EnderecoNumero")
-    private String enderecoNumero;
-    
-    @Column(name = "Bairro")
-    private String bairro;
-    
-    @Column(name = "Cidade")
-    private String cidade;
-    
-    @Column(name = "Estado")
-    private String estado;
-    
-    @Column(name = "Pais")
-    private String pais;
-    
-    @Column(name = "Cep")
-    private String cep;
-    
-    @ManyToOne
-    @JoinColumn(name="EventoTipoId")
-    private EventoTipo eventoTipo;
-    
-    @ManyToOne
-    @JoinColumn(name="EntidadePaiId")
-    private Entidade entidadePai;
-    
-    @OneToMany(mappedBy="entidadePai")
-    private Set<Entidade> entidadesFilhas = new HashSet<Entidade>();
-        
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="entidadePai")
+    private List<EntidadeAssociacao> entidadeAssociadas = new ArrayList<EntidadeAssociacao>();
+
     public Entidade() {
-        super();
-    }
-
-    public boolean isAtivo() {
-        return situacao.equals(Situacao.ativo);
-    }
-
-    public boolean isInativo() {
-        return situacao.equals(Situacao.inativo);
+      super();
     }
 
     public String getId() {
@@ -114,20 +75,20 @@ public class Entidade implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getCadastroNacional() {
         return cadastroNacional;
     }
 
     public void setCadastroNacional(String cadastroNacional) {
         this.cadastroNacional = cadastroNacional;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Situacao getSituacao() {
@@ -137,85 +98,21 @@ public class Entidade implements Serializable {
     public void setSituacao(Situacao situacao) {
         this.situacao = situacao;
     }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getEnderecoNumero() {
-        return enderecoNumero;
-    }
-
-    public void setEnderecoNumero(String enderecoNumero) {
-        this.enderecoNumero = enderecoNumero;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public EventoTipo getEventoTipo() {
-        return eventoTipo;
-    }
-
-    public void setEventoTipo(EventoTipo eventoTipo) {
-        this.eventoTipo = eventoTipo;
-    }
-
-    public Entidade getEntidadePai() {
-        return entidadePai;
-    }
-
-    public void setEntidadePai(Entidade entidadePai) {
-        this.entidadePai = entidadePai;
-    }
-
-    public Set<Entidade> getEntidadesFilhas() {
-        return entidadesFilhas;
-    }
-
-    public void setEntidadesFilhas(Set<Entidade> entidadesFilhas) {
-        this.entidadesFilhas = entidadesFilhas;
-    }
     
+    public boolean isAtivo() {
+        return situacao.equals(Situacao.ativo);
+    }
+
+    public boolean isInativo() {
+        return situacao.equals(Situacao.inativo);
+    }
+
+    public List<EntidadeAssociacao> getEntidadeAssociadas() {
+        return entidadeAssociadas;
+    }
+
+    public void setEntidadeAssociadas(List<EntidadeAssociacao> entidadeAssociadas) {
+        this.entidadeAssociadas = entidadeAssociadas;
+    }
+   
 }
