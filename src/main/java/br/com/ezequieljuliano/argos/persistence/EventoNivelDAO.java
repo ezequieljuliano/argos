@@ -27,4 +27,5 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
 public class EventoNivelDAO extends JPACrud<EventoNivel, String> {
 
     private static final long serialVersionUID = 1L;
+    
 }

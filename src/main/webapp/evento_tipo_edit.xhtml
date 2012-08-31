@@ -4,7 +4,7 @@
 
     <ui:define name="body">
         <h:form id="frm">
-            
+
             <p:toolbar>
                 <p:toolbarGroup>
                     <p:commandButton value="Voltar" action="/evento_tipo_list.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
@@ -16,15 +16,17 @@
             </p:toolbar>
 
             <p:panel>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Código" for="codigo"/>
-                    <p:inputText value="#{eventoTipoMB.bean.codigo}" id="codigo" />
+                <p:fieldset legend="Tipo de Evento">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Código" for="codigo"/>
+                        <p:inputText value="#{eventoTipoMB.bean.codigo}" id="codigo" />
 
-                    <h:outputLabel value="Descrição" for="descricao"/>
-                    <p:inputText value="#{eventoTipoMB.bean.descricao}" id="descricao" />
-                </h:panelGrid>
+                        <h:outputLabel value="Descrição" for="descricao"/>
+                        <p:inputText value="#{eventoTipoMB.bean.descricao}" id="descricao" />
+                    </h:panelGrid>
+                </p:fieldset>   
             </p:panel>
-            
+
         </h:form>
     </ui:define>
 

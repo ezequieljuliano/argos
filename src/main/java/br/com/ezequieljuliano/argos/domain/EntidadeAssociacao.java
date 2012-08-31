@@ -39,11 +39,11 @@ public class EntidadeAssociacao implements Serializable {
     @Column(name = "ID")
     private String id;
     
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ENTIDADE_PAI_ID")
     private Entidade entidadePai;
     
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ENTIDADE_FILHA_ID")
     private Entidade entidadeFilha;
 

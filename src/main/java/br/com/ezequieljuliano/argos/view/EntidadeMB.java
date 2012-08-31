@@ -16,7 +16,9 @@
 package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.EntidadeBC;
+import br.com.ezequieljuliano.argos.business.EntidadeAssociacaoBC;
 import br.com.ezequieljuliano.argos.domain.Entidade;
+import br.com.ezequieljuliano.argos.domain.EntidadeAssociacao;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -96,10 +98,23 @@ public class EntidadeMB {
     public List<Entidade> getList() {
         return this.bc.findAll();
     }
-    
-    public List<Entidade> getListPai(){
-        EntidadeBC bcPai = new EntidadeBC();
-        return bcPai.findAll();
+
+    @Transactional
+    public void addEntidadeFilha(SelectEvent e) {
+        try {
+            Entidade filha = bc.load(((Entidade) e.getObject()).getId());
+            EntidadeAssociacaoBC entAssBc = new EntidadeAssociacaoBC();
+            EntidadeAssociacao entAss = new EntidadeAssociacao(bean);
+            entAss.setEntidadeFilha(filha);
+            entAssBc.saveOrUpdate(entAss);
+            messageContext.add("Entidade filha adicionada!", SeverityType.INFO);
+        } catch (Exception ex) {
+            messageContext.add("Ocorreu um erro ao adicionar a entidade filha!", SeverityType.ERROR);
+        }
+    }
+
+    public List<EntidadeAssociacao> getEntidadesFilhas() {
+        return bean.getEntidadeAssociadas();
     }
 
     public void handleSelect(SelectEvent e) {

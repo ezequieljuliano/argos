@@ -16,16 +16,18 @@
             </p:toolbar>
 
             <p:panel>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Código" for="codigo"/>
-                    <p:inputText value="#{eventoNivelMB.bean.codigo}" id="codigo" />
+                <p:fieldset legend="Nível de Evento">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Código" for="codigo"/>
+                        <p:inputText value="#{eventoNivelMB.bean.codigo}" id="codigo" />
 
-                    <h:outputLabel value="Descrição" for="descricao"/>
-                    <p:inputText value="#{eventoNivelMB.bean.descricao}" id="descricao" />
+                        <h:outputLabel value="Descrição" for="descricao"/>
+                        <p:inputText value="#{eventoNivelMB.bean.descricao}" id="descricao" />
 
-                    <h:outputText value="Envia Alertas: " />  
-                    <p:selectBooleanCheckbox value="#{eventoNivelMB.bean.enviaAlerta}" />
-                </h:panelGrid>
+                        <h:outputText value="Alerta" />  
+                        <p:selectBooleanCheckbox value="#{eventoNivelMB.bean.alerta}" />
+                    </h:panelGrid>
+                </p:fieldset>    
             </p:panel>
 
         </h:form>

@@ -53,7 +53,7 @@ public class Entidade implements Serializable {
     private Situacao situacao = Situacao.ativo;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="entidadePai")
-    private List<EntidadeAssociacao> entidadeAssociadas = new ArrayList<EntidadeAssociacao>();
+    private List<EntidadeAssociacao> entidadeAssociadas;
 
     public Entidade() {
       super();

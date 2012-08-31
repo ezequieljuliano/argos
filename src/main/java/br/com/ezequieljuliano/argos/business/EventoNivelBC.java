@@ -43,14 +43,14 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
     public void inativar(EventoNivel eventoNivel) {
         if (eventoNivel.isAtivo()) {
             eventoNivel.setSituacao(Situacao.inativo);
-            update(eventoNivel);
+            saveOrUpdate(eventoNivel);
         }
     }
 
     public void ativar(EventoNivel eventoNivel) {
         if (eventoNivel.isInativo()) {
             eventoNivel.setSituacao(Situacao.ativo);
-            update(eventoNivel);
+            saveOrUpdate(eventoNivel);
         }
     }
 }

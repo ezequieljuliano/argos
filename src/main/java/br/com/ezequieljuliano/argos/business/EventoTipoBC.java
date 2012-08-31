@@ -43,14 +43,14 @@ public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO
     public void inativar(EventoTipo eventoTipo) {
         if (eventoTipo.isAtivo()) {
             eventoTipo.setSituacao(Situacao.inativo);
-            update(eventoTipo);
+            saveOrUpdate(eventoTipo);
         }
     }
 
     public void ativar(EventoTipo eventoTipo) {
         if (eventoTipo.isInativo()) {
             eventoTipo.setSituacao(Situacao.ativo);
-            update(eventoTipo);
+            saveOrUpdate(eventoTipo);
         }
     }
 }

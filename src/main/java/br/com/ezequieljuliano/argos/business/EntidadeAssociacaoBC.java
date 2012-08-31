@@ -15,9 +15,8 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
-import br.com.ezequieljuliano.argos.domain.Entidade;
-import br.com.ezequieljuliano.argos.domain.Situacao;
-import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
+import br.com.ezequieljuliano.argos.domain.EntidadeAssociacao;
+import br.com.ezequieljuliano.argos.persistence.EntidadeAssociacaoDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
@@ -27,30 +26,17 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
+public class EntidadeAssociacaoBC extends DelegateCrud<EntidadeAssociacao, String, EntidadeAssociacaoDAO> {
 
     private static final long serialVersionUID = 1L;
 
-    public void saveOrUpdate(Entidade entidade) {
-        if (entidade.getId() == null) {
-            entidade.setId(Utils.getUniqueId());
-            insert(entidade);
+    public void saveOrUpdate(EntidadeAssociacao entidadeAssociacao) {
+        if (entidadeAssociacao.getId() == null) {
+            entidadeAssociacao.setId(Utils.getUniqueId());
+            insert(entidadeAssociacao);
         } else {
-            update(entidade);
+            update(entidadeAssociacao);
         }
     }
-
-    public void inativar(Entidade entidade) {
-        if (entidade.isAtivo()) {
-            entidade.setSituacao(Situacao.inativo);
-            saveOrUpdate(entidade);
-        }
-    }
-
-    public void ativar(Entidade entidade) {
-        if (entidade.isInativo()) {
-            entidade.setSituacao(Situacao.ativo);
-            saveOrUpdate(entidade);
-        }
-    }
+    
 }
