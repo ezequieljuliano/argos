@@ -16,14 +16,12 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -37,7 +35,7 @@ public class Entidade implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "ID")
+    @Column(name = "ENTIDADE_ID")
     private String id;
     
     @Column(name = "CODIGO")
@@ -52,8 +50,9 @@ public class Entidade implements Serializable {
     @Column(name = "SITUACAO")
     private Situacao situacao = Situacao.ativo;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="entidadePai")
-    private List<EntidadeAssociacao> entidadeAssociadas;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ENTIDADE_PAI_ID")
+    private Entidade entidadePai;
 
     public Entidade() {
       super();
@@ -107,12 +106,12 @@ public class Entidade implements Serializable {
         return situacao.equals(Situacao.inativo);
     }
 
-    public List<EntidadeAssociacao> getEntidadeAssociadas() {
-        return entidadeAssociadas;
+    public Entidade getEntidadePai() {
+        return entidadePai;
     }
 
-    public void setEntidadeAssociadas(List<EntidadeAssociacao> entidadeAssociadas) {
-        this.entidadeAssociadas = entidadeAssociadas;
+    public void setEntidadePai(Entidade entidadePai) {
+        this.entidadePai = entidadePai;
     }
-   
+    
 }

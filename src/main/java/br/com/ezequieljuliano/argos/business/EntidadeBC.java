@@ -21,6 +21,8 @@ import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.List;
+import javax.inject.Inject;
 
 /**
  *
@@ -30,6 +32,9 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
 
     private static final long serialVersionUID = 1L;
+    
+    @Inject
+    EntidadeDAO dao;
 
     public void saveOrUpdate(Entidade entidade) {
         if (entidade.getId() == null) {
@@ -53,4 +58,5 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
             saveOrUpdate(entidade);
         }
     }
+    
 }

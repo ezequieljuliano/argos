@@ -32,7 +32,7 @@ public class EventoNivel implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "ID")
+    @Column(name = "EVENTO_NIVEL_ID")
     private String id;
     
     @Column(name = "CODIGO")

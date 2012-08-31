@@ -27,5 +27,5 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
 public class EntidadeDAO extends JPACrud<Entidade, String> {
 
     private static final long serialVersionUID = 1L;
-    
+
 }
