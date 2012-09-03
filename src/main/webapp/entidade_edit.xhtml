@@ -3,11 +3,11 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
-        <h:form id="frm">
+        <h:form id="frm" rendered="#{securityContext.hasRole('@A')}">
 
             <p:toolbar>
                 <p:toolbarGroup>
-                    <p:commandButton value="Voltar" action="/entidade_list.jsf?faces-redirect=true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
+                    <p:commandButton value="Voltar" action="/entidade_list.jsf?faces-redirect=true" immediate="true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
                     <p:commandButton value="Novo" action="/entidade_edit.jsf?faces-redirect=true" rendered="#{entidadeMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
                     <p:commandButton value="Salvar" action="#{entidadeMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
                     <p:commandButton value="Inativar" action="#{entidadeMB.inativar()}" rendered="#{entidadeMB.bean.ativo and entidadeMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
@@ -20,13 +20,13 @@
             <p:fieldset legend="Entidade">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Código*" for="codigo"/>
-                    <p:inputText value="#{entidadeMB.bean.codigo}" id="codigo" label="Código" required="true"/>
+                    <p:inputText value="#{entidadeMB.bean.codigo}" id="codigo" label="Código" required="true" size="40"/>
 
                     <h:outputLabel value="Nome*" for="nome"/>
-                    <p:inputText value="#{entidadeMB.bean.nome}" id="nome" label="Nome" required="true"/>
+                    <p:inputText value="#{entidadeMB.bean.nome}" id="nome" label="Nome" required="true" size="40"/>
 
                     <h:outputLabel value="Cadastro Nacional*" for="cadastroNacional"/>
-                    <p:inputText value="#{entidadeMB.bean.cadastroNacional}" id="cadastroNacional" label="Cadastro Nacional" required="true"/>
+                    <p:inputText value="#{entidadeMB.bean.cadastroNacional}" id="cadastroNacional" label="Cadastro Nacional" required="true" size="40"/>
 
                 </h:panelGrid> 
             </p:fieldset>

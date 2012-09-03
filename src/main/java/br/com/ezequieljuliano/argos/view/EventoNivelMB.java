@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.EventoNivelBC;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
+import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -37,16 +38,12 @@ import org.primefaces.event.SelectEvent;
 public class EventoNivelMB {
 
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private EventoNivelBC bc;
-    
     @Inject
     private MessageContext messageContext;
-    
     @Inject
     private Parameter<String> id;
-    
     private EventoNivel bean;
 
     public EventoNivel getBean() {
@@ -68,6 +65,8 @@ public class EventoNivelMB {
         try {
             bc.saveOrUpdate(bean);
             messageContext.add("Registro salvo com sucesso!", SeverityType.INFO);
+        } catch (ValidationException e) {
+            messageContext.add(e.getMessage(), SeverityType.WARN);
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }

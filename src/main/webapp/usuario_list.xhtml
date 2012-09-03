@@ -3,7 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
-        <h:form>
+        <h:form rendered="#{securityContext.hasRole('@A')}">
 
             <p:toolbar>
                 <p:toolbarGroup>
@@ -36,8 +36,8 @@
                 <p:column headerText="Situação">
                     <h:outputText value="#{bean.situacao}" />
                 </p:column>
-                <p:column headerText="Entidade Código">
-                    <h:outputText value="#{bean.entidade.codigo}" />
+                <p:column headerText="API Key">
+                    <h:outputText value="#{bean.apiKey}" />
                 </p:column>
                 <p:column headerText="Entidade Nome">
                     <h:outputText value="#{bean.entidade.nome}" />

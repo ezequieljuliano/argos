@@ -17,10 +17,12 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.Situacao;
+import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoTipoDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import javax.inject.Inject;
 
 /**
  *
@@ -30,8 +32,15 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO> {
 
     private static final long serialVersionUID = 1L;
+    @Inject
+    EventoTipoDAO dao;
 
-    public void saveOrUpdate(EventoTipo eventoTipo) {
+    public void saveOrUpdate(EventoTipo eventoTipo) throws ValidationException {
+        //Verifica se código já não foi cadastrado
+        EventoTipo objCodigo = findByCodigo(eventoTipo.getCodigo());
+        if (objCodigo != null && !objCodigo.getId().equals(eventoTipo.getId())) {
+            throw new ValidationException("Código já cadastrado!");
+        }
         if (eventoTipo.getId() == null) {
             eventoTipo.setId(Utils.getUniqueId());
             insert(eventoTipo);
@@ -40,17 +49,21 @@ public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO
         }
     }
 
-    public void inativar(EventoTipo eventoTipo) {
+    public void inativar(EventoTipo eventoTipo) throws ValidationException {
         if (eventoTipo.isAtivo()) {
             eventoTipo.setSituacao(Situacao.inativo);
             saveOrUpdate(eventoTipo);
         }
     }
 
-    public void ativar(EventoTipo eventoTipo) {
+    public void ativar(EventoTipo eventoTipo) throws ValidationException {
         if (eventoTipo.isInativo()) {
             eventoTipo.setSituacao(Situacao.ativo);
             saveOrUpdate(eventoTipo);
         }
+    }
+
+    public EventoTipo findByCodigo(int codigo) {
+        return dao.findByCodigo(codigo);
     }
 }

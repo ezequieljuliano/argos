@@ -18,6 +18,8 @@ package br.com.ezequieljuliano.argos.persistence;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import br.gov.frameworkdemoiselle.template.JPACrud;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,5 +29,15 @@ import br.gov.frameworkdemoiselle.template.JPACrud;
 public class EventoNivelDAO extends JPACrud<EventoNivel, String> {
 
     private static final long serialVersionUID = 1L;
-    
+
+    public EventoNivel findByCodigo(int codigo) {
+        String jpql = "select e from EventoNivel e where e.codigo = :codigo";
+        Query qry = createQuery(jpql);
+        qry.setParameter("codigo", codigo);
+        List<EventoNivel> eventoNivelList = qry.getResultList();
+        if (eventoNivelList == null || eventoNivelList.isEmpty()) {
+            return null;
+        }
+        return eventoNivelList.get(0);
+    }
 }

@@ -18,6 +18,7 @@ package br.com.ezequieljuliano.argos.view;
 import br.com.ezequieljuliano.argos.business.UsuarioBC;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
+import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -40,16 +41,12 @@ import org.primefaces.event.SelectEvent;
 public class UsuarioMB {
 
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private UsuarioBC bc;
-    
     @Inject
     private MessageContext messageContext;
-    
     @Inject
     private Parameter<String> id;
-    
     private Usuario bean;
     private ArrayList<SelectItem> perfil;
 
@@ -72,6 +69,8 @@ public class UsuarioMB {
         try {
             bc.saveOrUpdate(bean);
             messageContext.add("Registro salvo com sucesso!", SeverityType.INFO);
+        } catch (ValidationException e) {
+            messageContext.add(e.getMessage(), SeverityType.WARN);
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
@@ -118,10 +117,14 @@ public class UsuarioMB {
         }
         return perfil;
     }
-    
-    public void cleanEntidade(){
-        if (this.bean != null){
-            this.bean.setEntidade(null);
+
+    public void generateApiKey() {
+        try {
+            bc.generateApiKey(bean);
+            bc.saveOrUpdate(bean);
+            messageContext.add("API Key gerada com sucesso!", SeverityType.INFO);
+        } catch (Exception e) {
+            messageContext.add("Ocorreu um erro ao gerar a API Key!", SeverityType.ERROR);
         }
     }
 }

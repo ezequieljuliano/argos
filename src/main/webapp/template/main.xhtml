@@ -1,39 +1,39 @@
 <html xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
-	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<f:view contentType="text/html" locale="#currentLocale" />
+    <f:view contentType="text/html" locale="#currentLocale" />
 
-<h:head>
-	<title>Sistema Argos</title>
-	<link type="text/css" rel="stylesheet" href="css/styles.css" />
-</h:head>
+    <h:head>
+        <title>Argos - Sistema Distribuído para Gestão de Logs</title>
+        <link type="text/css" rel="stylesheet" href="css/styles.css" />
+    </h:head>
 
-<h:body style="background-color:#f1f1f1">
-	<table style="width: 100%">
-		<tr>
-			<td height="70" align="left"><a href="index.jsf"><img src="images/logo.png" border="0" /></a></td>
-		</tr>
-		<tr>
-			<td height="20"><ui:include src="/menu.xhtml" /></td>
-		</tr>
-		<tr valign="top">
-			<td height="400"><ui:insert name="body" /></td>
-		</tr>
-		<tr align="center">
-			<td height="20" align="center" class="text-input">Sistema Argos desenvolvido com Demoiselle</td>
-		</tr>
-	</table>
+    <h:body style="background-color:#f1f1f1">
+        <table style="width: 100%">
+            <tr>
+                <td height="70" align="left"><a href="index.jsf"><img src="images/logo.png" border="0" /></a></td>
+            </tr>
+            <tr>
+                <td height="20"><ui:include src="/menu.xhtml" /></td>
+            </tr>
+            <tr valign="top">
+                <td height="400"><ui:insert name="body" /></td>
+            </tr>
+            <tr align="center">
+                <td height="20" colspan="2" align="center" class="text-input">Argos - Sistema Distribuído para Gestão de Logs (2012)</td>
+            </tr>
+        </table>
 
         <p:growl id="messages" globalOnly="true" autoUpdate="true" />
 
-	<p:ajaxStatus style="width:16px;height:16px;">
-		<f:facet name="start">
-		</f:facet>
+        <p:ajaxStatus style="width:16px;height:16px;">
+            <f:facet name="start">
+            </f:facet>
 
-		<f:facet name="complete">
-			<h:outputText value="" />
-		</f:facet>
-	</p:ajaxStatus>
-	<link type="text/css" rel="stylesheet" href="css/aristo/skin.css" />
-</h:body>
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+        <link type="text/css" rel="stylesheet" href="css/aristo/skin.css" />
+    </h:body>
 </html>

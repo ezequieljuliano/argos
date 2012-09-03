@@ -18,6 +18,8 @@ package br.com.ezequieljuliano.argos.persistence;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import br.gov.frameworkdemoiselle.template.JPACrud;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +30,37 @@ public class UsuarioDAO extends JPACrud<Usuario, String> {
 
     private static final long serialVersionUID = 1L;
 
+    public Usuario findByUserName(String userName) {
+        String jpql = "select u from Usuario u where u.userName = :userName";
+        Query qry = createQuery(jpql);
+        qry.setParameter("userName", userName);
+        List<Usuario> usuarioList = qry.getResultList();
+        if (usuarioList == null || usuarioList.isEmpty()) {
+            return null;
+        }
+        return usuarioList.get(0);
+    }
+
+    public Usuario findByEmail(String email) {
+        String jpql = "select u from Usuario u where u.email = :email";
+        Query qry = createQuery(jpql);
+        qry.setParameter("email", email);
+        List<Usuario> usuarioList = qry.getResultList();
+        if (usuarioList == null || usuarioList.isEmpty()) {
+            return null;
+        }
+        return usuarioList.get(0);
+    }
+
+    public Usuario login(String userName, String password) {
+        String jpql = "select u from Usuario u where u.userName = :userName and u.password = :password";
+        Query qry = createQuery(jpql);
+        qry.setParameter("userName", userName);
+        qry.setParameter("password", password);
+        List<Usuario> usuarioList = qry.getResultList();
+        if (usuarioList == null || usuarioList.isEmpty()) {
+            return null;
+        }
+        return usuarioList.get(0);
+    }
 }

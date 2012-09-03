@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ENTIDADE", schema = "Argos@cassandra_pu")
+@Index(index = true, columns = {"CODIGO", "CADASTRO_NACIONAL"})
 public class Entidade implements Serializable {
 
     private static final long serialVersionUID = 1L;

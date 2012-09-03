@@ -3,7 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
-        <h:form>
+        <h:form rendered="#{securityContext.hasRole('@A')}">
 
             <p:toolbar>
                 <p:toolbarGroup>

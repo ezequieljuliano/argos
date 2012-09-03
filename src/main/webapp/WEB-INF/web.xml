@@ -34,5 +34,10 @@
 		</web-resource-collection>
 		<auth-constraint />
 	</security-constraint>
+        
+        <error-page>
+            <exception-type>br.com.ezequieljuliano.argos.exception.AcessoNegadoException</exception-type>
+            <location>/acesso_negado.jsf</location>
+        </error-page>
 
 </web-app>

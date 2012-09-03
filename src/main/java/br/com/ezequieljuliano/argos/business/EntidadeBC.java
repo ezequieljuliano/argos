@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
+import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
@@ -31,11 +32,20 @@ import javax.inject.Inject;
 public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
 
     private static final long serialVersionUID = 1L;
-    
     @Inject
     EntidadeDAO dao;
 
-    public void saveOrUpdate(Entidade entidade) {
+    public void saveOrUpdate(Entidade entidade) throws ValidationException {
+        //Verifica se código já não foi cadastrado
+        Entidade objCodigo = findByCodigo(entidade.getCodigo());
+        if (objCodigo != null && !objCodigo.getId().equals(entidade.getId())) {
+            throw new ValidationException("Código já cadastrado!");
+        }
+        //Verifica se o cadastro nacional já não ta cadastrado
+        Entidade objCadNacional = findByCadastroNacional(entidade.getCadastroNacional());
+        if (objCadNacional != null && !objCadNacional.getId().equals(entidade.getId())) {
+            throw new ValidationException("Cadastro Nacional já cadastrado!");
+        }
         if (entidade.getId() == null) {
             entidade.setId(Utils.getUniqueId());
             insert(entidade);
@@ -44,18 +54,25 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
         }
     }
 
-    public void inativar(Entidade entidade) {
+    public void inativar(Entidade entidade) throws ValidationException {
         if (entidade.isAtivo()) {
             entidade.setSituacao(Situacao.inativo);
             saveOrUpdate(entidade);
         }
     }
 
-    public void ativar(Entidade entidade) {
+    public void ativar(Entidade entidade) throws ValidationException {
         if (entidade.isInativo()) {
             entidade.setSituacao(Situacao.ativo);
             saveOrUpdate(entidade);
         }
     }
-    
+
+    public Entidade findByCodigo(int codigo) {
+        return dao.findByCodigo(codigo);
+    }
+
+    public Entidade findByCadastroNacional(String cadastroNacional) {
+        return dao.findByCadastroNacional(cadastroNacional);
+    }
 }

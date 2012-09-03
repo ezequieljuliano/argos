@@ -17,10 +17,12 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.Situacao;
+import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoNivelDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import javax.inject.Inject;
 
 /**
  *
@@ -30,8 +32,15 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivelDAO> {
 
     private static final long serialVersionUID = 1L;
+    @Inject
+    EventoNivelDAO dao;
 
-    public void saveOrUpdate(EventoNivel eventoNivel) {
+    public void saveOrUpdate(EventoNivel eventoNivel) throws ValidationException {
+        //Verifica se código já não foi cadastrado
+        EventoNivel objCodigo = findByCodigo(eventoNivel.getCodigo());
+        if (objCodigo != null && !objCodigo.getId().equals(eventoNivel.getId())) {
+            throw new ValidationException("Código já cadastrado!");
+        }
         if (eventoNivel.getId() == null) {
             eventoNivel.setId(Utils.getUniqueId());
             insert(eventoNivel);
@@ -40,17 +49,21 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
         }
     }
 
-    public void inativar(EventoNivel eventoNivel) {
+    public void inativar(EventoNivel eventoNivel) throws ValidationException {
         if (eventoNivel.isAtivo()) {
             eventoNivel.setSituacao(Situacao.inativo);
             saveOrUpdate(eventoNivel);
         }
     }
 
-    public void ativar(EventoNivel eventoNivel) {
+    public void ativar(EventoNivel eventoNivel) throws ValidationException {
         if (eventoNivel.isInativo()) {
             eventoNivel.setSituacao(Situacao.ativo);
             saveOrUpdate(eventoNivel);
         }
+    }
+
+    public EventoNivel findByCodigo(int codigo) {
+        return dao.findByCodigo(codigo);
     }
 }

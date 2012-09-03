@@ -15,7 +15,9 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +32,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USUARIO", schema = "Argos@cassandra_pu")
+@Index(index = true, columns = {"USERNAME", "EMAIL"})
 public class Usuario implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -53,10 +56,10 @@ public class Usuario implements Serializable {
     @Column(name="EMAIL")
     private String email;
     
-    @Column(name="HASH_MD5")
-    private String hashMd5;
+    @Column(name="API_KEY")
+    private String apiKey;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="ENTIDADE_ID")
     private Entidade entidade;
 
@@ -112,12 +115,12 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public String getHashMd5() {
-        return hashMd5;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setHashMd5(String hashMd5) {
-        this.hashMd5 = hashMd5;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
     public Entidade getEntidade() {
@@ -135,5 +138,5 @@ public class Usuario implements Serializable {
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
     }
-       
+   
 }

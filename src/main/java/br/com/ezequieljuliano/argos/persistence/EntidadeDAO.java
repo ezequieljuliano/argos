@@ -18,6 +18,8 @@ package br.com.ezequieljuliano.argos.persistence;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import br.gov.frameworkdemoiselle.template.JPACrud;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +30,25 @@ public class EntidadeDAO extends JPACrud<Entidade, String> {
 
     private static final long serialVersionUID = 1L;
 
+    public Entidade findByCodigo(int codigo) {
+        String jpql = "select e from Entidade e where e.codigo = :codigo";
+        Query qry = createQuery(jpql);
+        qry.setParameter("codigo", codigo);
+        List<Entidade> entidadeList = qry.getResultList();
+        if (entidadeList == null || entidadeList.isEmpty()) {
+            return null;
+        }
+        return entidadeList.get(0);
+    }
+
+    public Entidade findByCadastroNacional(String cadastroNacional) {
+        String jpql = "select u from Entidade u where u.cadastroNacional = :cadastroNacional";
+        Query qry = createQuery(jpql);
+        qry.setParameter("cadastroNacional", cadastroNacional);
+        List<Entidade> entidadeList = qry.getResultList();
+        if (entidadeList == null || entidadeList.isEmpty()) {
+            return null;
+        }
+        return entidadeList.get(0);
+    }
 }
