@@ -15,17 +15,17 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:panel>
-                <p:fieldset legend="Tipo de Evento">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="Código" for="codigo"/>
-                        <p:inputText value="#{eventoTipoMB.bean.codigo}" id="codigo" />
+            <br />
 
-                        <h:outputLabel value="Descrição" for="descricao"/>
-                        <p:inputText value="#{eventoTipoMB.bean.descricao}" id="descricao" />
-                    </h:panelGrid>
-                </p:fieldset>   
-            </p:panel>
+            <p:fieldset legend="Tipo de Evento">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código*" for="codigo"/>
+                    <p:inputText value="#{eventoTipoMB.bean.codigo}" id="codigo" label="Código" required="true"/>
+
+                    <h:outputLabel value="Descrição*" for="descricao"/>
+                    <p:inputText value="#{eventoTipoMB.bean.descricao}" id="descricao" label="Descrição" required="true"/>
+                </h:panelGrid>
+            </p:fieldset>   
 
         </h:form>
     </ui:define>

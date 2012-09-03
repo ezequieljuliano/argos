@@ -11,6 +11,8 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
+            <br />
+
             <p:dataTable selectionMode="single" 
                          rowKey="#{bean.id}" id="list" var="bean" 
                          value="#{entidadeMB.list}" 
@@ -19,6 +21,7 @@
                          rowsPerPageTemplate="5,10,15"
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{entidadeMB.handleSelect}" />
+                
                 <f:facet name="header">Lista de Entidades</f:facet>
 
                 <p:column headerText="Código">

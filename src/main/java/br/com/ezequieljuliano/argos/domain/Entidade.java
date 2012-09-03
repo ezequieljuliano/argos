@@ -18,10 +18,7 @@ package br.com.ezequieljuliano.argos.domain;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -49,10 +46,6 @@ public class Entidade implements Serializable {
     
     @Column(name = "SITUACAO")
     private Situacao situacao = Situacao.ativo;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ENTIDADE_PAI_ID")
-    private Entidade entidadePai;
 
     public Entidade() {
       super();
@@ -104,14 +97,6 @@ public class Entidade implements Serializable {
 
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
-    }
-
-    public Entidade getEntidadePai() {
-        return entidadePai;
-    }
-
-    public void setEntidadePai(Entidade entidadePai) {
-        this.entidadePai = entidadePai;
     }
     
 }

@@ -15,17 +15,20 @@
  */
 package br.com.ezequieljuliano.argos.view;
 
-import br.com.ezequieljuliano.argos.business.EntidadeBC;
-import br.com.ezequieljuliano.argos.domain.Entidade;
+import br.com.ezequieljuliano.argos.business.UsuarioBC;
+import br.com.ezequieljuliano.argos.domain.Usuario;
+import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.Parameter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 
@@ -34,12 +37,12 @@ import org.primefaces.event.SelectEvent;
  * @author Ezequiel Juliano Müller
  */
 @ViewController
-public class EntidadeMB {
+public class UsuarioMB {
 
     private static final long serialVersionUID = 1L;
     
     @Inject
-    private EntidadeBC bc;
+    private UsuarioBC bc;
     
     @Inject
     private MessageContext messageContext;
@@ -47,11 +50,12 @@ public class EntidadeMB {
     @Inject
     private Parameter<String> id;
     
-    private Entidade bean;
+    private Usuario bean;
+    private ArrayList<SelectItem> perfil;
 
-    public Entidade getBean() {
+    public Usuario getBean() {
         if (bean == null) {
-            bean = new Entidade();
+            bean = new Usuario();
             if (this.id.getValue() != null) {
                 this.bean = bc.load(this.id.getValue());
             }
@@ -59,7 +63,7 @@ public class EntidadeMB {
         return bean;
     }
 
-    public void setBean(Entidade bean) {
+    public void setBean(Usuario bean) {
         this.bean = bean;
     }
 
@@ -93,15 +97,31 @@ public class EntidadeMB {
         }
     }
 
-    public List<Entidade> getList() {
+    public List<Usuario> getList() {
         return this.bc.findAll();
     }
 
     public void handleSelect(SelectEvent e) {
         try {
-            JsfUtils.redireciona("entidade_edit.jsf?faces-redirect=true&id=" + ((Entidade) e.getObject()).getId());
+            JsfUtils.redireciona("usuario_edit.jsf?faces-redirect=true&id=" + ((Usuario) e.getObject()).getId());
         } catch (Exception ex) {
-            Logger.getLogger(EntidadeMB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<SelectItem> getPerfil() {
+        if (this.perfil == null) {
+            this.perfil = new ArrayList<SelectItem>();
+            for (UsuarioPerfil tipo : UsuarioPerfil.values()) {
+                this.perfil.add(new SelectItem(tipo, tipo.toString()));
+            }
+        }
+        return perfil;
+    }
+    
+    public void cleanEntidade(){
+        if (this.bean != null){
+            this.bean.setEntidade(null);
         }
     }
 }

@@ -48,6 +48,7 @@ public class EventoTipoMB {
     private Parameter<String> id;
     
     private EventoTipo bean;
+    
 
     public EventoTipo getBean() {
         if (bean == null) {
@@ -104,4 +105,5 @@ public class EventoTipoMB {
             Logger.getLogger(EventoTipoMB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+   
 }

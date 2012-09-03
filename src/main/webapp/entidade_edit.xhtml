@@ -15,49 +15,21 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dialog header="Vincular Entidade Pai" widgetVar="dlgEntidadePai" modal="true" closable="true">
-                <p:dataTable value="#{entidadeMB.list}" var="ent"
-                             selectionMode="single"
-                             selection="#{entidadeMB.bean.entidadePai}"
-                             rowKey="#{ent.id}" id="listPai">
-                    <p:ajax event="rowSelect" oncomplete="dlgEntidadePai.hide()" update=":frm:entPaiSet"/>
-                    <p:column headerText="Código">
-                        <h:outputText value="#{ent.codigo}"/>
-                    </p:column>
-                    <p:column headerText="Nome">
-                        <h:outputText value="#{ent.nome}"/>
-                    </p:column>
-                    <p:column headerText="Cadastro Nacional">
-                        <h:outputText value="#{ent.cadastroNacional}"/>
-                    </p:column>
-                    <p:column headerText="Situação">
-                        <h:outputText value="#{ent.situacao}"/>
-                    </p:column>
-                </p:dataTable>
-            </p:dialog>
+            <br />
 
-            <p:panel>
-                <p:fieldset legend="Entidade">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="Código" for="codigo"/>
-                        <p:inputText value="#{entidadeMB.bean.codigo}" id="codigo" />
+            <p:fieldset legend="Entidade">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código*" for="codigo"/>
+                    <p:inputText value="#{entidadeMB.bean.codigo}" id="codigo" label="Código" required="true"/>
 
-                        <h:outputLabel value="Nome" for="nome"/>
-                        <p:inputText value="#{entidadeMB.bean.nome}" id="nome" />
+                    <h:outputLabel value="Nome*" for="nome"/>
+                    <p:inputText value="#{entidadeMB.bean.nome}" id="nome" label="Nome" required="true"/>
 
-                        <h:outputLabel value="Cadastro Nacional" for="cadastroNacional"/>
-                        <p:inputText value="#{entidadeMB.bean.cadastroNacional}" id="cadastroNacional" />
+                    <h:outputLabel value="Cadastro Nacional*" for="cadastroNacional"/>
+                    <p:inputText value="#{entidadeMB.bean.cadastroNacional}" id="cadastroNacional" label="Cadastro Nacional" required="true"/>
 
-                        <h:panelGrid columns="3" id="entPaiSet">
-                            <h:outputLabel value="Entidade Pai"/>
-                            <p:inputText value="#{entidadeMB.bean.entidadePai.codigo}" id="entPaiCodigo" disabled="true" />
-                            <p:inputText value="#{entidadeMB.bean.entidadePai.nome}" id="entPaiNome" disabled="true" />
-                            <p:button image="ui-icon ui-icon-search" onclick="dlgEntidadePai.show(); return false;" /> 
-                        </h:panelGrid> 
-
-                    </h:panelGrid> 
-                </p:fieldset>
-            </p:panel>
+                </h:panelGrid> 
+            </p:fieldset>
 
         </h:form>
     </ui:define>

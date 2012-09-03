@@ -15,9 +15,9 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
-import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
-import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
+import br.com.ezequieljuliano.argos.domain.Usuario;
+import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
@@ -28,34 +28,33 @@ import javax.inject.Inject;
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
+public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
 
     private static final long serialVersionUID = 1L;
     
     @Inject
-    EntidadeDAO dao;
+    UsuarioDAO dao;
 
-    public void saveOrUpdate(Entidade entidade) {
-        if (entidade.getId() == null) {
-            entidade.setId(Utils.getUniqueId());
-            insert(entidade);
+    public void saveOrUpdate(Usuario usuario) {
+        if (usuario.getId() == null) {
+            usuario.setId(Utils.getUniqueId());
+            insert(usuario);
         } else {
-            update(entidade);
+            update(usuario);
         }
     }
 
-    public void inativar(Entidade entidade) {
-        if (entidade.isAtivo()) {
-            entidade.setSituacao(Situacao.inativo);
-            saveOrUpdate(entidade);
+    public void inativar(Usuario usuario) {
+        if (usuario.isAtivo()) {
+            usuario.setSituacao(Situacao.inativo);
+            saveOrUpdate(usuario);
         }
     }
 
-    public void ativar(Entidade entidade) {
-        if (entidade.isInativo()) {
-            entidade.setSituacao(Situacao.ativo);
-            saveOrUpdate(entidade);
+    public void ativar(Usuario usuario) {
+        if (usuario.isInativo()) {
+            usuario.setSituacao(Situacao.ativo);
+            saveOrUpdate(usuario);
         }
     }
-    
 }

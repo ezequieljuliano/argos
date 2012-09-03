@@ -15,20 +15,20 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:panel>
-                <p:fieldset legend="Nível de Evento">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="Código" for="codigo"/>
-                        <p:inputText value="#{eventoNivelMB.bean.codigo}" id="codigo" />
+            <br />
 
-                        <h:outputLabel value="Descrição" for="descricao"/>
-                        <p:inputText value="#{eventoNivelMB.bean.descricao}" id="descricao" />
+            <p:fieldset legend="Nível de Evento">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Código*" for="codigo"/>
+                    <p:inputText value="#{eventoNivelMB.bean.codigo}" id="codigo" label="Código" required="true"/>
 
-                        <h:outputText value="Alerta" />  
-                        <p:selectBooleanCheckbox value="#{eventoNivelMB.bean.alerta}" />
-                    </h:panelGrid>
-                </p:fieldset>    
-            </p:panel>
+                    <h:outputLabel value="Descrição*" for="descricao"/>
+                    <p:inputText value="#{eventoNivelMB.bean.descricao}" id="descricao" label="Descrição" required="true"/>
+
+                    <h:outputText value="Alerta*" />  
+                    <p:selectBooleanCheckbox value="#{eventoNivelMB.bean.alerta}" label="Alerta" required="true"/>
+                </h:panelGrid>
+            </p:fieldset>    
 
         </h:form>
     </ui:define>

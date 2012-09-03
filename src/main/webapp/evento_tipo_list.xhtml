@@ -11,15 +11,19 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
+            <br />
+
             <p:dataTable selectionMode="single" 
                          rowKey="#{bean.id}" id="list" var="bean" 
-                         value="#{eventoTipoMB.list}" 
+                         value="#{eventoTipoMB.list}"                          
                          paginator="true" rows="10"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          rowsPerPageTemplate="5,10,15"
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{eventoTipoMB.handleSelect}" />
+
                 <f:facet name="header">Lista de Tipos de Eventos</f:facet>
+
                 <p:column headerText="Código">
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>

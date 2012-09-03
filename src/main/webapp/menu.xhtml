@@ -16,7 +16,10 @@
                 <p:menuitem value="Novo" url="/entidade_edit.jsf" />
                 <p:menuitem value="Listar" url="/entidade_list.jsf" />
             </p:submenu>
-
+            <p:submenu label="Usuário">
+                <p:menuitem value="Novo" url="/usuario_edit.jsf" />
+                <p:menuitem value="Listar" url="/usuario_list.jsf" />
+            </p:submenu>
             <p:menuitem value="Sair" action="#{securityContext.logout}" />
         </p:menubar>
     </h:form>
