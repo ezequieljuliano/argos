@@ -13,6 +13,7 @@
                     <p:commandButton value="Inativar" action="#{usuarioMB.inativar()}" rendered="#{usuarioMB.bean.ativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
                     <p:commandButton value="Ativar" action="#{usuarioMB.ativar()}" rendered="#{usuarioMB.bean.inativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                     <p:commandButton value="Gerar API Key" action="#{usuarioMB.generateApiKey()}" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-extlink" update="frm"/>
+                    <p:commandButton value="Trocar Senha" onclick="dlgTrocarSenha.show(); return false;" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-key"/>
                 </p:toolbarGroup>
             </p:toolbar>
 
@@ -41,6 +42,18 @@
                         <h:outputText value="#{ent.situacao}"/>
                     </p:column>
                 </p:dataTable>
+            </p:dialog>
+
+            <p:dialog header="Trocar Senha" widgetVar="dlgTrocarSenha" modal="true" closable="true">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="pwd2" value="Nova Senha" />  
+                    <p:password id="pwd2" value="#{usuarioMB.bean.password}" 
+                                feedback="true" redisplay="true"  
+                                promptLabel="Informe a senha" weakLabel="Senha fraca"
+                                goodLabel="Senha boa" strongLabel="Senha forte" size="40" required="true"/> 
+                </h:panelGrid> 
+                <p:commandButton value="Cancelar" onclick="dlgTrocarSenha.hide()" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: left;"/>
+                <p:commandButton value="Salvar" action="#{usuarioMB.trocarSenha()}" image="ui-icon ui-icon-disk"  style="float: right;" update="frm"/>
             </p:dialog>
 
             <p:fieldset legend="Usuário">

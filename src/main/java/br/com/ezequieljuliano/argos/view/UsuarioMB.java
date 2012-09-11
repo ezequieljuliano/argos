@@ -39,7 +39,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ViewController
 public class UsuarioMB {
-
+    
     private static final long serialVersionUID = 1L;
     @Inject
     private UsuarioBC bc;
@@ -49,7 +49,7 @@ public class UsuarioMB {
     private Parameter<String> id;
     private Usuario bean;
     private ArrayList<SelectItem> perfil;
-
+    
     public Usuario getBean() {
         if (bean == null) {
             bean = new Usuario();
@@ -59,11 +59,11 @@ public class UsuarioMB {
         }
         return bean;
     }
-
+    
     public void setBean(Usuario bean) {
         this.bean = bean;
     }
-
+    
     @Transactional
     public void salvar() {
         try {
@@ -75,7 +75,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     @Transactional
     public void inativar() {
         try {
@@ -85,7 +85,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao inativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     @Transactional
     public void ativar() {
         try {
@@ -95,11 +95,11 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao ativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     public List<Usuario> getList() {
         return this.bc.findAll();
     }
-
+    
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("usuario_edit.jsf?faces-redirect=true&id=" + ((Usuario) e.getObject()).getId());
@@ -107,7 +107,7 @@ public class UsuarioMB {
             Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public List<SelectItem> getPerfil() {
         if (this.perfil == null) {
             this.perfil = new ArrayList<SelectItem>();
@@ -117,7 +117,7 @@ public class UsuarioMB {
         }
         return perfil;
     }
-
+    
     public void generateApiKey() {
         try {
             bc.generateApiKey(bean);
@@ -125,6 +125,16 @@ public class UsuarioMB {
             messageContext.add("API Key gerada com sucesso!", SeverityType.INFO);
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao gerar a API Key!", SeverityType.ERROR);
+        }
+    }
+    
+    public void trocarSenha() {
+        try {
+            bc.generatePasswordKey(bean);
+            bc.saveOrUpdate(bean);
+            messageContext.add("Senha trocada com sucesso!", SeverityType.INFO);
+        } catch (Exception e) {
+            messageContext.add("Ocorreu um erro ao trocar a senha!", SeverityType.ERROR);
         }
     }
 }

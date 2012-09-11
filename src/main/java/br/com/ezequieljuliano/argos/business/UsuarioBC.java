@@ -92,7 +92,7 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         usuario.setApiKey(apiKey);
     }
 
-    private void generatePasswordKey(Usuario usuario) {
+    public void generatePasswordKey(Usuario usuario) {
         String passwordKey = UniqId.getInstance().hashString(usuario.getPassword());
         usuario.setPassword(passwordKey);
     }

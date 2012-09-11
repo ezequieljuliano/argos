@@ -59,7 +59,7 @@ public class Usuario implements Serializable {
     @Column(name="API_KEY")
     private String apiKey;
     
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="ENTIDADE_ID")
     private Entidade entidade;
 

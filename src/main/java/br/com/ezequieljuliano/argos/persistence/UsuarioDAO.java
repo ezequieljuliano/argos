@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
+import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import br.gov.frameworkdemoiselle.template.JPACrud;
@@ -58,7 +59,7 @@ public class UsuarioDAO extends JPACrud<Usuario, String> {
         qry.setParameter("userName", userName);
         qry.setParameter("password", password);
         List<Usuario> usuarioList = qry.getResultList();
-        if (usuarioList == null || usuarioList.isEmpty()) {
+        if (usuarioList == null || usuarioList.isEmpty() || usuarioList.get(0).isInativo()) {
             return null;
         }
         return usuarioList.get(0);

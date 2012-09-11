@@ -1,26 +1,27 @@
 package br.com.ezequieljuliano.argos.util;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Data {
-
+    
     public Date fromString(String dataString) {
-        String[] splitData = dataString.split("/"); 
+        String[] splitData = dataString.split("/");        
         
         int year = Integer.parseInt(splitData[2]);
         int month = Integer.parseInt(splitData[1]);
         int day = Integer.parseInt(splitData[0]);
         
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month-1, day);
+        calendar.set(year, month - 1, day);
         
         return calendar.getTime();
     }
     
-    public Date firstTimeOfMonth(int mes, int ano){
+    public Date firstTimeOfMonth(int mes, int ano) {
         GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
         calendar.set(Calendar.YEAR, ano);
-        calendar.set(Calendar.MONTH, mes-1);
+        calendar.set(Calendar.MONTH, mes - 1);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getMinimum(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getMinimum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, 0);
@@ -28,10 +29,10 @@ public class Data {
         return calendar.getTime();
     }
     
-    public Date lastTimeOfMonth(int mes, int ano){
+    public Date lastTimeOfMonth(int mes, int ano) {
         GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
         calendar.set(Calendar.YEAR, ano);
-        calendar.set(Calendar.MONTH, mes-1);
+        calendar.set(Calendar.MONTH, mes - 1);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getMaximum(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getMaximum(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, 59);
@@ -39,7 +40,7 @@ public class Data {
         return calendar.getTime();
     }
     
-    public Date firstTimeOfDay(Date date){
+    public Date firstTimeOfDay(Date date) {
         GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getMinimum(Calendar.HOUR_OF_DAY));
@@ -47,20 +48,20 @@ public class Data {
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTime();
     }
-
-    public Date firstDayOfCurrentMonth(){
+    
+    public Date firstDayOfCurrentMonth() {
         Date today = new Date();
         Date firstDay = firstTimeOfMonth(extractMonthFrom(today), extractYearFrom(today));
         return firstDay;
     }
     
-    public Date lastDayOfCurrentMonth(){
+    public Date lastDayOfCurrentMonth() {
         Date today = new Date();
         Date lastDay = lastTimeOfMonth(extractMonthFrom(today), extractYearFrom(today));
         return lastDay;
     }
     
-    public Date lastTimeOfDay(Date date){
+    public Date lastTimeOfDay(Date date) {
         GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getMaximum(Calendar.HOUR_OF_DAY));
@@ -68,9 +69,9 @@ public class Data {
         calendar.set(Calendar.SECOND, 59);
         return calendar.getTime();
     }
-
-    public static String monthName(Integer month){
-        switch(month) {
+    
+    public static String monthName(Integer month) {
+        switch (month) {
             case 1:
                 return "Jan";
             case 2:
@@ -103,7 +104,7 @@ public class Data {
 //        return calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
         
     }
-
+    
     public Date decreaseMonthsFrom(Date date, Integer monthsToDecrease) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(firstTimeOfDay(date));
@@ -115,19 +116,19 @@ public class Data {
         return decreaseMonthsFrom(new Date(), monthsToDecrease);
     }
     
-    public static Integer extractMonthFrom(Date date){
+    public static Integer extractMonthFrom(Date date) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(date);
         return calendar.get(Calendar.MONTH) + 1;
     }
     
-    public static Integer extractYearFrom(Date date){
+    public static Integer extractYearFrom(Date date) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
     }
     
-    public static boolean isTheSameMonth(Date date1, Date date2){
+    public static boolean isTheSameMonth(Date date1, Date date2) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         
         calendar.setTime(date1);
@@ -142,9 +143,18 @@ public class Data {
     }
     
     public class InvalidDateException extends Exception {
+
         public InvalidDateException(String message, Throwable cause) {
             super(message, cause);
         }
-        
     }
+    
+    public static String dateToStr(Date data) {
+        return new SimpleDateFormat("dd/MM/yyyy").format(data);
+    }
+    
+     public static String timeToStr(Date time) {
+        return new SimpleDateFormat("HH:mm:ss").format(time);
+    }
+    
 }

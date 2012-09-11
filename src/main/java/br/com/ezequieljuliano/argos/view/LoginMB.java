@@ -46,7 +46,7 @@ public class LoginMB {
         try {
             securityContext.login();
             if (!securityContext.isLoggedIn()) {
-                throw new Exception("Não foi possível acessar o sistema.");
+                throw new Exception("Não foi possível acessar o sistema. Seu usuário é inválido ou está INATIVO");
             }
             return "/index.jsf";
         } catch (Exception e) {
