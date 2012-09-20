@@ -32,16 +32,15 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 
 /**
@@ -65,18 +64,21 @@ public class EventoLuceneDAO implements Serializable {
 
     private Document criarDocumento(Evento evento) throws IOException {
         Document document = new Document();
-        document.add(new Field(Constantes.TUDO, getConteudoEvento(evento), Store.NO, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTO_ID, evento.getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS, TermVector.WITH_POSITIONS_OFFSETS));
-        document.add(new Field(Constantes.INDICE_COMPUTADOR_GERADOR, evento.getComputadorGerador(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_FONTE, evento.getFonte(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_NOME, evento.getNome(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_OCORRENCIA_DATA, Data.dateToStr(evento.getOcorrenciaData()), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_OCORRENCIA_HORA, Data.dateToStr(evento.getOcorrenciaHora()), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_PALAVRAS_CHAVE, evento.getPalavrasChave(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_USUARIO_GERADOR, evento.getUsuarioGerador(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_ENTIDADE_ID, evento.getEntidade().getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_EVENTO_NIVEL_ID, evento.getEventoNivel().getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-        document.add(new Field(Constantes.INDICE_EVENTO_TIPO_ID, evento.getEventoTipo().getId(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+        document.add(new Field(Constantes.INDICE_EVENTO_ID, evento.getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_COMPUTADOR_GERADOR, evento.getComputadorGerador(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_FONTE, evento.getFonte(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_NOME, evento.getNome(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_OCORRENCIA_DATA, Data.dateToStr(evento.getOcorrenciaData()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_OCORRENCIA_HORA, Data.dateToStr(evento.getOcorrenciaHora()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_PALAVRAS_CHAVE, evento.getPalavrasChave(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_USUARIO_GERADOR, evento.getUsuarioGerador(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_ENTIDADE_ID, evento.getEntidade().getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_ENTIDADE_NOME, evento.getEntidade().getNome(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_NIVEL_ID, evento.getEventoNivel().getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_NIVEL_DESCRICAO, evento.getEventoNivel().getDescricao(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_TIPO_ID, evento.getEventoTipo().getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_TIPO_DESCRICAO, evento.getEventoTipo().getDescricao(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.TUDO, getConteudoEvento(evento), Store.YES, Index.ANALYZED));
         return document;
     }
 
@@ -126,7 +128,7 @@ public class EventoLuceneDAO implements Serializable {
 
     public void salvar(Evento evento) {
         IndexWriterConfig indexConfig = new IndexWriterConfig(Constantes.getVersion(), analyzer);
-        IndexWriter indexWriter = null;
+        IndexWriter indexWriter;
         try {
             indexWriter = new IndexWriter(directory, indexConfig);
             indexWriter.addDocument(criarDocumento(evento));
@@ -139,28 +141,69 @@ public class EventoLuceneDAO implements Serializable {
 
     }
 
-    public List<Evento> findByTudo(String campoPesquisa) {
-        Query query = new TermQuery(new Term(Constantes.TUDO, campoPesquisa));
+    public List<Evento> findByTudo(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.TUDO, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByComputadorGerador(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_COMPUTADOR_GERADOR, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByFonte(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_FONTE, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByNome(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_NOME, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByOcorrenciaData(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_OCORRENCIA_DATA, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByPalavrasChave(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_PALAVRAS_CHAVE, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByUsuarioGerador(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_USUARIO_GERADOR, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByEntidadeNome(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_ENTIDADE_NOME, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByEventoNivelDescricao(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_NIVEL_DESCRICAO, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByEventoTipoDescricao(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_TIPO_DESCRICAO, analyzer).parse(campoPesquisa);
         return executeQuery(query);
     }
 
     private List<Evento> executeQuery(Query q) {
-
         List<Evento> eventos = new ArrayList<Evento>();
-
         try {
             int hitsPerPage = 30;
-
             IndexReader reader = IndexReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
 
-            TopDocs topDocs = searcher.search(q, hitsPerPage);
-            ScoreDoc[] hits = topDocs.scoreDocs;
+            TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+            searcher.search(q, collector);
+            ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
             for (int i = 0; i < hits.length; ++i) {
-
                 int docId = hits[i].doc;
-
                 Document d = searcher.doc(docId);
                 String id = d.get(Constantes.INDICE_EVENTO_ID);
                 Evento evento = eventoDAO.load(id);

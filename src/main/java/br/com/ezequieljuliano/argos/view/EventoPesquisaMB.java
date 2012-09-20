@@ -22,8 +22,11 @@ import br.com.ezequieljuliano.argos.persistence.EventoLuceneDAO;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import org.apache.lucene.queryParser.ParseException;
 
 /**
  *
@@ -42,7 +45,7 @@ public class EventoPesquisaMB {
     private List<Evento> eventos;
 
     public EventoPesquisaMB() {
-        tipoPesquisa = EventoTipoPesquisa.tudo;
+        tipoPesquisa = EventoTipoPesquisa.etpTudo;
     }
 
     public String getCampoPesquisa() {
@@ -74,8 +77,75 @@ public class EventoPesquisaMB {
             eventos = eventoDAO.findAll();
         } else {
             switch (tipoPesquisa) {
-                case tudo:
-                    eventos = luceneDAO.findByTudo(campoPesquisa);
+                case etpTudo:
+                    try {
+                        eventos = luceneDAO.findByTudo(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpComputadorGerador:
+                    try {
+                        eventos = luceneDAO.findByComputadorGerador(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpEntidadeNome:
+                    try {
+                        eventos = luceneDAO.findByEntidadeNome(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpEventoNivelDescricao:
+                    try {
+                        eventos = luceneDAO.findByEventoNivelDescricao(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpEventoTipoDescricao:
+                    try {
+                        eventos = luceneDAO.findByEventoTipoDescricao(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpFonte:
+                    try {
+                        eventos = luceneDAO.findByFonte(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpNome:
+                    try {
+                        eventos = luceneDAO.findByNome(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpOcorrenciaData:
+                    try {
+                        eventos = luceneDAO.findByOcorrenciaData(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpPalavrasChave:
+                    try {
+                        eventos = luceneDAO.findByPalavrasChave(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpUsuarioGerador:
+                    try {
+                        eventos = luceneDAO.findByUsuarioGerador(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     break;
             }
         }

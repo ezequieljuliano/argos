@@ -15,10 +15,8 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
-import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import br.gov.frameworkdemoiselle.template.JPACrud;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -27,7 +25,7 @@ import javax.persistence.Query;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class UsuarioDAO extends JPACrud<Usuario, String> {
+public class UsuarioDAO extends BaseDAO<Usuario, String> {
 
     private static final long serialVersionUID = 1L;
 

@@ -3,41 +3,105 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
-        <h:form id="frm">
+        <style type="text/css">
+            .linha-pesquisa .nome-link {
+                padding: 0px;
+                margin: 0px;
+                margin-bottom: 5px;
+                font-size: medium;
+            }
+            .linha-pesquisa .nome-link a{
+                color: #12C;
+            }
+
+            .linha-pesquisa .nome-link span {
+                display: inline-block;
+                text-indent: -999999px;
+                overflow: hidden;
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+            }
+            .linha-pesquisa p {
+                font-size: small;
+                margin: 0px;
+                margin-bottom: 3px;
+            }
+            .linha-pesquisa {
+                padding: 5px;
+                font-family: arial, sans-serif;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                color: #222;
+                border-bottom: 1px solid #ddd;
+            }
+            .linha-pesquisa:hover {
+                background-color: #f6f6f6;
+            }
+            .nivel1 {
+                background-image: url(images/info.png);
+            }
+            .nivel2 {
+                background-image: url(images/alert.png);
+            }
+            .nivel3 {
+                background-image: url(images/error.png);
+            }
+        </style>
+        <h:form id="frm" rendered="#{securityContext.hasRole('N')}">
 
             <p:toolbar>
                 <p:toolbarGroup>
                     <h:panelGrid columns="3">
                         <p:inputText value="#{eventoPesquisaMB.campoPesquisa}"/>
-                        <p:selectOneRadio value="#{eventoPesquisaMB.tipoPesquisa}">
+
+                        <p:selectOneMenu value="#{eventoPesquisaMB.tipoPesquisa}">  
                             <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
-                        </p:selectOneRadio>
-                        <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-document" update="frm"/>
+                        </p:selectOneMenu>  
+
+                        <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update="frm"/>
                     </h:panelGrid>
                 </p:toolbarGroup>
             </p:toolbar>
 
             <br />
 
-            <p:dataTable id="list" var="bean" 
-                         value="#{eventoPesquisaMB.eventos}" 
-                         paginator="true" rows="10"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                         rowsPerPageTemplate="5,10,15"
-                         emptyMessage="Não existem registros para exibir"> 
-
-                <f:facet name="header">Lista de Eventos</f:facet>
-
-                <p:column headerText="Identificador">
-                    <h:outputText value="#{bean.id}" />
-                </p:column>
-                <p:column headerText="Descrição">
-                    <h:outputText value="#{bean.descricao}" />
-                </p:column>
-                <p:column headerText="Fonte">
-                    <h:outputText value="#{bean.fonte}" />
-                </p:column>
-            </p:dataTable>
+            <p:panel>
+                <ui:repeat value="#{eventoPesquisaMB.eventos}" var="bean">
+                    <div class="linha-pesquisa">
+                        <h3 class="nome-link">
+                            <span class="nivel#{bean.eventoNivel.codigo}">#{bean.eventoNivel.codigo}</span>
+                            <p:commandLink><h:outputText value="#{bean.nome}"/></p:commandLink>
+                        </h3>
+                        <p>
+                            Data:
+                            <h:outputText value="#{bean.ocorrenciaData}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                            </h:outputText> 
+                            Hora:
+                            <h:outputText value="#{bean.ocorrenciaHora}">
+                                <f:convertDateTime type="time" pattern="hh:mm:ss" />
+                            </h:outputText>
+                            Usuário:
+                            <h:outputText value="#{bean.usuarioGerador}"/>
+                            IP:
+                            <h:outputText value="#{bean.enderecoIp}"/>
+                            PC:
+                            <h:outputText value="#{bean.computadorGerador}"/>
+                        </p>
+                        <p>
+                            Fonte:
+                            <h:outputText value="#{bean.fonte}"/>
+                            Tipo de Evento:
+                            <h:outputText value="#{bean.eventoTipo.descricao}"/>
+                        </p>
+                        <p>
+                            Palavras-Chave:
+                            <h:outputText value="#{bean.palavrasChave}"/> 
+                        </p>
+                    </div>
+                </ui:repeat>
+            </p:panel>
 
         </h:form>
     </ui:define>

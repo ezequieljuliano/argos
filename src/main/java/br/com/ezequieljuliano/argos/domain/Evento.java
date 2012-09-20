@@ -16,7 +16,8 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -33,6 +34,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "EVENTO", schema = "Argos@cassandra_pu")
+@XmlRootElement
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,12 +59,12 @@ public class Evento implements Serializable {
     private String nome;
     
     @Column(name = "OCORRENCIA_DATA")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date ocorrenciaData;
+    //@Temporal(TemporalType.DATE)
+    private java.sql.Date ocorrenciaData;
     
     @Column(name = "OCORRENCIA_HORA")
-    @Temporal(javax.persistence.TemporalType.TIME)
-    private Date ocorrenciaHora;
+    //@Temporal(TemporalType.TIME)
+    private java.sql.Time ocorrenciaHora;
     
     @Column(name = "PALAVRAS_CHAVE")
     private String palavrasChave;
@@ -142,11 +144,11 @@ public class Evento implements Serializable {
         this.ocorrenciaData = ocorrenciaData;
     }
 
-    public Date getOcorrenciaHora() {
+    public Time getOcorrenciaHora() {
         return ocorrenciaHora;
     }
 
-    public void setOcorrenciaHora(Date ocorrenciaHora) {
+    public void setOcorrenciaHora(Time ocorrenciaHora) {
         this.ocorrenciaHora = ocorrenciaHora;
     }
 

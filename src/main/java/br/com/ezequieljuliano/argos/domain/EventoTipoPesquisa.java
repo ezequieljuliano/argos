@@ -23,7 +23,11 @@ import javax.inject.Named;
  */
 @Named
 public enum EventoTipoPesquisa {
-    tudo("Tudo");
+
+    etpTudo("Tudo"), etpComputadorGerador("Computador Gerador"), etpFonte("Fonte"),
+    etpNome("Nome"), etpOcorrenciaData("Data de Ocorrência"), etpPalavrasChave("Palavras-Chave"),
+    etpUsuarioGerador("Usuário Gerador"), etpEntidadeNome("Entidade"),
+    etpEventoNivelDescricao("Nível de Evento"), etpEventoTipoDescricao("Tipo de Evento");
     
     private String nome;
 

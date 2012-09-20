@@ -17,7 +17,6 @@ package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import br.gov.frameworkdemoiselle.template.JPACrud;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -26,7 +25,7 @@ import javax.persistence.Query;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EventoNivelDAO extends JPACrud<EventoNivel, String> {
+public class EventoNivelDAO extends BaseDAO<EventoNivel, String> {
 
     private static final long serialVersionUID = 1L;
 

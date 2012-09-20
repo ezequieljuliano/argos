@@ -17,7 +17,6 @@ package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import br.gov.frameworkdemoiselle.template.JPACrud;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -26,7 +25,7 @@ import javax.persistence.Query;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EntidadeDAO extends JPACrud<Entidade, String> {
+public class EntidadeDAO extends BaseDAO<Entidade, String> {
 
     private static final long serialVersionUID = 1L;
 

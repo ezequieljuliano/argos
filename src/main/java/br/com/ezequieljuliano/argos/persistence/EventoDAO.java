@@ -17,7 +17,6 @@ package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import br.gov.frameworkdemoiselle.template.JPACrud;
 import javax.inject.Inject;
 
 /**
@@ -25,7 +24,7 @@ import javax.inject.Inject;
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EventoDAO extends JPACrud<Evento, String> {
+public class EventoDAO extends BaseDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
     @Inject

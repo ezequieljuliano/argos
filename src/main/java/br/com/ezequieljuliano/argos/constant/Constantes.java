@@ -37,8 +37,11 @@ public class Constantes {
     public static final String INDICE_PALAVRAS_CHAVE = "INDICE_PALAVRAS_CHAVE";
     public static final String INDICE_USUARIO_GERADOR = "INDICE_USUARIO_GERADOR";
     public static final String INDICE_ENTIDADE_ID = "INDICE_ENTIDADE_ID";
+    public static final String INDICE_ENTIDADE_NOME = "INDICE_ENTIDADE_NOME";
     public static final String INDICE_EVENTO_NIVEL_ID = "INDICE_EVENTO_NIVEL_ID";
+    public static final String INDICE_EVENTO_NIVEL_DESCRICAO = "INDICE_EVENTO_NIVEL_DESCRICAO";
     public static final String INDICE_EVENTO_TIPO_ID = "INDICE_EVENTO_TIPO_ID";
+    public static final String INDICE_EVENTO_TIPO_DESCRICAO = "INDICE_EVENTO_TIPO_DESCRICAO";
 
     public static String getIndexDirectory() {
         return getRootFolder() + DIRECTORY_INDEX;

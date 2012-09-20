@@ -18,11 +18,12 @@ package br.com.ezequieljuliano.argos.business;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.persistence.EventoDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
-import br.gov.frameworkdemoiselle.annotation.Startup;
+import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import br.gov.frameworkdemoiselle.transaction.Transactional;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 import javax.inject.Inject;
 
 /**
@@ -58,8 +59,8 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
         evento.setEnderecoIp("192.168.0.10");
         evento.setFonte("ARGOS");
         evento.setNome("Login Argos");
-        evento.setOcorrenciaData(new Date());
-        evento.setOcorrenciaHora(new Date());
+        evento.setOcorrenciaData(new Date(serialVersionUID));
+        evento.setOcorrenciaHora(new Time(serialVersionUID));
         evento.setPalavrasChave("LOGIN;ARGOS;SISTEMA");
         evento.setUsuarioGerador("ADM");
         evento.setEntidade(entidadeBC.findByCodigo(1));
@@ -68,13 +69,13 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
         saveOrUpdate(evento);
 
         Evento evento2 = new Evento();
-        evento2.setComputadorGerador("EZEQUIEL-NB");
+        evento2.setComputadorGerador("LUIZ-NB");
         evento2.setDescricao("Alteração de Dados no sistema Argos");
         evento2.setEnderecoIp("192.168.0.10");
-        evento2.setFonte("ARGOS");
+        evento2.setFonte("PEDIDOS");
         evento2.setNome("Alteração Argos");
-        evento2.setOcorrenciaData(new Date());
-        evento2.setOcorrenciaHora(new Date());
+        evento2.setOcorrenciaData(new Date(serialVersionUID));
+        evento2.setOcorrenciaHora(new Time(serialVersionUID));
         evento2.setPalavrasChave("ALTERACAO;ARGOS;SISTEMA");
         evento2.setUsuarioGerador("ADM");
         evento2.setEntidade(entidadeBC.findByCodigo(1));

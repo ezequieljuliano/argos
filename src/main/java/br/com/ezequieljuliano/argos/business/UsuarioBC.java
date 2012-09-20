@@ -22,7 +22,7 @@ import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.UniqId;
 import br.com.ezequieljuliano.argos.util.Utils;
-import br.gov.frameworkdemoiselle.annotation.Startup;
+import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import br.gov.frameworkdemoiselle.transaction.Transactional;
