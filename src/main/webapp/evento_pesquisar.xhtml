@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm">
+
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <h:panelGrid columns="3">
+                        <p:inputText value="#{eventoPesquisaMB.campoPesquisa}"/>
+                        <p:selectOneRadio value="#{eventoPesquisaMB.tipoPesquisa}">
+                            <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
+                        </p:selectOneRadio>
+                        <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-document" update="frm"/>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <br />
+
+            <p:dataTable id="list" var="bean" 
+                         value="#{eventoPesquisaMB.eventos}" 
+                         paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10,15"
+                         emptyMessage="Não existem registros para exibir"> 
+
+                <f:facet name="header">Lista de Eventos</f:facet>
+
+                <p:column headerText="Identificador">
+                    <h:outputText value="#{bean.id}" />
+                </p:column>
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{bean.descricao}" />
+                </p:column>
+                <p:column headerText="Fonte">
+                    <h:outputText value="#{bean.fonte}" />
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>

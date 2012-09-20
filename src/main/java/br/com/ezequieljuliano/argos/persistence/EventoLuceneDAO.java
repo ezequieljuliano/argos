@@ -141,10 +141,10 @@ public class EventoLuceneDAO implements Serializable {
 
     public List<Evento> findByTudo(String campoPesquisa) {
         Query query = new TermQuery(new Term(Constantes.TUDO, campoPesquisa));
-        return executeQuery(query, Constantes.TUDO);
+        return executeQuery(query);
     }
 
-    private List<Evento> executeQuery(Query q, String field) {
+    private List<Evento> executeQuery(Query q) {
 
         List<Evento> eventos = new ArrayList<Evento>();
 
