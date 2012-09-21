@@ -42,18 +42,21 @@
                 background-image: url(images/info.png);
             }
             .nivel2 {
-                background-image: url(images/alert.png);
+                background-image: url(images/alerta.png);
             }
             .nivel3 {
-                background-image: url(images/error.png);
+                background-image: url(images/erro.png);
+            }
+            .nivel4 {
+                background-image: url(images/critico.png);
             }
         </style>
         <h:form id="frm" rendered="#{securityContext.hasRole('N')}">
 
             <p:toolbar>
-                <p:toolbarGroup>
+                <p:toolbarGroup rendered="#{eventoPesquisaMB.pesquisaAvancada == false}">
                     <h:panelGrid columns="3">
-                        <p:inputText value="#{eventoPesquisaMB.campoPesquisa}"/>
+                        <p:inputText value="#{eventoPesquisaMB.campoPesquisa}" size="40"/>
 
                         <p:selectOneMenu value="#{eventoPesquisaMB.tipoPesquisa}">  
                             <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
@@ -62,46 +65,113 @@
                         <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update="frm"/>
                     </h:panelGrid>
                 </p:toolbarGroup>
+
             </p:toolbar>
 
             <br />
 
-            <p:panel>
+            <p:dialog width="800" height="500" showHeader="false" widgetVar="dlgEvento" modal="true" closable="true">
+                <h:panelGroup layout="block" id="pEvento">  
+                    <p:fieldset legend="#{eventoPesquisaMB.evento.nome}">
+
+                        <h:outputText value="Data: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaData}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
+                        </h:outputText> 
+                        <h:outputText value=" - "/>
+                        <h:outputText value="Hora: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaHora}">
+                            <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
+                        </h:outputText>
+                        <br />
+                        <h:outputText value="Usuário: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.usuarioGerador}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="IP: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.enderecoIp}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="Computador: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.computadorGerador}"/>
+                        <br />
+                        <h:outputText value="Fonte: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.fonte}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="Tipo: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.eventoTipo.descricao}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="Nível: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.eventoNivel.descricao}"/>
+                        <br />
+                        <h:outputText value="Palavras-Chave: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.palavrasChave}"/>
+                        <br />
+                        <h:outputText value="Entidade: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.entidade.codigo}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.entidade.cadastroNacional}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.entidade.nome}"/>
+                        <br />
+                        <br />
+                        <h:outputText value="Descrição: "/>
+                        <br />
+                        <h:outputText value="#{eventoPesquisaMB.evento.descricao}"/>
+
+                    </p:fieldset>
+                </h:panelGroup>  
+                <f:facet name="footer">
+                    <p:commandButton value="Fechar" onclick="dlgEvento.hide()" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: right;" update="frm"/>
+                </f:facet>
+            </p:dialog>
+
+            <p:fieldset legend="Lista de Eventos (Logs)">
                 <ui:repeat value="#{eventoPesquisaMB.eventos}" var="bean">
                     <div class="linha-pesquisa">
                         <h3 class="nome-link">
                             <span class="nivel#{bean.eventoNivel.codigo}">#{bean.eventoNivel.codigo}</span>
-                            <p:commandLink><h:outputText value="#{bean.nome}"/></p:commandLink>
+
+                            <p:commandLink onclick="dlgEvento.show()" update=":frm:pEvento">
+                                <h:outputText value="#{bean.nome}"/>
+                                <f:setPropertyActionListener target="#{eventoPesquisaMB.evento}" value="#{bean}"/> 
+                            </p:commandLink>
+
                         </h3>
                         <p>
-                            Data:
+                            <b>Data: </b>
                             <h:outputText value="#{bean.ocorrenciaData}">
-                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
                             </h:outputText> 
-                            Hora:
+                            <b>Hora: </b>
                             <h:outputText value="#{bean.ocorrenciaHora}">
-                                <f:convertDateTime type="time" pattern="hh:mm:ss" />
+                                <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
                             </h:outputText>
-                            Usuário:
+                            <b>Usuário: </b>
                             <h:outputText value="#{bean.usuarioGerador}"/>
-                            IP:
+                            <b>IP: </b>
                             <h:outputText value="#{bean.enderecoIp}"/>
-                            PC:
+                            <b>PC: </b>
                             <h:outputText value="#{bean.computadorGerador}"/>
                         </p>
                         <p>
-                            Fonte:
+                            <b>Fonte: </b>
                             <h:outputText value="#{bean.fonte}"/>
-                            Tipo de Evento:
+                            <b>Tipo de Evento: </b>
                             <h:outputText value="#{bean.eventoTipo.descricao}"/>
+                            <b>Nível de Evento: </b>
+                            <h:outputText value="#{bean.eventoNivel.descricao}"/>
                         </p>
                         <p>
-                            Palavras-Chave:
+                            <b>Palavras-Chave: </b>
                             <h:outputText value="#{bean.palavrasChave}"/> 
+                        </p>
+                        <p>
+                            <b>Entidade: </b>
+                            <h:outputText value="#{bean.entidade.cadastroNacional}"/> -  
+                            <h:outputText value="#{bean.entidade.nome}"/> 
                         </p>
                     </div>
                 </ui:repeat>
-            </p:panel>
+            </p:fieldset>
 
         </h:form>
     </ui:define>

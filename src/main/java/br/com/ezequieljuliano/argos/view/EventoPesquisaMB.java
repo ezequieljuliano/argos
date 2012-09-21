@@ -15,10 +15,16 @@
  */
 package br.com.ezequieljuliano.argos.view;
 
+import br.com.ezequieljuliano.argos.business.EntidadeBC;
+import br.com.ezequieljuliano.argos.business.EventoBC;
+import br.com.ezequieljuliano.argos.business.EventoLuceneBC;
+import br.com.ezequieljuliano.argos.business.EventoNivelBC;
+import br.com.ezequieljuliano.argos.business.EventoTipoBC;
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoNivel;
+import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.EventoTipoPesquisa;
-import br.com.ezequieljuliano.argos.persistence.EventoDAO;
-import br.com.ezequieljuliano.argos.persistence.EventoLuceneDAO;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +42,27 @@ import org.apache.lucene.queryParser.ParseException;
 public class EventoPesquisaMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
-    private EventoLuceneDAO luceneDAO;
+    private EventoLuceneBC luceneBC;
     @Inject
-    private EventoDAO eventoDAO;
+    private EventoBC eventoBC;
+    @Inject
+    private EntidadeBC entidadeBC;
+    @Inject 
+    private EventoNivelBC eventoNivelBC;
+    @Inject
+    private EventoTipoBC eventoTipoBC;
+    
     private String campoPesquisa;
     private EventoTipoPesquisa tipoPesquisa;
     private List<Evento> eventos;
+    private Evento evento;
+    private Boolean pesquisaAvancada;
 
     public EventoPesquisaMB() {
         tipoPesquisa = EventoTipoPesquisa.etpTudo;
+        pesquisaAvancada = false;
     }
 
     public String getCampoPesquisa() {
@@ -72,77 +89,103 @@ public class EventoPesquisaMB {
         this.eventos = eventos;
     }
 
+    public Evento getEvento() {
+        if (evento == null) {
+            evento = new Evento();
+        }
+        return evento;
+    }
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
+    public Boolean getPesquisaAvancada() {
+        return pesquisaAvancada;
+    }
+
+    public void setPesquisaAvancada(Boolean pesquisaAvancada) {
+        this.pesquisaAvancada = pesquisaAvancada;
+    }
+
     public void pesquisar() {
         if (campoPesquisa == null || campoPesquisa.length() == 0) {
-            eventos = eventoDAO.findAll();
+            eventos = eventoBC.findAll();
         } else {
             switch (tipoPesquisa) {
                 case etpTudo:
                     try {
-                        eventos = luceneDAO.findByTudo(campoPesquisa);
+                        eventos = luceneBC.findByTudo(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpComputadorGerador:
                     try {
-                        eventos = luceneDAO.findByComputadorGerador(campoPesquisa);
+                        eventos = luceneBC.findByComputadorGerador(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpEntidadeNome:
                     try {
-                        eventos = luceneDAO.findByEntidadeNome(campoPesquisa);
+                        eventos = luceneBC.findByEntidadeNome(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpEventoNivelDescricao:
                     try {
-                        eventos = luceneDAO.findByEventoNivelDescricao(campoPesquisa);
+                        eventos = luceneBC.findByEventoNivelDescricao(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpEventoTipoDescricao:
                     try {
-                        eventos = luceneDAO.findByEventoTipoDescricao(campoPesquisa);
+                        eventos = luceneBC.findByEventoTipoDescricao(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpFonte:
                     try {
-                        eventos = luceneDAO.findByFonte(campoPesquisa);
+                        eventos = luceneBC.findByFonte(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpNome:
                     try {
-                        eventos = luceneDAO.findByNome(campoPesquisa);
+                        eventos = luceneBC.findByNome(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpOcorrenciaData:
                     try {
-                        eventos = luceneDAO.findByOcorrenciaData(campoPesquisa);
+                        eventos = luceneBC.findByOcorrenciaData(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpPalavrasChave:
                     try {
-                        eventos = luceneDAO.findByPalavrasChave(campoPesquisa);
+                        eventos = luceneBC.findByPalavrasChave(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
                 case etpUsuarioGerador:
                     try {
-                        eventos = luceneDAO.findByUsuarioGerador(campoPesquisa);
+                        eventos = luceneBC.findByUsuarioGerador(campoPesquisa);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                case etpEventoDescricao:
+                    try {
+                        eventos = luceneBC.findByEventoDescricao(campoPesquisa);
                     } catch (ParseException ex) {
                         Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -159,4 +202,17 @@ public class EventoPesquisaMB {
         }
         return itens;
     }
+
+    public List<Entidade> getEntidadeList() {
+        return entidadeBC.findAll();
+    }
+    
+    public List<EventoNivel> getEventoNivelList(){
+        return eventoNivelBC.findAll();
+    }
+    
+    public List<EventoTipo> getEventoTipoList(){
+        return eventoTipoBC.findAll();
+    }
+    
 }

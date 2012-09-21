@@ -149,11 +149,11 @@ public class Data {
         }
     }
     
-    public static String dateToStr(Date data) {
+    public static String dateToString(Date data) {
         return new SimpleDateFormat("dd/MM/yyyy").format(data);
     }
     
-     public static String timeToStr(Date time) {
+     public static String timeToString(Date time) {
         return new SimpleDateFormat("HH:mm:ss").format(time);
     }
     

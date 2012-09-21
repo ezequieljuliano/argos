@@ -27,7 +27,8 @@ public enum EventoTipoPesquisa {
     etpTudo("Tudo"), etpComputadorGerador("Computador Gerador"), etpFonte("Fonte"),
     etpNome("Nome"), etpOcorrenciaData("Data de Ocorrência"), etpPalavrasChave("Palavras-Chave"),
     etpUsuarioGerador("Usuário Gerador"), etpEntidadeNome("Entidade"),
-    etpEventoNivelDescricao("Nível de Evento"), etpEventoTipoDescricao("Tipo de Evento");
+    etpEventoNivelDescricao("Nível de Evento"), etpEventoTipoDescricao("Tipo de Evento"), 
+    etpEventoDescricao("Descrição do Evento");
     
     private String nome;
 

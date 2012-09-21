@@ -59,11 +59,9 @@ public class Evento implements Serializable {
     private String nome;
     
     @Column(name = "OCORRENCIA_DATA")
-    //@Temporal(TemporalType.DATE)
     private java.sql.Date ocorrenciaData;
     
     @Column(name = "OCORRENCIA_HORA")
-    //@Temporal(TemporalType.TIME)
     private java.sql.Time ocorrenciaHora;
     
     @Column(name = "PALAVRAS_CHAVE")

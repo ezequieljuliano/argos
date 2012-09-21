@@ -65,11 +65,12 @@ public class EventoLuceneDAO implements Serializable {
     private Document criarDocumento(Evento evento) throws IOException {
         Document document = new Document();
         document.add(new Field(Constantes.INDICE_EVENTO_ID, evento.getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_DESCRICAO, evento.getDescricao(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_COMPUTADOR_GERADOR, evento.getComputadorGerador(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_FONTE, evento.getFonte(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_NOME, evento.getNome(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_OCORRENCIA_DATA, Data.dateToStr(evento.getOcorrenciaData()), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_OCORRENCIA_HORA, Data.dateToStr(evento.getOcorrenciaHora()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_OCORRENCIA_DATA, Data.dateToString(evento.getOcorrenciaData()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_OCORRENCIA_HORA, Data.timeToString(evento.getOcorrenciaHora()), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_PALAVRAS_CHAVE, evento.getPalavrasChave(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_USUARIO_GERADOR, evento.getUsuarioGerador(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_ENTIDADE_ID, evento.getEntidade().getId(), Store.YES, Index.ANALYZED));
@@ -96,9 +97,9 @@ public class EventoLuceneDAO implements Serializable {
         stringBuilder.append(" \n ");
         stringBuilder.append(evento.getFonte());
         stringBuilder.append(" \n ");
-        stringBuilder.append(Data.dateToStr(evento.getOcorrenciaData()));
+        stringBuilder.append(Data.dateToString(evento.getOcorrenciaData()));
         stringBuilder.append(" \n ");
-        stringBuilder.append(Data.timeToStr(evento.getOcorrenciaHora()));
+        stringBuilder.append(Data.timeToString(evento.getOcorrenciaHora()));
         stringBuilder.append(" \n ");
         stringBuilder.append(evento.getPalavrasChave());
         stringBuilder.append(" \n ");
@@ -188,6 +189,11 @@ public class EventoLuceneDAO implements Serializable {
 
     public List<Evento> findByEventoTipoDescricao(String campoPesquisa) throws ParseException {
         Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_TIPO_DESCRICAO, analyzer).parse(campoPesquisa);
+        return executeQuery(query);
+    }
+
+    public List<Evento> findByEventoDescricao(String campoPesquisa) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_DESCRICAO, analyzer).parse(campoPesquisa);
         return executeQuery(query);
     }
 

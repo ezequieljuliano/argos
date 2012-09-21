@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.constant;
 
+import br.com.ezequieljuliano.argos.config.Configuracoes;
 import org.apache.lucene.util.Version;
 
 /**
@@ -29,6 +30,7 @@ public class Constantes {
     //ÍNDICES PARA O LUCENE
     public static final String TUDO = "TUDO";
     public static final String INDICE_EVENTO_ID = "INDICE_EVENTO_ID";
+    public static final String INDICE_EVENTO_DESCRICAO = "INDICE_EVENTO_DESCRICAO";
     public static final String INDICE_COMPUTADOR_GERADOR = "INDICE_COMPUTADOR_GERADOR";
     public static final String INDICE_FONTE = "INDICE_FONTE";
     public static final String INDICE_NOME = "INDICE_NOME";
@@ -48,11 +50,16 @@ public class Constantes {
     }
 
     public static String getRootFolder() {
-        return ROOT_FOLDER;
+        Configuracoes config;
+        try {
+            config = Configuracoes.load();
+            return config.getLuceneIndices() + ROOT_FOLDER;
+        } catch (Exception ex) {
+            return ROOT_FOLDER;
+        }
     }
 
     public static Version getVersion() {
         return Version.LUCENE_36;
-
     }
 }

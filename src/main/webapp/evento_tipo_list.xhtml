@@ -16,9 +16,6 @@
             <p:dataTable selectionMode="single" 
                          rowKey="#{bean.id}" id="list" var="bean" 
                          value="#{eventoTipoMB.list}"                          
-                         paginator="true" rows="10"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                         rowsPerPageTemplate="5,10,15"
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{eventoTipoMB.handleSelect}" />
 

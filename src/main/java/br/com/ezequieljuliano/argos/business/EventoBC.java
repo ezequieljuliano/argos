@@ -55,32 +55,64 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
     public void insereEventos() {
         Evento evento = new Evento();
         evento.setComputadorGerador("EZEQUIEL-NB");
-        evento.setDescricao("Login no sistema Argos");
+        evento.setDescricao("Login no sistema Msys");
         evento.setEnderecoIp("192.168.0.10");
-        evento.setFonte("ARGOS");
-        evento.setNome("Login Argos");
-        evento.setOcorrenciaData(new Date(serialVersionUID));
-        evento.setOcorrenciaHora(new Time(serialVersionUID));
-        evento.setPalavrasChave("LOGIN;ARGOS;SISTEMA");
-        evento.setUsuarioGerador("ADM");
-        evento.setEntidade(entidadeBC.findByCodigo(1));
+        evento.setFonte("Microsys");
+        evento.setNome("Login no Msys");
+        evento.setOcorrenciaData(new Date(new java.util.Date().getTime()));
+        evento.setOcorrenciaHora(new Time(new java.util.Date().getTime()));
+        evento.setPalavrasChave("LOGIN;MSYS;SISTEMA");
+        evento.setUsuarioGerador("Ezequiel");
+        evento.setEntidade(entidadeBC.findByCodigo(2));
         evento.setEventoNivel(eventoNivelBC.findByCodigo(1));
         evento.setEventoTipo(eventoTipoBC.findByCodigo(1));
         saveOrUpdate(evento);
 
         Evento evento2 = new Evento();
         evento2.setComputadorGerador("LUIZ-NB");
-        evento2.setDescricao("Alteração de Dados no sistema Argos");
-        evento2.setEnderecoIp("192.168.0.10");
-        evento2.setFonte("PEDIDOS");
-        evento2.setNome("Alteração Argos");
-        evento2.setOcorrenciaData(new Date(serialVersionUID));
-        evento2.setOcorrenciaHora(new Time(serialVersionUID));
-        evento2.setPalavrasChave("ALTERACAO;ARGOS;SISTEMA");
-        evento2.setUsuarioGerador("ADM");
+        evento2.setDescricao("Alteração de dados do cliente 50");
+        evento2.setEnderecoIp("192.168.0.50");
+        evento2.setFonte("Cadastro de Clientes");
+        evento2.setNome("Alteração de Clientes");
+        evento2.setOcorrenciaData(new Date(new java.util.Date().getTime()));
+        evento2.setOcorrenciaHora(new Time(new java.util.Date().getTime()));
+        evento2.setPalavrasChave("ALTERAÇÃO;CLIENTE;SISTEMA");
+        evento2.setUsuarioGerador("Luiz");
         evento2.setEntidade(entidadeBC.findByCodigo(1));
         evento2.setEventoNivel(eventoNivelBC.findByCodigo(2));
         evento2.setEventoTipo(eventoTipoBC.findByCodigo(2));
         saveOrUpdate(evento2);
+
+        Evento evento3 = new Evento();
+        evento3.setComputadorGerador("EVANDRO-NB");
+        evento3.setDescricao("Exclusão de cliente 120");
+        evento3.setEnderecoIp("192.168.0.38");
+        evento3.setFonte("Cadastro de Clientes");
+        evento3.setNome("Exclusão de Clientes");
+        evento3.setOcorrenciaData(new Date(new java.util.Date().getTime()));
+        evento3.setOcorrenciaHora(new Time(new java.util.Date().getTime()));
+        evento3.setPalavrasChave("EXCLUSÃO;CLIENTE;SISTEMA");
+        evento3.setUsuarioGerador("Evandro");
+        evento3.setEntidade(entidadeBC.findByCodigo(1));
+        evento3.setEventoNivel(eventoNivelBC.findByCodigo(3));
+        evento3.setEventoTipo(eventoTipoBC.findByCodigo(3));
+        saveOrUpdate(evento3);
+        
+        Evento evento4 = new Evento();
+        evento4.setComputadorGerador("LUCIANO-PC");
+        evento4.setDescricao("Exclusão de pedido de venda 600");
+        evento4.setEnderecoIp("192.168.0.44");
+        evento4.setFonte("Pedidos de Vendas");
+        evento4.setNome("Exclusão de Pedidos de Vendas");
+        evento4.setOcorrenciaData(new Date(new java.util.Date().getTime()));
+        evento4.setOcorrenciaHora(new Time(new java.util.Date().getTime()));
+        evento4.setPalavrasChave("EXCLUSÃO;PEDIDO DE VENDA;SISTEMA");
+        evento4.setUsuarioGerador("Luciano");
+        evento4.setEntidade(entidadeBC.findByCodigo(1));
+        evento4.setEventoNivel(eventoNivelBC.findByCodigo(4));
+        evento4.setEventoTipo(eventoTipoBC.findByCodigo(4));
+        saveOrUpdate(evento4);
+
     }
+    
 }
