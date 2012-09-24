@@ -42,14 +42,13 @@ import org.apache.lucene.queryParser.ParseException;
 public class EventoPesquisaMB {
 
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private EventoLuceneBC luceneBC;
     @Inject
     private EventoBC eventoBC;
     @Inject
     private EntidadeBC entidadeBC;
-    @Inject 
+    @Inject
     private EventoNivelBC eventoNivelBC;
     @Inject
     private EventoTipoBC eventoTipoBC;
@@ -59,6 +58,9 @@ public class EventoPesquisaMB {
     private List<Evento> eventos;
     private Evento evento;
     private Boolean pesquisaAvancada;
+    private Entidade selectedEntidade;
+    private EventoNivel selectedEventoNivel;
+    private EventoTipo selectedEventoTipo;
 
     public EventoPesquisaMB() {
         tipoPesquisa = EventoTipoPesquisa.etpTudo;
@@ -106,6 +108,47 @@ public class EventoPesquisaMB {
 
     public void setPesquisaAvancada(Boolean pesquisaAvancada) {
         this.pesquisaAvancada = pesquisaAvancada;
+    }
+
+    public void ativarPesquisaAvancada() {
+        this.pesquisaAvancada = true;
+    }
+
+    public void inativarPesquisaAvancada() {
+        this.pesquisaAvancada = false;
+    }
+
+    public Entidade getSelectedEntidade() {
+        if (selectedEntidade == null) {
+            selectedEntidade = new Entidade();
+        }
+        return selectedEntidade;
+    }
+
+    public void setSelectedEntidade(Entidade selectedEntidade) {
+        this.selectedEntidade = selectedEntidade;
+    }
+
+    public EventoNivel getSelectedEventoNivel() {
+        if (selectedEventoNivel == null) {
+            selectedEventoNivel = new EventoNivel();
+        }
+        return selectedEventoNivel;
+    }
+
+    public void setSelectedEventoNivel(EventoNivel selectedEventoNivel) {
+        this.selectedEventoNivel = selectedEventoNivel;
+    }
+
+    public EventoTipo getSelectedEventoTipo() {
+        if (selectedEventoTipo == null) {
+            selectedEventoTipo = new EventoTipo();
+        }
+        return selectedEventoTipo;
+    }
+
+    public void setSelectedEventoTipo(EventoTipo selectedEventoTipo) {
+        this.selectedEventoTipo = selectedEventoTipo;
     }
 
     public void pesquisar() {
@@ -206,13 +249,12 @@ public class EventoPesquisaMB {
     public List<Entidade> getEntidadeList() {
         return entidadeBC.findAll();
     }
-    
-    public List<EventoNivel> getEventoNivelList(){
+
+    public List<EventoNivel> getEventoNivelList() {
         return eventoNivelBC.findAll();
     }
-    
-    public List<EventoTipo> getEventoTipoList(){
+
+    public List<EventoTipo> getEventoTipoList() {
         return eventoTipoBC.findAll();
     }
-    
 }
