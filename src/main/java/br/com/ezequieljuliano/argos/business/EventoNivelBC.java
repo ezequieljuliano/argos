@@ -33,7 +33,7 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
 
     private static final long serialVersionUID = 1L;
     @Inject
-    EventoNivelDAO dao;
+    private EventoNivelDAO dao;
 
     public void saveOrUpdate(EventoNivel eventoNivel) throws ValidationException {
         //Verifica se código já não foi cadastrado

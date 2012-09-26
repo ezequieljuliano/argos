@@ -23,16 +23,16 @@ import br.com.ezequieljuliano.argos.business.EventoTipoBC;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
+import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.EventoTipoPesquisa;
+import br.gov.frameworkdemoiselle.message.MessageContext;
+import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import org.apache.lucene.queryParser.ParseException;
 
 /**
  *
@@ -52,7 +52,8 @@ public class EventoPesquisaMB {
     private EventoNivelBC eventoNivelBC;
     @Inject
     private EventoTipoBC eventoTipoBC;
-    
+    @Inject
+    private MessageContext messageContext;
     private String campoPesquisa;
     private EventoTipoPesquisa tipoPesquisa;
     private List<Evento> eventos;
@@ -111,17 +112,16 @@ public class EventoPesquisaMB {
     }
 
     public void ativarPesquisaAvancada() {
+        limparFiltroAvancado();
         this.pesquisaAvancada = true;
     }
 
     public void inativarPesquisaAvancada() {
+        limparFiltroAvancado();
         this.pesquisaAvancada = false;
     }
 
     public Entidade getSelectedEntidade() {
-        if (selectedEntidade == null) {
-            selectedEntidade = new Entidade();
-        }
         return selectedEntidade;
     }
 
@@ -130,9 +130,6 @@ public class EventoPesquisaMB {
     }
 
     public EventoNivel getSelectedEventoNivel() {
-        if (selectedEventoNivel == null) {
-            selectedEventoNivel = new EventoNivel();
-        }
         return selectedEventoNivel;
     }
 
@@ -141,9 +138,6 @@ public class EventoPesquisaMB {
     }
 
     public EventoTipo getSelectedEventoTipo() {
-        if (selectedEventoTipo == null) {
-            selectedEventoTipo = new EventoTipo();
-        }
         return selectedEventoTipo;
     }
 
@@ -152,94 +146,21 @@ public class EventoPesquisaMB {
     }
 
     public void pesquisar() {
-        if (campoPesquisa == null || campoPesquisa.length() == 0) {
+        if ((campoPesquisa == null || campoPesquisa.length() == 0)
+                && (selectedEntidade == null) && (selectedEventoNivel == null) && (selectedEventoTipo == null)) {
             eventos = eventoBC.findAll();
         } else {
-            switch (tipoPesquisa) {
-                case etpTudo:
-                    try {
-                        eventos = luceneBC.findByTudo(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpComputadorGerador:
-                    try {
-                        eventos = luceneBC.findByComputadorGerador(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpEntidadeNome:
-                    try {
-                        eventos = luceneBC.findByEntidadeNome(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpEventoNivelDescricao:
-                    try {
-                        eventos = luceneBC.findByEventoNivelDescricao(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpEventoTipoDescricao:
-                    try {
-                        eventos = luceneBC.findByEventoTipoDescricao(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpFonte:
-                    try {
-                        eventos = luceneBC.findByFonte(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpNome:
-                    try {
-                        eventos = luceneBC.findByNome(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpOcorrenciaData:
-                    try {
-                        eventos = luceneBC.findByOcorrenciaData(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpPalavrasChave:
-                    try {
-                        eventos = luceneBC.findByPalavrasChave(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpUsuarioGerador:
-                    try {
-                        eventos = luceneBC.findByUsuarioGerador(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
-                case etpEventoDescricao:
-                    try {
-                        eventos = luceneBC.findByEventoDescricao(campoPesquisa);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaMB.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
+            EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, selectedEntidade, selectedEventoNivel, selectedEventoTipo);
+            try {
+                eventos = luceneBC.findByFiltro(filtro);
+            } catch (Exception e) {
+                messageContext.add(e.getMessage(), SeverityType.ERROR);
             }
         }
     }
 
     public List<SelectItem> getTipoPesquisas() {
         List<SelectItem> itens = new ArrayList<SelectItem>();
-
         for (EventoTipoPesquisa eventotipoPesquisa : EventoTipoPesquisa.values()) {
             itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
         }
@@ -256,5 +177,11 @@ public class EventoPesquisaMB {
 
     public List<EventoTipo> getEventoTipoList() {
         return eventoTipoBC.findAll();
+    }
+
+    private void limparFiltroAvancado() {
+        selectedEntidade = null;
+        selectedEventoNivel = null;
+        selectedEventoTipo = null;
     }
 }

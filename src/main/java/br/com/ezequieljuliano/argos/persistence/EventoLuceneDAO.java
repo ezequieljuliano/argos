@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.util.Data;
 import java.io.IOException;
 import java.io.Serializable;
@@ -139,66 +140,14 @@ public class EventoLuceneDAO implements Serializable {
             Logger.getLogger(EventoLuceneDAO.class.getName()).log(Level.SEVERE,
                     null, exception);
         }
-
     }
 
-    public List<Evento> findByTudo(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.TUDO, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
+    public List<Evento> findByFiltro(EventoPesquisaFiltro filtro) throws ParseException {
+        Query query = new QueryParser(Constantes.getVersion(), filtro.getFiltroTipo().getLuceneIndex(), analyzer).parse(filtro.getPesquisaValor());
+        return executeQuery(query, filtro);
     }
 
-    public List<Evento> findByComputadorGerador(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_COMPUTADOR_GERADOR, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByFonte(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_FONTE, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByNome(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_NOME, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByOcorrenciaData(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_OCORRENCIA_DATA, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByPalavrasChave(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_PALAVRAS_CHAVE, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByUsuarioGerador(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_USUARIO_GERADOR, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByEntidadeNome(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_ENTIDADE_NOME, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByEventoNivelDescricao(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_NIVEL_DESCRICAO, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByEventoTipoDescricao(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_TIPO_DESCRICAO, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    public List<Evento> findByEventoDescricao(String campoPesquisa) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), Constantes.INDICE_EVENTO_DESCRICAO, analyzer).parse(campoPesquisa);
-        return executeQuery(query);
-    }
-
-    private List<Evento> executeQuery(Query q) {
-        List<Evento> eventos = new ArrayList<Evento>();
+    private List<Evento> executeQuery(Query q, EventoPesquisaFiltro filtro) {
         try {
             int hitsPerPage = 30;
             IndexReader reader = IndexReader.open(directory);
@@ -208,19 +157,27 @@ public class EventoLuceneDAO implements Serializable {
             searcher.search(q, collector);
             ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
+            List<Evento> eventosList = new ArrayList<Evento>();
             for (int i = 0; i < hits.length; ++i) {
                 int docId = hits[i].doc;
                 Document d = searcher.doc(docId);
-                String id = d.get(Constantes.INDICE_EVENTO_ID);
-                Evento evento = eventoDAO.load(id);
-                if (evento != null) {
-                    eventos.add(evento);
+                if (satisfazFiltro(filtro, d)) {
+                    String id = d.get(Constantes.INDICE_EVENTO_ID);
+                    eventosList.add(eventoDAO.load(id));
                 }
             }
+            return eventosList;
         } catch (Exception exception) {
             Logger.getLogger(EventoLuceneDAO.class.getName()).log(Level.SEVERE,
                     null, exception);
         }
-        return eventos;
+        return new ArrayList<Evento>();
+    }
+
+    private boolean satisfazFiltro(EventoPesquisaFiltro filtro, Document d) {
+        boolean satisfazEntidade = (filtro.getEntidade() == null) || (filtro.getEntidade().getId().equals(d.get(Constantes.INDICE_ENTIDADE_ID)));
+        boolean satisfazNivel = (filtro.getEventoNivel() == null) || (filtro.getEventoNivel().getId().equals(d.get(Constantes.INDICE_EVENTO_NIVEL_ID)));
+        boolean satisfazTipo = (filtro.getEventoTipo() == null) || (filtro.getEventoTipo().getId().equals(d.get(Constantes.INDICE_EVENTO_TIPO_ID)));
+        return satisfazEntidade && satisfazNivel && satisfazTipo;
     }
 }

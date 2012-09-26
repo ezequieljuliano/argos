@@ -33,7 +33,7 @@ public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO
 
     private static final long serialVersionUID = 1L;
     @Inject
-    EventoTipoDAO dao;
+    private EventoTipoDAO dao;
 
     public void saveOrUpdate(EventoTipo eventoTipo) throws ValidationException {
         //Verifica se código já não foi cadastrado

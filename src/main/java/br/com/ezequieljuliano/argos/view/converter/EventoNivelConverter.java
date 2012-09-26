@@ -51,7 +51,7 @@ public class EventoNivelConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value == null) {
+        if ((value == null) || (value.equals(""))) {
             return "0";
         }
         return ((EventoNivel) value).getId();

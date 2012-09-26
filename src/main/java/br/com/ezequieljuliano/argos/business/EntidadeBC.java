@@ -33,7 +33,7 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
 
     private static final long serialVersionUID = 1L;
     @Inject
-    EntidadeDAO dao;
+    private EntidadeDAO dao;
 
     public void saveOrUpdate(Entidade entidade) throws ValidationException {
         //Verifica se código já não foi cadastrado

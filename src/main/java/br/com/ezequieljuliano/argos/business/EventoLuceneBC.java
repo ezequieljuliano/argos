@@ -16,6 +16,7 @@
 package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.persistence.EventoLuceneDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import java.io.Serializable;
@@ -32,49 +33,9 @@ public class EventoLuceneBC implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Inject
-    EventoLuceneDAO eventoLuceneDAO;
+    private EventoLuceneDAO eventoLuceneDAO;
 
-    public List<Evento> findByTudo(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByTudo(campoPesquisa);
-    }
-
-    public List<Evento> findByComputadorGerador(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByComputadorGerador(campoPesquisa);
-    }
-
-    public List<Evento> findByFonte(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByFonte(campoPesquisa);
-    }
-
-    public List<Evento> findByNome(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByNome(campoPesquisa);
-    }
-
-    public List<Evento> findByOcorrenciaData(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByOcorrenciaData(campoPesquisa);
-    }
-
-    public List<Evento> findByPalavrasChave(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByPalavrasChave(campoPesquisa);
-    }
-
-    public List<Evento> findByUsuarioGerador(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByUsuarioGerador(campoPesquisa);
-    }
-
-    public List<Evento> findByEntidadeNome(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByEntidadeNome(campoPesquisa);
-    }
-
-    public List<Evento> findByEventoNivelDescricao(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByEventoNivelDescricao(campoPesquisa);
-    }
-
-    public List<Evento> findByEventoTipoDescricao(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByEventoTipoDescricao(campoPesquisa);
-    }
-
-    public List<Evento> findByEventoDescricao(String campoPesquisa) throws ParseException {
-        return eventoLuceneDAO.findByEventoDescricao(campoPesquisa);
+    public List<Evento> findByFiltro(EventoPesquisaFiltro filtro) throws ParseException {
+        return eventoLuceneDAO.findByFiltro(filtro);
     }
 }

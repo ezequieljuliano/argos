@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.domain;
 
 import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -89,4 +90,26 @@ public class EventoTipo implements Serializable {
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EventoTipo other = (EventoTipo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

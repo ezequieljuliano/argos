@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="body">
         <style type="text/css">
@@ -52,28 +53,8 @@
             }
         </style>
         <h:form id="frm" rendered="#{securityContext.hasRole('N')}">
-
-            <p:toolbar>
-                <p:toolbarGroup rendered="#{eventoPesquisaMB.pesquisaAvancada == false}">
-
-                    <h:panelGrid columns="4">
-                        <h:panelGrid columns="1" >
-                            <h:outputText value="Pesquisar por:" />
-                            <p:inputText value="#{eventoPesquisaMB.campoPesquisa}" size="40"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="1" >
-                            <h:outputText value="Pesquisar em:" />
-                            <p:selectOneMenu style="width: 175px" value="#{eventoPesquisaMB.tipoPesquisa}">  
-                                <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
-                            </p:selectOneMenu>  
-                        </h:panelGrid>
-                        <p:commandButton value="Pesquisar" immediate="true" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update="frm"/>
-                        <p:commandButton value="Modo Avançado" immediate="true" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update="frm" /> 
-                    </h:panelGrid>
-
-                </p:toolbarGroup>
-
-                <p:toolbarGroup rendered="#{eventoPesquisaMB.pesquisaAvancada == true}">
+            
+            <p:panel id="pnPesquisaAvancada" rendered="#{eventoPesquisaMB.pesquisaAvancada}">
                     <h:panelGrid columns="3">
                         <h:panelGrid columns="1" rendered="#{securityContext.hasRole('A')}" >
                             <h:outputText value="Entidade:" />
@@ -97,7 +78,28 @@
                             </p:selectOneMenu>
                         </h:panelGrid>
                     </h:panelGrid>
-
+                        
+                    <h:panelGrid columns="4">
+                        <h:panelGrid columns="1" >
+                            <h:outputText value="Pesquisar por:" />
+                            <p:inputText value="#{eventoPesquisaMB.campoPesquisa}" style="width: 350px" id="campoPesquisa">   
+                            </p:inputText>
+                            <p:focus for="campoPesquisa" />   
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" >
+                            <h:outputText value="Pesquisar em:" />
+                            <p:selectOneMenu style="width: 175px" value="#{eventoPesquisaMB.tipoPesquisa}">  
+                                <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
+                            </p:selectOneMenu>  
+                        </h:panelGrid>
+                        <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
+                        <p:commandButton value="Modo Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" 
+                                         update=":frm" 
+                                         immediate="true"/> 
+                    </h:panelGrid>
+            </p:panel>
+            
+            <p:panel id="pnPesquisaBasica" rendered="#{not eventoPesquisaMB.pesquisaAvancada}">
                     <h:panelGrid columns="4">
                         <h:panelGrid columns="1" >
                             <h:outputText value="Pesquisar por:" />
@@ -109,12 +111,14 @@
                                 <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
                             </p:selectOneMenu>  
                         </h:panelGrid>
-                        <p:commandButton value="Pesquisar" immediate="true" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update="frm"/>
-                        <p:commandButton value="Modo Básico" immediate="true" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update="frm" /> 
+                        <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
+                        <p:commandButton value="Modo Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" 
+                                         image="ui-icon ui-icon-carat-2-n-s" 
+                                         immediate="true"
+                                         update=":frm" /> 
                     </h:panelGrid>
-                </p:toolbarGroup>
-            </p:toolbar>
-
+            </p:panel>
+            
             <br />
 
             <p:dialog width="800" height="500" showHeader="false" widgetVar="dlgEvento" modal="true" closable="true">
@@ -172,6 +176,7 @@
             </p:dialog>
 
             <p:fieldset legend="Lista de Eventos (Logs)">
+                <h:outputText value="A pesquisa não retornou nenhum registro!" rendered="#{eventoPesquisaMB.eventos.size() == 0}" />
                 <ui:repeat value="#{eventoPesquisaMB.eventos}" var="bean">
                     <div class="linha-pesquisa">
                         <h3 class="nome-link">

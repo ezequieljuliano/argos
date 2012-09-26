@@ -35,11 +35,11 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
 
     private static final long serialVersionUID = 1L;
     @Inject
-    EntidadeBC entidadeBC;
+    private EntidadeBC entidadeBC;
     @Inject
-    EventoNivelBC eventoNivelBC;
+    private EventoNivelBC eventoNivelBC;
     @Inject
-    EventoTipoBC eventoTipoBC;
+    private EventoTipoBC eventoTipoBC;
 
     public void saveOrUpdate(Evento evento) {
         if (evento.getId() == null) {
