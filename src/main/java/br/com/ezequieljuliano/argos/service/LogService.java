@@ -14,20 +14,20 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class LogService {
     
-    @Inject
-    private EventoDAO eventoDAO;
-    
-    @GET
-    @Path("/list")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Evento> list(){
-        return eventoDAO.findAll();
-    }
-    
-    @GET
-    @Path("/get")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Evento get(){
-        return eventoDAO.findAll().get(0);
-    }
+//    @Inject
+//    private EventoDAO eventoDAO;
+//    
+//    @GET
+//    @Path("/list")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Evento> list(){
+//        return eventoDAO.findAll();
+//    }
+//    
+//    @GET
+//    @Path("/get")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Evento get(){
+//        return eventoDAO.findAll().get(0);
+//    }
 }

@@ -25,11 +25,12 @@ import javax.inject.Named;
 @Named
 public enum EventoTipoPesquisa {
 
-    etpTudo("Tudo"), etpComputadorGerador("Computador Gerador"), etpFonte("Fonte"),
-    etpNome("Nome"), etpOcorrenciaData("Data de Ocorrência"), etpPalavrasChave("Palavras-Chave"),
-    etpUsuarioGerador("Usuário Gerador"), etpEntidadeNome("Entidade"),
-    etpEventoNivelDescricao("Nível de Evento"), etpEventoTipoDescricao("Tipo de Evento"),
-    etpEventoDescricao("Descrição do Evento");
+    etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
+    etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
+    etpNome("Nome do Evento"), etpOcorrenciaDtHr("Data/Hora Ocorrência"), etpPalavrasChave("Palavras-Chave"),
+    etpEntidadeNome("Entidade Nome"), etpEntidadeCadastroNacional("Entidade Cadastro Nacional"),
+    etpEventoNivelDescricao("Nível de Evento Descrição"), etpEventoTipoDescricao("Tipo de Evento Descrição");
+    
     private String nome;
 
     private EventoTipoPesquisa(String nome) {
@@ -40,34 +41,34 @@ public enum EventoTipoPesquisa {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getLuceneIndex() {
         switch (this) {
             case etpTudo:
                 return Constantes.TUDO;
-            case etpComputadorGerador:
-                return Constantes.INDICE_COMPUTADOR_GERADOR;
+            case etpEventoMensagem:
+                return Constantes.INDICE_EVENTO_MENSAGEM;
+            case etpHostName:
+                return Constantes.INDICE_HOST_NAME;
+            case etpHostUser:
+                return Constantes.INDICE_HOST_USER;
+            case etpHostIp:
+                return Constantes.INDICE_HOST_IP;
             case etpFonte:
                 return Constantes.INDICE_FONTE;
             case etpNome:
                 return Constantes.INDICE_NOME;
-            case etpOcorrenciaData:
-                return Constantes.INDICE_OCORRENCIA_DATA;
+            case etpOcorrenciaDtHr:
+                return Constantes.INDICE_OCORRENCIA_DTHR;
             case etpPalavrasChave:
                 return Constantes.INDICE_PALAVRAS_CHAVE;
-            case etpUsuarioGerador:
-                return Constantes.INDICE_USUARIO_GERADOR;
             case etpEntidadeNome:
                 return Constantes.INDICE_ENTIDADE_NOME;
+            case etpEntidadeCadastroNacional:
+                return Constantes.INDICE_ENTIDADE_CADASTRONACIONAL;
             case etpEventoNivelDescricao:
                 return Constantes.INDICE_EVENTO_NIVEL_DESCRICAO;
             case etpEventoTipoDescricao:
                 return Constantes.INDICE_EVENTO_TIPO_DESCRICAO;
-            case etpEventoDescricao:
-                return Constantes.INDICE_EVENTO_DESCRICAO;
             default:
                 return Constantes.TUDO;
         }

@@ -108,11 +108,11 @@ public class UsuarioMB {
         }
     }
     
-    public List<SelectItem> getPerfil() {
+    public List<SelectItem> getPerfis() {
         if (this.perfil == null) {
             this.perfil = new ArrayList<SelectItem>();
             for (UsuarioPerfil tipo : UsuarioPerfil.values()) {
-                this.perfil.add(new SelectItem(tipo, tipo.toString()));
+                this.perfil.add(new SelectItem(tipo, tipo.getNome()));
             }
         }
         return perfil;

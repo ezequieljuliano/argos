@@ -156,5 +156,9 @@ public class Data {
      public static String timeToString(Date time) {
         return new SimpleDateFormat("HH:mm:ss").format(time);
     }
+     
+    public static String timestampToString(Date timestamp) {
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(timestamp);
+    }
     
 }

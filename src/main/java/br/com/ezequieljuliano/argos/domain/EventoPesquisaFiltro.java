@@ -24,6 +24,7 @@ import java.io.Serializable;
 public class EventoPesquisaFiltro implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     private EventoTipoPesquisa filtroTipo;
     private String pesquisaValor;
     private Entidade entidade;

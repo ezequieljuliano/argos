@@ -27,19 +27,21 @@ public class Constantes {
     //ÍNDICES DE DIRETÓRIOS
     private static final String DIRECTORY_INDEX = "/Index/";
     private static final String ROOT_FOLDER = "/Argos-Lucene/";
+    
     //ÍNDICES PARA O LUCENE
     public static final String TUDO = "TUDO";
     public static final String INDICE_EVENTO_ID = "INDICE_EVENTO_ID";
-    public static final String INDICE_EVENTO_DESCRICAO = "INDICE_EVENTO_DESCRICAO";
-    public static final String INDICE_COMPUTADOR_GERADOR = "INDICE_COMPUTADOR_GERADOR";
+    public static final String INDICE_EVENTO_MENSAGEM = "INDICE_EVENTO_MENSAGEM";
+    public static final String INDICE_HOST_NAME = "INDICE_HOST_NAME";
+    public static final String INDICE_HOST_USER = "INDICE_HOST_USER";
+    public static final String INDICE_HOST_IP = "INDICE_HOST_IP";
     public static final String INDICE_FONTE = "INDICE_FONTE";
     public static final String INDICE_NOME = "INDICE_NOME";
-    public static final String INDICE_OCORRENCIA_DATA = "INDICE_OCORRENCIA_DATA";
-    public static final String INDICE_OCORRENCIA_HORA = "INDICE_OCORRENCIA_HORA";
+    public static final String INDICE_OCORRENCIA_DTHR = "INDICE_OCORRENCIA_DTHR";
     public static final String INDICE_PALAVRAS_CHAVE = "INDICE_PALAVRAS_CHAVE";
-    public static final String INDICE_USUARIO_GERADOR = "INDICE_USUARIO_GERADOR";
     public static final String INDICE_ENTIDADE_ID = "INDICE_ENTIDADE_ID";
     public static final String INDICE_ENTIDADE_NOME = "INDICE_ENTIDADE_NOME";
+    public static final String INDICE_ENTIDADE_CADASTRONACIONAL = "INDICE_ENTIDADE_CADASTRONACIONAL";
     public static final String INDICE_EVENTO_NIVEL_ID = "INDICE_EVENTO_NIVEL_ID";
     public static final String INDICE_EVENTO_NIVEL_DESCRICAO = "INDICE_EVENTO_NIVEL_DESCRICAO";
     public static final String INDICE_EVENTO_TIPO_ID = "INDICE_EVENTO_TIPO_ID";

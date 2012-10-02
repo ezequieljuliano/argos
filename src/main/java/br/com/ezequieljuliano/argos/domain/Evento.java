@@ -16,8 +16,7 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +25,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -34,7 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "EVENTO", schema = "Argos@cassandra_pu")
-@XmlRootElement
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,14 +40,17 @@ public class Evento implements Serializable {
     @Column(name = "EVENTO_ID")
     private String id;
     
-    @Column(name = "COMPUTADOR_GERADOR")
-    private String computadorGerador;
+    @Column(name = "HOST_NAME")
+    private String hostName;
     
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "HOST_IP")
+    private String hostIp;
     
-    @Column(name = "ENDERECO_IP")
-    private String enderecoIp;
+    @Column(name = "HOST_USER")
+    private String hostUser;
+    
+    @Column(name = "MENSAGEM")
+    private String mensagem;
     
     @Column(name = "FONTE")
     private String fonte;
@@ -58,17 +58,11 @@ public class Evento implements Serializable {
     @Column(name = "NOME")
     private String nome;
     
-    @Column(name = "OCORRENCIA_DATA")
-    private java.sql.Date ocorrenciaData;
-    
-    @Column(name = "OCORRENCIA_HORA")
-    private java.sql.Time ocorrenciaHora;
+    @Column(name = "OCORRENCIA_DTHR")
+    private java.sql.Timestamp ocorrenciaDtHr;
     
     @Column(name = "PALAVRAS_CHAVE")
     private String palavrasChave;
-    
-    @Column(name = "USUARIO_GERADOR")
-    private String usuarioGerador;
     
     @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="ENTIDADE_ID")
@@ -94,28 +88,36 @@ public class Evento implements Serializable {
         this.id = id;
     }
 
-    public String getComputadorGerador() {
-        return computadorGerador;
+    public String getHostName() {
+        return hostName;
     }
 
-    public void setComputadorGerador(String computadorGerador) {
-        this.computadorGerador = computadorGerador;
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getHostIp() {
+        return hostIp;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setHostIp(String hostIp) {
+        this.hostIp = hostIp;
     }
 
-    public String getEnderecoIp() {
-        return enderecoIp;
+    public String getHostUser() {
+        return hostUser;
     }
 
-    public void setEnderecoIp(String enderecoIp) {
-        this.enderecoIp = enderecoIp;
+    public void setHostUser(String hostUser) {
+        this.hostUser = hostUser;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 
     public String getFonte() {
@@ -134,20 +136,12 @@ public class Evento implements Serializable {
         this.nome = nome;
     }
 
-    public Date getOcorrenciaData() {
-        return ocorrenciaData;
+    public Timestamp getOcorrenciaDtHr() {
+        return ocorrenciaDtHr;
     }
 
-    public void setOcorrenciaData(Date ocorrenciaData) {
-        this.ocorrenciaData = ocorrenciaData;
-    }
-
-    public Time getOcorrenciaHora() {
-        return ocorrenciaHora;
-    }
-
-    public void setOcorrenciaHora(Time ocorrenciaHora) {
-        this.ocorrenciaHora = ocorrenciaHora;
+    public void setOcorrenciaDtHr(Timestamp ocorrenciaDtHr) {
+        this.ocorrenciaDtHr = ocorrenciaDtHr;
     }
 
     public String getPalavrasChave() {
@@ -156,14 +150,6 @@ public class Evento implements Serializable {
 
     public void setPalavrasChave(String palavrasChave) {
         this.palavrasChave = palavrasChave;
-    }
-
-    public String getUsuarioGerador() {
-        return usuarioGerador;
-    }
-
-    public void setUsuarioGerador(String usuarioGerador) {
-        this.usuarioGerador = usuarioGerador;
     }
 
     public Entidade getEntidade() {
@@ -189,6 +175,5 @@ public class Evento implements Serializable {
     public void setEventoTipo(EventoTipo eventoTipo) {
         this.eventoTipo = eventoTipo;
     }
-    
-     
+   
 }

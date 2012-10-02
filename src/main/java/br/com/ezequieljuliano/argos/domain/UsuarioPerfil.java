@@ -23,6 +23,17 @@ import javax.inject.Named;
  */
 @Named
 public enum UsuarioPerfil {
-  administrador,
-  normal
+
+    administrador("Administrador"),
+    normal("Normal");
+    
+    private String nome;
+
+    private UsuarioPerfil(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

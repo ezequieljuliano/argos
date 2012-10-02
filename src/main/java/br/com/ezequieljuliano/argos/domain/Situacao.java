@@ -21,9 +21,19 @@ import javax.inject.Named;
  *
  * @author Ezequiel Juliano Müller
  */
-
 @Named
 public enum Situacao {
-   ativo,
-   inativo;
+
+    ativo("Ativo"),
+    inativo("Inativo");
+    
+    private String nome;
+
+    private Situacao(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }
