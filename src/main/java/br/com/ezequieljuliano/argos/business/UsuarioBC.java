@@ -122,16 +122,16 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
             saveOrUpdate(user);
         }
         
-        if (findByUserName("normal") == null) {
-            Usuario user = new Usuario();
-            user.setUserName("normal");
-            user.setEmail("normal@normal.com.br");
-            user.setPassword("123");
-            user.setEntidade(entidadeBC.findByCodigo(1));
-            user.setPerfil(UsuarioPerfil.normal);
-            user.setSituacao(Situacao.ativo);
-            saveOrUpdate(user);
-        }
+//        if (findByUserName("normal") == null) {
+//            Usuario user = new Usuario();
+//            user.setUserName("normal");
+//            user.setEmail("normal@normal.com.br");
+//            user.setPassword("123");
+//            user.setEntidade(entidadeBC.findByCodigo(1));
+//            user.setPerfil(UsuarioPerfil.normal);
+//            user.setSituacao(Situacao.ativo);
+//            saveOrUpdate(user);
+//        }
         
     }
 }
