@@ -88,14 +88,12 @@
                         </h:panelGrid>
                         <h:panelGrid columns="1" >
                             <h:outputText value="Pesquisar em:" />
-                            <p:selectOneMenu style="width: 175px" value="#{eventoPesquisaMB.tipoPesquisa}">  
+                            <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.tipoPesquisa}">  
                                 <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
-                        <p:commandButton value="Modo Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" 
-                                         update=":frm" 
-                                         immediate="true"/> 
+                        <p:commandButton value="Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update=":frm" immediate="true"/> 
                     </h:panelGrid>
             </p:panel>
             
@@ -107,12 +105,12 @@
                         </h:panelGrid>
                         <h:panelGrid columns="1" >
                             <h:outputText value="Pesquisar em:" />
-                            <p:selectOneMenu style="width: 175px" value="#{eventoPesquisaMB.tipoPesquisa}">  
+                            <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.tipoPesquisa}">  
                                 <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
-                        <p:commandButton value="Modo Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" 
+                        <p:commandButton value="Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" 
                                          image="ui-icon ui-icon-carat-2-n-s" 
                                          immediate="true"
                                          update=":frm" /> 
@@ -126,23 +124,23 @@
                     <p:fieldset legend="#{eventoPesquisaMB.evento.nome}">
 
                         <h:outputText value="Data: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaData}">
+                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaDtHr}">
                             <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
                         </h:outputText> 
                         <h:outputText value=" - "/>
                         <h:outputText value="Hora: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaHora}">
+                        <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaDtHr}">
                             <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
                         </h:outputText>
                         <br />
-                        <h:outputText value="Usuário: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.usuarioGerador}"/>
+                        <h:outputText value="Usuário do Host: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.hostUser}"/>
                         <h:outputText value=" - "/>
-                        <h:outputText value="IP: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.enderecoIp}"/>
+                        <h:outputText value="IP do Host: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.hostIp}"/>
                         <h:outputText value=" - "/>
-                        <h:outputText value="Computador: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.computadorGerador}"/>
+                        <h:outputText value="Nome do Host: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.hostName}"/>
                         <br />
                         <h:outputText value="Fonte: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.fonte}"/>
@@ -166,7 +164,7 @@
                         <br />
                         <h:outputText value="Descrição: "/>
                         <br />
-                        <h:outputText value="#{eventoPesquisaMB.evento.descricao}"/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.mensagem}"/>
 
                     </p:fieldset>
                 </h:panelGroup>  
@@ -190,19 +188,19 @@
                         </h3>
                         <p>
                             <b>Data: </b>
-                            <h:outputText value="#{bean.ocorrenciaData}">
+                            <h:outputText value="#{bean.ocorrenciaDtHr}">
                                 <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
                             </h:outputText> 
                             <b>Hora: </b>
-                            <h:outputText value="#{bean.ocorrenciaHora}">
+                            <h:outputText value="#{bean.ocorrenciaDtHr}">
                                 <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
                             </h:outputText>
-                            <b>Usuário: </b>
-                            <h:outputText value="#{bean.usuarioGerador}"/>
-                            <b>IP: </b>
-                            <h:outputText value="#{bean.enderecoIp}"/>
-                            <b>PC: </b>
-                            <h:outputText value="#{bean.computadorGerador}"/>
+                            <b>Usuário do Host: </b>
+                            <h:outputText value="#{bean.hostUser}"/>
+                            <b>IP do Host: </b>
+                            <h:outputText value="#{bean.hostIp}"/>
+                            <b>Nome do Host: </b>
+                            <h:outputText value="#{bean.hostName}"/>
                         </p>
                         <p>
                             <b>Fonte: </b>
