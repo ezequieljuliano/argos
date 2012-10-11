@@ -18,5 +18,5 @@
             <property name="kundera.ddl.auto.prepare" value="update" />		
         </properties>		
     </persistence-unit>
-
+    
 </persistence>

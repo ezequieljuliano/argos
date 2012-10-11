@@ -9,7 +9,7 @@
                 <p:toolbarGroup>
                     <p:commandButton value="Voltar" action="/usuario_list.jsf?faces-redirect=true" immediate="true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
                     <p:commandButton value="Novo" action="/usuario_edit.jsf?faces-redirect=true" rendered="#{usuarioMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
-                    <p:commandButton value="Salvar" action="#{usuarioMB.salvar()}" image="ui-icon ui-icon-disk" update=":frm"/>
+                    <p:commandButton value="Salvar" action="#{usuarioMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
                     <p:commandButton value="Inativar" action="#{usuarioMB.inativar()}" rendered="#{usuarioMB.bean.ativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
                     <p:commandButton value="Ativar" action="#{usuarioMB.ativar()}" rendered="#{usuarioMB.bean.inativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                     <p:commandButton value="Gerar API Key" action="#{usuarioMB.generateApiKey()}" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-extlink" update="frm"/>

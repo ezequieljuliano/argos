@@ -34,13 +34,13 @@ import javax.inject.Inject;
  */
 @BusinessController
 public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
-    
+
     private static final long serialVersionUID = 1L;
     @Inject
     private UsuarioDAO dao;
     @Inject
     private EntidadeBC entidadeBC;
-    
+
     public void saveOrUpdate(Usuario usuario) throws ValidationException {
         //Verifica se nome de usuário já existe
         Usuario objUserName = findByUserName(usuario.getUserName());
@@ -71,44 +71,44 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
             update(usuario);
         }
     }
-    
+
     public void inativar(Usuario usuario) throws ValidationException {
         if (usuario.isAtivo()) {
             usuario.setSituacao(Situacao.inativo);
             saveOrUpdate(usuario);
         }
     }
-    
+
     public void ativar(Usuario usuario) throws ValidationException {
         if (usuario.isInativo()) {
             usuario.setSituacao(Situacao.ativo);
             saveOrUpdate(usuario);
         }
     }
-    
+
     public Usuario findByUserName(String userName) {
         return dao.findByUserName(userName);
     }
-    
+
     public Usuario findByEmail(String email) {
         return dao.findByEmail(email);
     }
-    
+
     public void generateApiKey(Usuario usuario) {
         String apiKey = UniqId.getInstance().getUniqIDHashString();
         usuario.setApiKey(apiKey);
     }
-    
+
     public void generatePasswordKey(Usuario usuario) {
         String passwordKey = UniqId.getInstance().hashString(usuario.getPassword());
         usuario.setPassword(passwordKey);
     }
-    
+
     public Usuario login(String userName, String password) {
         String passwordKey = UniqId.getInstance().hashString(password);
         return dao.login(userName, passwordKey);
     }
-    
+
     @Startup
     @Transactional
     public void insereUsuarioPadrao() throws ValidationException {
@@ -121,7 +121,7 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
             user.setSituacao(Situacao.ativo);
             saveOrUpdate(user);
         }
-        
+    }
 //        if (findByUserName("normal") == null) {
 //            Usuario user = new Usuario();
 //            user.setUserName("normal");
@@ -132,6 +132,5 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
 //            user.setSituacao(Situacao.ativo);
 //            saveOrUpdate(user);
 //        }
-        
-    }
+
 }

@@ -16,6 +16,7 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import br.com.ezequieljuliano.argos.constant.Constantes;
+import java.io.Serializable;
 import javax.inject.Named;
 
 /**
@@ -23,13 +24,16 @@ import javax.inject.Named;
  * @author Ezequiel Juliano Müller
  */
 @Named
-public enum EventoTipoPesquisa {
+public enum EventoTipoPesquisa implements Serializable {
+    
 
     etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
     etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
     etpNome("Nome do Evento"), etpOcorrenciaDtHr("Data/Hora Ocorrência"), etpPalavrasChave("Palavras-Chave"),
     etpEntidadeNome("Entidade Nome"), etpEntidadeCadastroNacional("Entidade Cadastro Nacional"),
     etpEventoNivelDescricao("Nível de Evento Descrição"), etpEventoTipoDescricao("Tipo de Evento Descrição");
+    
+    private static final long serialVersionUID = 1L;
     
     private String nome;
 

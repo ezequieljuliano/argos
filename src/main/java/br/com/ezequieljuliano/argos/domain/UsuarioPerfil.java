@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import java.io.Serializable;
 import javax.inject.Named;
 
 /**
@@ -22,10 +23,12 @@ import javax.inject.Named;
  * @author Ezequiel Juliano Müller
  */
 @Named
-public enum UsuarioPerfil {
+public enum UsuarioPerfil implements Serializable {
 
     administrador("Administrador"),
     normal("Normal");
+    
+    private static final long serialVersionUID = 1L;
     
     private String nome;
 
