@@ -52,9 +52,12 @@ import org.apache.lucene.store.Directory;
 public class EventoLuceneDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     private Analyzer analyzer;
+    
     @Inject
     private Directory directory;
+    
     @Inject
     private EventoDAO eventoDAO;
 

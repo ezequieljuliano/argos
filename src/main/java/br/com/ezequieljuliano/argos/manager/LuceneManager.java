@@ -36,6 +36,7 @@ import org.apache.lucene.store.RAMDirectory;
 public class LuceneManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Produces
     private Directory directory;
 

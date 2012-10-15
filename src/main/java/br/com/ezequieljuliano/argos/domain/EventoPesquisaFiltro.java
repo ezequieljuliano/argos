@@ -32,6 +32,7 @@ public class EventoPesquisaFiltro implements Serializable {
     private EventoTipo eventoTipo;
 
     public EventoPesquisaFiltro() {
+        super();
     }
 
     public EventoPesquisaFiltro(EventoTipoPesquisa filtroTipo, String pesquisaValor, Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo) {

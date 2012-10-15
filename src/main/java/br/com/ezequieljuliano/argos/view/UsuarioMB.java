@@ -118,6 +118,7 @@ public class UsuarioMB {
         return perfil;
     }
     
+    @Transactional
     public void generateApiKey() {
         try {
             bc.generateApiKey(bean);
@@ -128,6 +129,7 @@ public class UsuarioMB {
         }
     }
     
+    @Transactional
     public void trocarSenha() {
         try {
             bc.generatePasswordKey(bean);

@@ -22,10 +22,8 @@ import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.UniqId;
 import br.com.ezequieljuliano.argos.util.Utils;
-import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
 import javax.inject.Inject;
 
 /**
@@ -38,8 +36,6 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     private static final long serialVersionUID = 1L;
     @Inject
     private UsuarioDAO dao;
-    @Inject
-    private EntidadeBC entidadeBC;
 
     public void saveOrUpdate(Usuario usuario) throws ValidationException {
         //Verifica se nome de usuário já existe
@@ -108,29 +104,4 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         String passwordKey = UniqId.getInstance().hashString(password);
         return dao.login(userName, passwordKey);
     }
-
-    @Startup
-    @Transactional
-    public void insereUsuarioPadrao() throws ValidationException {
-        if (findByUserName("adm") == null) {
-            Usuario user = new Usuario();
-            user.setUserName("adm");
-            user.setEmail("adm@adm.com.br");
-            user.setPassword("123");
-            user.setPerfil(UsuarioPerfil.administrador);
-            user.setSituacao(Situacao.ativo);
-            saveOrUpdate(user);
-        }
-    }
-//        if (findByUserName("normal") == null) {
-//            Usuario user = new Usuario();
-//            user.setUserName("normal");
-//            user.setEmail("normal@normal.com.br");
-//            user.setPassword("123");
-//            user.setEntidade(entidadeBC.findByCodigo(1));
-//            user.setPerfil(UsuarioPerfil.normal);
-//            user.setSituacao(Situacao.ativo);
-//            saveOrUpdate(user);
-//        }
-
 }

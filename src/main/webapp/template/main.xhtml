@@ -4,7 +4,7 @@
     <f:view contentType="text/html" locale="#currentLocale" />
 
     <h:head>
-        <title>Argos - Sistema Distribuído para Gestão de Logs</title>
+        <title>Argos - Sistema de Logging de Aplicações</title>
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
     </h:head>
 
@@ -19,10 +19,11 @@
             <tr valign="top">
                 <td height="400"><ui:insert name="body" /></td>
             </tr>
-            <tr align="center">
-                <td height="20" colspan="2" align="center" class="text-input">Argos - Sistema para Gestão de Logs (2012)</td>
-            </tr>
         </table>
+
+        <p:panel>
+            <h:outputText value="Argos - Sistema de Logging de Aplicações (2012)" styleClass="text-input" />
+        </p:panel> 
 
         <p:growl id="messages" globalOnly="true" autoUpdate="true" />
 

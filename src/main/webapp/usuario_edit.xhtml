@@ -50,7 +50,7 @@
                     <p:password id="pwd2" value="#{usuarioMB.bean.password}" 
                                 feedback="true" redisplay="true"  
                                 promptLabel="Informe a senha" weakLabel="Senha fraca"
-                                goodLabel="Senha boa" strongLabel="Senha forte" size="40" required="true"/> 
+                                goodLabel="Senha boa" strongLabel="Senha forte" size="40"/> 
                 </h:panelGrid> 
                 <p:commandButton value="Cancelar" onclick="dlgTrocarSenha.hide()" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: left;"/>
                 <p:commandButton value="Salvar" action="#{usuarioMB.trocarSenha()}" image="ui-icon ui-icon-disk"  style="float: right;" update="frm"/>

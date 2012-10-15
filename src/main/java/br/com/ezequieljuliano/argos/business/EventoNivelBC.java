@@ -22,6 +22,7 @@ import br.com.ezequieljuliano.argos.persistence.EventoNivelDAO;
 import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -65,5 +66,5 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
 
     public EventoNivel findByCodigo(int codigo) {
         return dao.findByCodigo(codigo);
-    }
+    }    
 }

@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.domain;
 
 import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -138,5 +139,26 @@ public class Usuario implements Serializable {
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
     }
-   
+
+    @Override
+    public boolean equals(Object obj) {
+         if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        return hash;
+    }  
 }

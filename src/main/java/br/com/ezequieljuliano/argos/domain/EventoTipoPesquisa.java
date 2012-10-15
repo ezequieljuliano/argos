@@ -26,7 +26,6 @@ import javax.inject.Named;
 @Named
 public enum EventoTipoPesquisa implements Serializable {
     
-
     etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
     etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
     etpNome("Nome do Evento"), etpOcorrenciaDtHr("Data/Hora Ocorrência"), etpPalavrasChave("Palavras-Chave"),

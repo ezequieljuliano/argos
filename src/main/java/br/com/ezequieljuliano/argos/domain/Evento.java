@@ -15,8 +15,10 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +34,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EVENTO", schema = "Argos@cassandra_pu")
+@Index(index = true, columns = {"ENTIDADE_ID", "EVENTO_NIVEL_ID", "EVENTO_TIPO_ID"})
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -175,5 +178,26 @@ public class Evento implements Serializable {
     public void setEventoTipo(EventoTipo eventoTipo) {
         this.eventoTipo = eventoTipo;
     }
-   
+
+    @Override
+    public boolean equals(Object obj) {
+         if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Evento other = (Evento) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
 }

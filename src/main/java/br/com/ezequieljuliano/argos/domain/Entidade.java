@@ -51,7 +51,7 @@ public class Entidade implements Serializable {
     private Situacao situacao = Situacao.ativo;
 
     public Entidade() {
-      super();
+        super();
     }
 
     public String getId() {
@@ -93,19 +93,13 @@ public class Entidade implements Serializable {
     public void setSituacao(Situacao situacao) {
         this.situacao = situacao;
     }
-    
+
     public boolean isAtivo() {
         return situacao.equals(Situacao.ativo);
     }
 
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
     }
 
     @Override
@@ -122,5 +116,11 @@ public class Entidade implements Serializable {
         }
         return true;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
 }
