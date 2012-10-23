@@ -2,7 +2,7 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
-    <persistence-unit name="cassandra_pu">
+    <!--    <persistence-unit name="cassandra_pu">
         <provider>com.impetus.kundera.KunderaPersistence</provider>		
         <properties>	
             <property name="kundera.nodes" value="localhost" />
@@ -17,6 +17,22 @@
             <property name="kundera.client.property" value="kundera-cassandra.properties" />
             <property name="kundera.ddl.auto.prepare" value="update" />		
         </properties>		
+    </persistence-unit>-->
+    
+    <persistence-unit name="mongodb" transaction-type="RESOURCE_LOCAL">
+        <class>br.com.ezequieljuliano.argos.domain.Entidade</class>
+        <class>br.com.ezequieljuliano.argos.domain.EventoNivel</class>
+        <class>br.com.ezequieljuliano.argos.domain.EventoTipo</class>
+        <class>br.com.ezequieljuliano.argos.domain.Usuario</class>
+        <class>br.com.ezequieljuliano.argos.domain.Evento</class>
+        <properties>
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.nosql.adapters.mongo.MongoPlatform"/>
+            <property name="eclipselink.nosql.connection-spec" value="org.eclipse.persistence.nosql.adapters.mongo.MongoConnectionSpec"/>
+            <property name="eclipselink.nosql.property.mongo.port" value="27017"/>
+            <property name="eclipselink.nosql.property.mongo.host" value="localhost"/>
+            <property name="eclipselink.nosql.property.mongo.db" value="Argos"/>
+            <property name="eclipselink.logging.level" value="FINEST"/>
+        </properties>
     </persistence-unit>
     
 </persistence>

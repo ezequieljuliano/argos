@@ -59,7 +59,7 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         }
         //Procedimento de Salvar 
         if (usuario.getId() == null) {
-            usuario.setId(Utils.getUniqueId());
+            //usuario.setId(Utils.getUniqueId());
             //Gerar Hash da senha
             generatePasswordKey(usuario);
             insert(usuario);

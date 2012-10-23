@@ -15,39 +15,48 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
-import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import org.eclipse.persistence.nosql.annotations.DataFormatType;
+import org.eclipse.persistence.nosql.annotations.Field;
+import org.eclipse.persistence.nosql.annotations.NoSql;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "EVENTO_NIVEL", schema = "Argos@cassandra_pu")
-@Index(index = true, columns = {"CODIGO"})
+@NoSql(dataType="EventoNivel", dataFormat=DataFormatType.MAPPED)
 public class EventoNivel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "EVENTO_NIVEL_ID")
+    @GeneratedValue
+    @Field(name="_id")
     private String id;
     
-    @Column(name = "CODIGO")
+    @Basic
+    @Field(name="codigo")
     private int codigo;
     
-    @Column(name = "DESCRICAO")
+    @Basic
+    @Field(name="descricao")
     private String descricao;
     
-    @Column(name = "SITUACAO")
+    @Basic
+    @Field(name="situacao")
+    @Enumerated(EnumType.ORDINAL)
     private Situacao situacao = Situacao.ativo;
     
-    @Column(name = "ALERTA")
+    @Basic
+    @Field(name="alerta")
     private Boolean alerta = true;
 
     public EventoNivel() {

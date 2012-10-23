@@ -15,53 +15,64 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
-import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.eclipse.persistence.nosql.annotations.DataFormatType;
+import org.eclipse.persistence.nosql.annotations.Field;
+import org.eclipse.persistence.nosql.annotations.JoinField;
+import org.eclipse.persistence.nosql.annotations.NoSql;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "USUARIO", schema = "Argos@cassandra_pu")
-@Index(index = true, columns = {"USERNAME", "EMAIL"})
+@NoSql(dataType="Usuario", dataFormat=DataFormatType.MAPPED)
 public class Usuario implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name="USUARIO_ID")
+    @GeneratedValue
+    @Field(name="_id")
     private String id;
     
-    @Column(name="USERNAME")
+    @Basic
+    @Field(name="userName")
     private String userName;
     
-    @Column(name="PASSWORD")
+    @Basic
+    @Field(name="password")
     private String password;
     
-    @Column(name="PERFIL")
+    @Basic
+    @Field(name="perfil")
+    @Enumerated(EnumType.ORDINAL)
     private UsuarioPerfil perfil = UsuarioPerfil.normal;
      
-    @Column(name="SITUACAO")
+    @Basic
+    @Field(name="situacao")
+    @Enumerated(EnumType.ORDINAL)
     private Situacao situacao = Situacao.ativo; 
     
-    @Column(name="EMAIL")
+    @Basic
+    @Field(name="email")
     private String email;
     
-    @Column(name="API_KEY")
+    @Basic
+    @Field(name="apiKey")
     private String apiKey;
     
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="ENTIDADE_ID")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinField(name="entidadeId")
     private Entidade entidade;
 
     public Usuario() {

@@ -32,8 +32,10 @@ import javax.persistence.Query;
 public class EventoDAO extends BaseDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     EventoLuceneDAO eventoLuceneDAO;
+    
     @Inject
     private SessionAttributes sessionAttributes;
 
@@ -57,12 +59,12 @@ public class EventoDAO extends BaseDAO<Evento, String> {
         Usuario usuarioLogado = sessionAttributes.getUsuario();
         UsuarioPerfil perfil = usuarioLogado.getPerfil();
         if (!perfil.equals(UsuarioPerfil.administrador)) {
-            jpql = "select e from Evento e where (e.id = :id) and (e.entidade.id = :entidadeId)";
+            jpql = "select e from Evento e where e.id = :id and e.entidade = :entidade";
             query = createQuery(jpql);
             query.setParameter("id", id);
-            query.setParameter("entidadeId", usuarioLogado.getEntidade().getId());
+            query.setParameter("entidade", usuarioLogado.getEntidade());
         } else {
-            jpql = "select e from Evento e where (e.id = :id)";
+            jpql = "select e from Evento e where e.id = :id";
             query = createQuery(jpql);
             query.setParameter("id", id);
         }
@@ -82,9 +84,9 @@ public class EventoDAO extends BaseDAO<Evento, String> {
         Usuario usuarioLogado = sessionAttributes.getUsuario();
         UsuarioPerfil perfil = usuarioLogado.getPerfil();
         if (!perfil.equals(UsuarioPerfil.administrador)) {
-            jpql = "select e from Evento e where e.entidade.id = :id";
+            jpql = "select e from Evento e where e.entidade.id = :entidadeId";
             query = createQuery(jpql);
-            query.setParameter("id", usuarioLogado.getEntidade().getId());
+            query.setParameter("entidadeId", usuarioLogado.getEntidade().getId());
         } else {
             jpql = "select e from Evento e";
             query = createQuery(jpql);

@@ -32,12 +32,14 @@
             <artifactId>demoiselle-jpa</artifactId>
             <scope>compile</scope>
         </dependency>
+        <!--Dependencias Primefaces-->
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>3.4.1</version>
             <scope>compile</scope>
         </dependency>
+        <!--Dependencias Diversas-->
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-easymock</artifactId>
@@ -58,12 +60,6 @@
             <artifactId>alfred</artifactId>
             <version>1.1.0</version>
         </dependency>
-        <!--Dependencias Kundera-->
-        <dependency>
-            <groupId>com.impetus.client</groupId>
-            <artifactId>kundera-cassandra</artifactId>
-            <version>2.1</version>
-        </dependency>
         <!--Dependencias Lucene-->
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -80,7 +76,23 @@
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
             <scope>provided</scope>
-        </dependency>     
+        </dependency>
+        <!--Dependencias Eclipse Link NoSQL-->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.nosql</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.7.3</version>
+        </dependency>       
     </dependencies>
 
     <repositories>
@@ -89,47 +101,20 @@
             <id>demoiselle.sourceforge.net-release</id>
             <url>http://demoiselle.sourceforge.net/repository/release</url>
         </repository>
-        <!--Repositório Kundera-->
-        <repository>
-            <id>sonatype-nexus</id>
-            <name>Kundera Public Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>kundera-missing</id>
-            <name>Kundera Public Missing Resources Repository</name>
-            <url>http://kundera.googlecode.com/svn/maven2/maven-missing-resources</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+        <!--Repositório Maven-->
         <repository>
             <id>central</id>
             <name>Maven Central Repo</name>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
+        <!--Repositório EclipseLink-->
         <repository>
-            <id>riptano</id>
-            <name>riptano</name>
-            <url>http://mvn.riptano.com/content/repositories/public</url>
-        </repository>
-        <repository>
-            <id>maven.scale7.org</id>
-            <name>Scale7 Maven Repo</name>
-            <url>https://github.com/s7/mvnrepo/raw/master</url>
+            <id>EclipseLink Repo</id>
+            <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
+        </repository>  
     </repositories>
   
     <properties>

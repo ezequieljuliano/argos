@@ -48,7 +48,7 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
             throw new ValidationException("Cadastro Nacional já cadastrado!");
         }
         if (entidade.getId() == null) {
-            entidade.setId(Utils.getUniqueId());
+            //entidade.setId(Utils.getUniqueId());
             insert(entidade);
         } else {
             update(entidade);

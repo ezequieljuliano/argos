@@ -15,39 +15,48 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
-import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import org.eclipse.persistence.nosql.annotations.DataFormatType;
+import org.eclipse.persistence.nosql.annotations.Field;
+import org.eclipse.persistence.nosql.annotations.NoSql;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "ENTIDADE", schema = "Argos@cassandra_pu")
-@Index(index = true, columns = {"CODIGO", "CADASTRO_NACIONAL"})
+@NoSql(dataType="Entidade", dataFormat=DataFormatType.MAPPED)
 public class Entidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "ENTIDADE_ID")
+    @GeneratedValue
+    @Field(name="_id")
     private String id;
     
-    @Column(name = "CODIGO")
+    @Basic
+    @Field(name="codigo")
     private int codigo;
     
-    @Column(name = "CADASTRO_NACIONAL")
+    @Basic
+    @Field(name="cadastroNacional")
     private String cadastroNacional;
     
-    @Column(name = "NOME")
+    @Basic
+    @Field(name="nome")
     private String nome;
     
-    @Column(name = "SITUACAO")
+    @Basic
+    @Field(name="situacao")
+    @Enumerated(EnumType.ORDINAL)
     private Situacao situacao = Situacao.ativo;
 
     public Entidade() {

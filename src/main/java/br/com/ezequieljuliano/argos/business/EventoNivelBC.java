@@ -43,7 +43,7 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
             throw new ValidationException("Código já cadastrado!");
         }
         if (eventoNivel.getId() == null) {
-            eventoNivel.setId(Utils.getUniqueId());
+            //eventoNivel.setId(Utils.getUniqueId());
             insert(eventoNivel);
         } else {
             update(eventoNivel);

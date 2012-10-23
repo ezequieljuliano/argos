@@ -32,7 +32,7 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
 
     public void saveOrUpdate(Evento evento) {
         if (evento.getId() == null) {
-            evento.setId(Utils.getUniqueId());
+            //evento.setId(Utils.getUniqueId());
             insert(evento);
         } else {
             update(evento);

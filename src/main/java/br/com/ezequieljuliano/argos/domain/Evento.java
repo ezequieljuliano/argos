@@ -15,68 +15,80 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
-import com.impetus.kundera.annotations.Index;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.eclipse.persistence.nosql.annotations.DataFormatType;
+import org.eclipse.persistence.nosql.annotations.Field;
+import org.eclipse.persistence.nosql.annotations.JoinField;
+import org.eclipse.persistence.nosql.annotations.NoSql;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @Entity
-@Table(name = "EVENTO", schema = "Argos@cassandra_pu")
-@Index(index = true, columns = {"ENTIDADE_ID", "EVENTO_NIVEL_ID", "EVENTO_TIPO_ID"})
+@NoSql(dataType="Evento", dataFormat=DataFormatType.MAPPED)
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "EVENTO_ID")
+    @GeneratedValue
+    @Field(name="_id")
     private String id;
     
-    @Column(name = "HOST_NAME")
+    @Basic
+    @Field(name="hostName")
     private String hostName;
     
-    @Column(name = "HOST_IP")
+    @Basic
+    @Field(name="hostIp")
     private String hostIp;
     
-    @Column(name = "HOST_USER")
+    @Basic
+    @Field(name="hostUser")
     private String hostUser;
     
-    @Column(name = "MENSAGEM")
+    @Basic
+    @Field(name="mensagem")
     private String mensagem;
     
-    @Column(name = "FONTE")
+    @Basic
+    @Field(name="fonte")
     private String fonte;
     
-    @Column(name = "NOME")
+    @Basic
+    @Field(name="nome")
     private String nome;
     
-    @Column(name = "OCORRENCIA_DTHR")
-    private java.sql.Timestamp ocorrenciaDtHr;
+    @Basic
+    @Field(name="ocorrenciaDtHr")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ocorrenciaDtHr;
     
-    @Column(name = "PALAVRAS_CHAVE")
+    @Basic
+    @Field(name="palavrasChave")
     private String palavrasChave;
     
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="ENTIDADE_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinField(name="entidadeId")
     private Entidade entidade;
     
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="EVENTO_NIVEL_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinField(name="eventoNivelId")
     private EventoNivel eventoNivel;
     
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="EVENTO_TIPO_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinField(name="eventoTipoId")
     private EventoTipo eventoTipo;
 
     public Evento() {
@@ -139,11 +151,11 @@ public class Evento implements Serializable {
         this.nome = nome;
     }
 
-    public Timestamp getOcorrenciaDtHr() {
+    public Date getOcorrenciaDtHr() {
         return ocorrenciaDtHr;
     }
 
-    public void setOcorrenciaDtHr(Timestamp ocorrenciaDtHr) {
+    public void setOcorrenciaDtHr(Date ocorrenciaDtHr) {
         this.ocorrenciaDtHr = ocorrenciaDtHr;
     }
 
