@@ -191,7 +191,7 @@ public class DadosPadraoBC {
         }
     }
 
-    private void insereLogs() throws ValidationException {
+    private void insereLogs() throws ValidationException, Exception {
         Evento evento = new Evento();
         evento.setHostName("EZEQUIEL-NB");
         evento.setMensagem("Realizada uma autenticação no sistema MsysComercial");
@@ -251,7 +251,7 @@ public class DadosPadraoBC {
 
         
     @Startup
-    public void InsereDados() throws ValidationException {
+    public void InsereDados() throws ValidationException, Exception {
         insereEventoNivel();
         insereEventoTipo();
         insereEntidade();

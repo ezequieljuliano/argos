@@ -30,48 +30,15 @@ public class EventoPesquisaFiltro implements Serializable {
     private Entidade entidade;
     private EventoNivel eventoNivel;
     private EventoTipo eventoTipo;
+    private Usuario usuario;
 
-    public EventoPesquisaFiltro() {
-        super();
-    }
-
-    public EventoPesquisaFiltro(EventoTipoPesquisa filtroTipo, String pesquisaValor, Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo) {
+    public EventoPesquisaFiltro(EventoTipoPesquisa filtroTipo, String pesquisaValor,
+            Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) throws Exception {
+        this.usuario = usuario;
         this.filtroTipo = filtroTipo;
         this.pesquisaValor = pesquisaValor;
-        this.entidade = entidade;
+        this.entidade = entidadeTratada(entidade);
         this.eventoNivel = eventoNivel;
-        this.eventoTipo = eventoTipo;
-    }
-
-    public String getPesquisaValor() {
-        return pesquisaValor;
-    }
-
-    public void setPesquisaValor(String pesquisaValor) {
-        this.pesquisaValor = pesquisaValor;
-    }
-
-    public Entidade getEntidade() {
-        return entidade;
-    }
-
-    public void setEntidade(Entidade entidade) {
-        this.entidade = entidade;
-    }
-
-    public EventoNivel getEventoNivel() {
-        return eventoNivel;
-    }
-
-    public void setEventoNivel(EventoNivel eventoNivel) {
-        this.eventoNivel = eventoNivel;
-    }
-
-    public EventoTipo getEventoTipo() {
-        return eventoTipo;
-    }
-
-    public void setEventoTipo(EventoTipo eventoTipo) {
         this.eventoTipo = eventoTipo;
     }
 
@@ -79,7 +46,32 @@ public class EventoPesquisaFiltro implements Serializable {
         return filtroTipo;
     }
 
-    public void setFiltroTipo(EventoTipoPesquisa filtroTipo) {
-        this.filtroTipo = filtroTipo;
+    public String getPesquisaValor() {
+        return pesquisaValor;
+    }
+
+    public Entidade getEntidade() {
+        return entidade;
+    }
+
+    public EventoNivel getEventoNivel() {
+        return eventoNivel;
+    }
+
+    public EventoTipo getEventoTipo() {
+        return eventoTipo;
+    }
+
+    private Entidade entidadeTratada(Entidade entidade) throws Exception {
+        //Verifica seu perfil se for normal deve possuir entidade para filrar
+        if (!usuario.getPerfil().equals(UsuarioPerfil.administrador)) {
+            if (usuario.getEntidade() != null) {
+                return usuario.getEntidade();
+            } else {
+                throw new Exception("Usuário normal deve ter entidade relacionada!");
+            }
+        } else {
+            return entidade;
+        }
     }
 }

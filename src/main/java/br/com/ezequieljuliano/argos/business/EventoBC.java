@@ -17,9 +17,9 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.persistence.EventoDAO;
-import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import javax.inject.Inject;
 
 /**
  *
@@ -29,13 +29,21 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
 
     private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private EventoLuceneBC luceneBC;
 
-    public void saveOrUpdate(Evento evento) {
-        if (evento.getId() == null) {
-            //evento.setId(Utils.getUniqueId());
-            insert(evento);
-        } else {
-            update(evento);
+    public void saveOrUpdate(Evento evento) throws Exception {
+        try {
+            if (evento.getId() == null) {
+                insert(evento);
+            } else {
+                update(evento);
+            }
+            //Faz a indexação com o Lucene
+            luceneBC.salvar(evento);
+        } catch (Exception e) {
+            throw new Exception("Erro ao salvar o evento! " + e.getMessage());
         }
     }
 }

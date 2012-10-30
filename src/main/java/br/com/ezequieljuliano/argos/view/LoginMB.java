@@ -30,8 +30,10 @@ import javax.inject.Inject;
 public class LoginMB {
 
     private Usuario usuario;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private SecurityContext securityContext;
 

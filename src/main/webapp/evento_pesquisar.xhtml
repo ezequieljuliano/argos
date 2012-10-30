@@ -72,7 +72,7 @@
 
                     <h:panelGrid columns="1">    
                         <h:outputText value="Nível:" />
-                        <p:selectOneMenu converter="eventoNivelConverter" value="#{eventoPesquisaMB.selectedEventoNivel}" style="width: 240px">  
+                        <p:selectOneMenu converter="eventoNivelConverter" value="#{eventoPesquisaMB.selectedEventoNivel}" style="width: 250px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
                             <f:selectItems value="#{eventoPesquisaMB.eventoNivelList}" var="vEventoNivel" itemLabel="#{vEventoNivel.descricao}" itemValue="#{vEventoNivel}"/>  
                         </p:selectOneMenu>
@@ -80,14 +80,14 @@
 
                     <h:panelGrid columns="1">       
                         <h:outputText value="Tipo:" />
-                        <p:selectOneMenu converter="eventoTipoConverter" value="#{eventoPesquisaMB.selectedEventoTipo}" style="width: 240px">  
+                        <p:selectOneMenu converter="eventoTipoConverter" value="#{eventoPesquisaMB.selectedEventoTipo}" style="width: 250px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
                             <f:selectItems value="#{eventoPesquisaMB.eventoTipoList}" var="vEventoTipo" itemLabel="#{vEventoTipo.descricao}" itemValue="#{vEventoTipo}"/>  
                         </p:selectOneMenu>
                     </h:panelGrid>
                 </h:panelGrid>
 
-                <h:panelGrid columns="4">
+                <h:panelGrid columns="2">
                     <h:panelGrid columns="1" >
                         <h:outputText value="Pesquisar por:" />
                         <p:inputText value="#{eventoPesquisaMB.campoPesquisa}" style="width: 350px" id="campoPesquisa" />  
@@ -99,14 +99,14 @@
                             <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
                         </p:selectOneMenu>  
                     </h:panelGrid>
-
-                    <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
-                    <p:commandButton value="Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update=":frm" immediate="true"/> 
                 </h:panelGrid>
+                
+                <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
+                <p:commandButton value="Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update=":frm" immediate="true"/> 
             </p:panel>
 
             <p:panel id="pnPesquisaBasica" rendered="#{not eventoPesquisaMB.pesquisaAvancada}">
-                <h:panelGrid columns="4">
+                <h:panelGrid columns="2">
                     <h:panelGrid columns="1" >
                         <h:outputText value="Pesquisar por:" />
                         <p:inputText value="#{eventoPesquisaMB.campoPesquisa}" size="40"/>
@@ -118,10 +118,10 @@
                             <f:selectItems value="#{eventoPesquisaMB.tipoPesquisas}"/>
                         </p:selectOneMenu>  
                     </h:panelGrid>
-
-                    <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
-                    <p:commandButton value="Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
                 </h:panelGrid>
+                
+                <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
+                <p:commandButton value="Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
             </p:panel>
 
             <br />

@@ -32,10 +32,16 @@ import org.apache.lucene.queryParser.ParseException;
 public class EventoLuceneBC implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoLuceneDAO eventoLuceneDAO;
 
     public List<Evento> findByFiltro(EventoPesquisaFiltro filtro) throws ParseException {
         return eventoLuceneDAO.findByFiltro(filtro);
     }
+    
+    public void salvar(Evento evento) {
+        eventoLuceneDAO.salvar(evento);
+    }
+    
 }

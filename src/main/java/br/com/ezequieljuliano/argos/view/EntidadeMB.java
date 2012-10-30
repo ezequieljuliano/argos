@@ -38,12 +38,14 @@ import org.primefaces.event.SelectEvent;
 public class EntidadeMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EntidadeBC bc;
     @Inject
     private MessageContext messageContext;
     @Inject
     private Parameter<String> id;
+    
     private Entidade bean;
 
     public Entidade getBean() {

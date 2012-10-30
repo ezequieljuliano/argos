@@ -38,12 +38,16 @@ import org.primefaces.event.SelectEvent;
 public class EventoTipoMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoTipoBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
+    
     private EventoTipo bean;
 
     public EventoTipo getBean() {

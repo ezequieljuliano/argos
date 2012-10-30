@@ -19,7 +19,6 @@ import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
-import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import javax.inject.Inject;
@@ -48,7 +47,6 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
             throw new ValidationException("Cadastro Nacional já cadastrado!");
         }
         if (entidade.getId() == null) {
-            //entidade.setId(Utils.getUniqueId());
             insert(entidade);
         } else {
             update(entidade);

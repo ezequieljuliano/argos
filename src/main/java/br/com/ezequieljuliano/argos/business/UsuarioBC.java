@@ -15,13 +15,13 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.UniqId;
-import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import javax.inject.Inject;
@@ -59,7 +59,6 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         }
         //Procedimento de Salvar 
         if (usuario.getId() == null) {
-            //usuario.setId(Utils.getUniqueId());
             //Gerar Hash da senha
             generatePasswordKey(usuario);
             insert(usuario);
@@ -103,5 +102,9 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     public Usuario login(String userName, String password) {
         String passwordKey = UniqId.getInstance().hashString(password);
         return dao.login(userName, passwordKey);
+    }
+
+    public Entidade findEntidadeByApiKey(String apiKey) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

@@ -19,7 +19,6 @@ import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoTipoDAO;
-import br.com.ezequieljuliano.argos.util.Utils;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import javax.inject.Inject;
@@ -32,6 +31,7 @@ import javax.inject.Inject;
 public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO> {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoTipoDAO dao;
 
@@ -42,7 +42,6 @@ public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO
             throw new ValidationException("Código já cadastrado!");
         }
         if (eventoTipo.getId() == null) {
-            //eventoTipo.setId(Utils.getUniqueId());
             insert(eventoTipo);
         } else {
             update(eventoTipo);

@@ -16,7 +16,6 @@
 package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.EntidadeBC;
-import br.com.ezequieljuliano.argos.business.EventoBC;
 import br.com.ezequieljuliano.argos.business.EventoLuceneBC;
 import br.com.ezequieljuliano.argos.business.EventoNivelBC;
 import br.com.ezequieljuliano.argos.business.EventoTipoBC;
@@ -26,6 +25,7 @@ import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.EventoTipoPesquisa;
+import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
@@ -42,18 +42,25 @@ import javax.inject.Inject;
 public class EventoPesquisaMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoLuceneBC luceneBC;
-    @Inject
-    private EventoBC eventoBC;
+    
     @Inject
     private EntidadeBC entidadeBC;
+    
     @Inject
     private EventoNivelBC eventoNivelBC;
+    
     @Inject
     private EventoTipoBC eventoTipoBC;
+    
     @Inject
     private MessageContext messageContext;
+     
+    @Inject
+    private SessionAttributes sessionAttributes;
+    
     private String campoPesquisa;
     private EventoTipoPesquisa tipoPesquisa;
     private List<Evento> eventos;
@@ -145,12 +152,12 @@ public class EventoPesquisaMB {
         this.selectedEventoTipo = selectedEventoTipo;
     }
 
-    public void pesquisar() {
-        if ((campoPesquisa == null || campoPesquisa.length() == 0)
-                && (selectedEntidade == null) && (selectedEventoNivel == null) && (selectedEventoTipo == null)) {
-            eventos = eventoBC.findAll();
+    public void pesquisar() throws Exception {
+        if (campoPesquisa == null || campoPesquisa.length() == 0) {
+            messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
         } else {
-            EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, selectedEntidade, selectedEventoNivel, selectedEventoTipo);
+            EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, 
+                    selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
             try {
                 eventos = luceneBC.findByFiltro(filtro);
             } catch (Exception e) {

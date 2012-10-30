@@ -16,13 +16,7 @@
 package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.domain.Evento;
-import br.com.ezequieljuliano.argos.domain.Usuario;
-import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
-import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.Query;
 
 /**
  *
@@ -32,66 +26,5 @@ import javax.persistence.Query;
 public class EventoDAO extends BaseDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
-    
-    @Inject
-    EventoLuceneDAO eventoLuceneDAO;
-    
-    @Inject
-    private SessionAttributes sessionAttributes;
-
-    @Override
-    public void insert(Evento entity) {
-        eventoLuceneDAO.salvar(entity);
-        super.insert(entity);
-    }
-
-    @Override
-    public void update(Evento entity) {
-        eventoLuceneDAO.salvar(entity);
-        super.update(entity);
-    }
-
-    @Override
-    public Evento load(String id) {
-        String jpql;
-        Query query;
-
-        Usuario usuarioLogado = sessionAttributes.getUsuario();
-        UsuarioPerfil perfil = usuarioLogado.getPerfil();
-        if (!perfil.equals(UsuarioPerfil.administrador)) {
-            jpql = "select e from Evento e where e.id = :id and e.entidade = :entidade";
-            query = createQuery(jpql);
-            query.setParameter("id", id);
-            query.setParameter("entidade", usuarioLogado.getEntidade());
-        } else {
-            jpql = "select e from Evento e where e.id = :id";
-            query = createQuery(jpql);
-            query.setParameter("id", id);
-        }
-
-        List<Evento> eventoList = query.getResultList();
-        if (eventoList == null || eventoList.isEmpty()) {
-            return null;
-        }
-        return eventoList.get(0);
-    }
-
-    @Override
-    public List<Evento> findAll() {
-        String jpql;
-        Query query;
-
-        Usuario usuarioLogado = sessionAttributes.getUsuario();
-        UsuarioPerfil perfil = usuarioLogado.getPerfil();
-        if (!perfil.equals(UsuarioPerfil.administrador)) {
-            jpql = "select e from Evento e where e.entidade.id = :entidadeId";
-            query = createQuery(jpql);
-            query.setParameter("entidadeId", usuarioLogado.getEntidade().getId());
-        } else {
-            jpql = "select e from Evento e";
-            query = createQuery(jpql);
-        }
-
-        return query.getResultList();
-    }
+       
 }

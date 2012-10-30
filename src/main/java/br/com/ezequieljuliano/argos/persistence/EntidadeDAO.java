@@ -41,7 +41,7 @@ public class EntidadeDAO extends BaseDAO<Entidade, String> {
     }
 
     public Entidade findByCadastroNacional(String cadastroNacional) {
-        String jpql = "select u from Entidade u where u.cadastroNacional = :cadastroNacional";
+        String jpql = "select e from Entidade e where e.cadastroNacional = :cadastroNacional";
         Query qry = createQuery(jpql);
         qry.setParameter("cadastroNacional", cadastroNacional);
         List<Entidade> entidadeList = qry.getResultList();

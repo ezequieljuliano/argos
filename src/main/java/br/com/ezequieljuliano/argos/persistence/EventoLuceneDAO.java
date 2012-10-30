@@ -65,7 +65,7 @@ public class EventoLuceneDAO implements Serializable {
     public void init() {
         analyzer = new StandardAnalyzer(Constantes.getVersion());
     }
-
+    
     private Document criarDocumento(Evento evento) throws IOException {
         Document document = new Document();
         document.add(new Field(Constantes.INDICE_EVENTO_ID, evento.getId(), Store.YES, Index.ANALYZED));
@@ -84,50 +84,8 @@ public class EventoLuceneDAO implements Serializable {
         document.add(new Field(Constantes.INDICE_EVENTO_NIVEL_DESCRICAO, evento.getEventoNivel().getDescricao(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_EVENTO_TIPO_ID, evento.getEventoTipo().getId(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_EVENTO_TIPO_DESCRICAO, evento.getEventoTipo().getDescricao(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.TUDO, getConteudoEvento(evento), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.TUDO, evento.getConteudo(), Store.YES, Index.ANALYZED));
         return document;
-    }
-
-    private String getConteudoEvento(Evento evento) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(evento.getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getHostName());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getHostIp());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getHostUser());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getMensagem());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getFonte());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getNome());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(Data.timestampToString(evento.getOcorrenciaDtHr()));
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getPalavrasChave());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEntidade().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEntidade().getCadastroNacional());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEntidade().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEntidade().getNome());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoNivel().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoNivel().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoNivel().getDescricao());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoTipo().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoTipo().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(evento.getEventoTipo().getDescricao());
-        return stringBuilder.toString();
     }
 
     public void salvar(Evento evento) {

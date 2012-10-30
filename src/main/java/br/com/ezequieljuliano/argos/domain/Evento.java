@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import br.com.ezequieljuliano.argos.util.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -79,7 +80,7 @@ public class Evento implements Serializable {
     @Field(name="palavrasChave")
     private String palavrasChave;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinField(name="entidadeId")
     private Entidade entidade;
     
@@ -212,4 +213,47 @@ public class Evento implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.id);
         return hash;
     }
+    
+    public String getConteudo(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getId());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getHostName());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getHostIp());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getHostUser());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getMensagem());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getFonte());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getNome());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(Data.timestampToString(this.getOcorrenciaDtHr()));
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getPalavrasChave());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEntidade().getId());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEntidade().getCadastroNacional());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEntidade().getCodigo());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEntidade().getNome());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoNivel().getId());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoNivel().getCodigo());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoNivel().getDescricao());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoTipo().getId());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoTipo().getCodigo());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(this.getEventoTipo().getDescricao());
+        return stringBuilder.toString(); 
+    }
+    
 }

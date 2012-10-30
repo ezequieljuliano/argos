@@ -5,23 +5,29 @@
 
     <h:head>
         <title>Argos - Sistema de Logging de Aplicações</title>
-        <link type="text/css" rel="stylesheet" href="css/styles.css" />
+        <style type="text/css">
+            *{font-size: 12px}
+            .col-logo{
+                width: 70px;
+            }
+            #conteudoSistema{
+                min-height: 500px;
+            }
+        </style>
     </h:head>
 
-    <h:body style="background-color:#f1f1f1">
-        <table style="width: 100%">
-            <tr>
-                <td height="70" align="left"><a href="index.jsf"><img src="images/logo.png" border="0" /></a></td>
-            </tr>
-            <tr>
-                <td height="20"><ui:include src="/menu.xhtml" /></td>
-            </tr>
-            <tr valign="top">
-                <td height="400"><ui:insert name="body" /></td>
-            </tr>
-        </table>
+    <h:body style="background-color:#f1f1f1;position: relative">
 
-        <p:panel>
+        <h:panelGrid style="width: 100%" columns="2" columnClasses="col-logo,col-menu">
+            <a href="index.jsf"><img src="images/logo.png" border="0" /></a>
+            <ui:include src="/menu.xhtml" />
+        </h:panelGrid>
+
+        <div id="conteudoSistema">
+            <ui:insert name="body" />
+        </div>
+
+        <p:panel style="position: fixed;bottom: 5px; right: 5px">
             <h:outputText value="Argos - Sistema de Logging de Aplicações (2012)" styleClass="text-input" />
         </p:panel> 
 

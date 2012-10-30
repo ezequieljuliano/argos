@@ -41,12 +41,16 @@ import org.primefaces.event.SelectEvent;
 public class UsuarioMB {
     
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private UsuarioBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
+    
     private Usuario bean;
     private ArrayList<SelectItem> perfil;
     
