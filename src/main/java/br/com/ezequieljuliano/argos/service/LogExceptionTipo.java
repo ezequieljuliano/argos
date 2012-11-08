@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.ezequieljuliano.argos.exception;
+package br.com.ezequieljuliano.argos.service;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-public class AutenticationException extends Exception {
+public enum LogExceptionTipo {
 
-    public AutenticationException(String msg) {
-        
+    logExUsuarioInvalido("Usuário Inválido"),
+    logExEventoNivelInvalido("Evento Nível Inválido"),
+    logExEventoTipoInvalido("Evento Tipo Inválido"), logExAoInserirLog("Erro ao Inserir Log");
+    private String descricao;
+
+    private LogExceptionTipo(String descricao) {
+        this.descricao = descricao;
     }
-    
+
+    public String getDescricao() {
+        return descricao;
+    }
 }

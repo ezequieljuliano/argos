@@ -15,14 +15,22 @@
  */
 package br.com.ezequieljuliano.argos.exception;
 
+import br.com.ezequieljuliano.argos.service.LogExceptionTipo;
+
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-public class AutenticationException extends Exception {
+public class LogServiceException extends Exception {
 
-    public AutenticationException(String msg) {
-        
+    private LogExceptionTipo logEx;
+
+    public LogServiceException(LogExceptionTipo logEx) {
+        super(logEx.getDescricao());
+        this.logEx = logEx;
     }
-    
+
+    public LogExceptionTipo getLogEx() {
+        return logEx;
+    }
 }

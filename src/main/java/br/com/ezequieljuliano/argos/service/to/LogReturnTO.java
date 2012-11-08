@@ -13,16 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.ezequieljuliano.argos.exception;
+package br.com.ezequieljuliano.argos.service.to;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-public class AutenticationException extends Exception {
-
-    public AutenticationException(String msg) {
-        
-    }
+@XmlRootElement
+public class LogReturnTO {
     
+    private Integer codigo;
+    private String descricao;
+
+    public LogReturnTO(Integer codigo, String descricao) {
+        this.codigo = codigo;
+        this.descricao = descricao;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+      
 }

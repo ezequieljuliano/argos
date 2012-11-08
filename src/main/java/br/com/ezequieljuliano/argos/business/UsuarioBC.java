@@ -105,6 +105,7 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     }
 
     public Entidade findEntidadeByApiKey(String apiKey) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Usuario user = dao.findByApiKey(apiKey);
+        return user.getEntidade();
     }
 }

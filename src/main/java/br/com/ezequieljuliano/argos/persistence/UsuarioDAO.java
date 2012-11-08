@@ -51,6 +51,17 @@ public class UsuarioDAO extends BaseDAO<Usuario, String> {
         return usuarioList.get(0);
     }
 
+    public Usuario findByApiKey(String apiKey) {
+        String jpql = "select u from Usuario u where u.apiKey = :apiKey";
+        Query qry = createQuery(jpql);
+        qry.setParameter("apiKey", apiKey);
+        List<Usuario> usuarioList = qry.getResultList();
+        if (usuarioList == null || usuarioList.isEmpty()) {
+            return null;
+        }
+        return usuarioList.get(0);
+    }
+
     public Usuario login(String userName, String password) {
         String jpql = "select u from Usuario u where u.userName = :userName and u.password = :password";
         Query qry = createQuery(jpql);
