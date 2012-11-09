@@ -191,4 +191,5 @@ public class EventoPesquisaMB {
         selectedEventoNivel = null;
         selectedEventoTipo = null;
     }
+  
 }

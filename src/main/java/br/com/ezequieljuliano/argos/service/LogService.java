@@ -14,9 +14,11 @@ import br.com.ezequieljuliano.argos.service.to.LogReturnTO;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/log")
@@ -35,6 +37,7 @@ public class LogService {
     @POST
     @Path("/{apiKey}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public LogReturnTO log(@PathParam("apiKey") String apiKey, EventoTO evento) {
         try {
             //Valida o usuário se está habilitado para enviar Logs
@@ -56,7 +59,7 @@ public class LogService {
             //Insere os logs no sistema
             ArmazenaLogs(evento, entidade, eveNivel, eveTipo);
         } catch (LogServiceException ex) {
-            return new LogReturnTO(ex.getLogEx().ordinal(), ex.getMessage());
+            return new LogReturnTO(new Integer(ex.getLogEx().ordinal()), ex.getMessage());
         }
         //Se tudo ocorrer de forma correta retorna OK
         return new LogReturnTO(0, "Log Gravado com Sucesso!");
@@ -71,7 +74,7 @@ public class LogService {
             evento.setMensagem(log.getMensagem());
             evento.setFonte(log.getFonte());
             evento.setNome(log.getNome());
-            evento.setOcorrenciaDtHr(log.getOcorrenciaDtHr());
+            evento.setOcorrenciaDtHr(log.getOcorrenciaDtHrAsDate());
             evento.setPalavrasChave(log.getPalavrasChave());
             evento.setEntidade(entidade);
             evento.setEventoNivel(eveNivel);
@@ -81,4 +84,11 @@ public class LogService {
             throw new LogServiceException(LogExceptionTipo.logExAoInserirLog);
         }
     }
+    
+    @GET
+    @Path("/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public LogReturnTO getReturn(){
+        return new LogReturnTO(new Integer("1"), "skuhfuidhs ihisu hhd uishui sd ");
+    } 
 }

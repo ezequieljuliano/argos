@@ -15,7 +15,11 @@
  */
 package br.com.ezequieljuliano.argos.service.to;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,12 +35,13 @@ public class EventoTO {
     private String mensagem;
     private String fonte;
     private String nome;
-    private Date ocorrenciaDtHr;
+    private String ocorrenciaDtHr;
     private String palavrasChave;
     private Integer eventoNivelCodigo;
     private Integer eventoTipoCodigo;
 
     public EventoTO() {
+    
     }
 
     public String getHostName() {
@@ -87,11 +92,11 @@ public class EventoTO {
         this.nome = nome;
     }
 
-    public Date getOcorrenciaDtHr() {
+    public String getOcorrenciaDtHr() {
         return ocorrenciaDtHr;
     }
 
-    public void setOcorrenciaDtHr(Date ocorrenciaDtHr) {
+    public void setOcorrenciaDtHr(String ocorrenciaDtHr) {
         this.ocorrenciaDtHr = ocorrenciaDtHr;
     }
 
@@ -117,5 +122,13 @@ public class EventoTO {
 
     public void setEventoTipoCodigo(Integer eventoTipoCodigo) {
         this.eventoTipoCodigo = eventoTipoCodigo;
+    }
+
+    public Date getOcorrenciaDtHrAsDate() {
+        try {
+            return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(this.ocorrenciaDtHr);
+        } catch (ParseException ex) {
+            return null;
+        }
     }
 }
