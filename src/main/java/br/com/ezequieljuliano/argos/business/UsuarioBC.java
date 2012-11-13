@@ -106,6 +106,13 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
 
     public Entidade findEntidadeByApiKey(String apiKey) {
         Usuario user = dao.findByApiKey(apiKey);
-        return user.getEntidade();
+        if ((user != null) && (user.getEntidade() != null)) {
+            return user.getEntidade();
+        }
+        return null;
+    }
+
+    public Usuario findByApiKey(String apiKey) {
+        return dao.findByApiKey(apiKey);
     }
 }

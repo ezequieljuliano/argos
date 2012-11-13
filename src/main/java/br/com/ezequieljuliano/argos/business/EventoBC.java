@@ -19,7 +19,6 @@ import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioEvento;
 import br.com.ezequieljuliano.argos.persistence.EventoDAO;
-import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import java.sql.Timestamp;
@@ -38,12 +37,9 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
     private EventoLuceneBC luceneBC;
     
     @Inject
-    private SessionAttributes sessionAttributes;
-    
-    @Inject
     private UsuarioEventoBC usuarioEventoBC;
 
-    public void saveOrUpdate(Evento evento) {
+    public void saveOrUpdate(Evento evento, Usuario usuario) {
         if (evento.getId() == null) {
             insert(evento);
         } else {
@@ -52,11 +48,10 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
         //Faz a indexação com o Lucene
         luceneBC.salvar(evento);
         //Insere Usuário relacionado ao Evento
-        gravarUsuarioEvento(evento);
+        gravarUsuarioEvento(evento, usuario);
     }
 
-    private void gravarUsuarioEvento(Evento evento) {
-        Usuario usuario = sessionAttributes.getUsuario();
+    private void gravarUsuarioEvento(Evento evento, Usuario usuario) {
         if ((usuario != null) && (evento != null)) {
             UsuarioEvento usuEve = new UsuarioEvento();
             usuEve.setDataHora(new Timestamp(new java.util.Date().getTime()));

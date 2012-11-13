@@ -8,13 +8,13 @@ import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.exception.LogServiceException;
 import br.com.ezequieljuliano.argos.service.to.EventoTO;
 import br.com.ezequieljuliano.argos.service.to.LogReturnTO;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -41,10 +41,19 @@ public class LogService {
     public LogReturnTO log(@PathParam("apiKey") String apiKey, EventoTO evento) {
         try {
             //Valida o usuário se está habilitado para enviar Logs
-            //Faz validação baseado na ApiKey
-            Entidade entidade = usuarioBC.findEntidadeByApiKey(apiKey);
-            if (entidade == null) {
+            //Busca o usuário pela ApiKey
+            Usuario usuario = usuarioBC.findByApiKey(apiKey);
+            if (usuario == null) {
                 throw new LogServiceException(LogExceptionTipo.logExUsuarioInvalido);
+            }
+            //Verifica se o usuário possui entidade vinculada
+            Entidade entidade = usuario.getEntidade();
+            if (entidade == null) {
+                throw new LogServiceException(LogExceptionTipo.logExUsuarioSemEntidade);
+            }
+            //Verifica se o usuário não está inativo
+            if (usuario.isInativo()){
+              throw new LogServiceException(LogExceptionTipo.logExUsuarioInativo);  
             }
             //Valida se o nível do log está cadastrado
             EventoNivel eveNivel = eventoNivelBC.findByCodigo(evento.getEventoNivelCodigo());
@@ -57,15 +66,15 @@ public class LogService {
                 throw new LogServiceException(LogExceptionTipo.logExEventoTipoInvalido);
             }
             //Insere os logs no sistema
-            ArmazenaLogs(evento, entidade, eveNivel, eveTipo);
+            ArmazenaLogs(evento, entidade, eveNivel, eveTipo, usuario);
         } catch (LogServiceException ex) {
-            return new LogReturnTO(new Integer(ex.getLogEx().ordinal()), ex.getMessage());
+            return new LogReturnTO(ex.getLogEx().getCodigo(), ex.getLogEx().getDescricao());
         }
         //Se tudo ocorrer de forma correta retorna OK
         return new LogReturnTO(0, "Log Gravado com Sucesso!");
     }
 
-    private void ArmazenaLogs(EventoTO log, Entidade entidade, EventoNivel eveNivel, EventoTipo eveTipo) throws LogServiceException {
+    private void ArmazenaLogs(EventoTO log, Entidade entidade, EventoNivel eveNivel, EventoTipo eveTipo, Usuario usuario) throws LogServiceException {
         try {
             Evento evento = new Evento();
             evento.setHostName(log.getHostName());
@@ -79,16 +88,9 @@ public class LogService {
             evento.setEntidade(entidade);
             evento.setEventoNivel(eveNivel);
             evento.setEventoTipo(eveTipo);
-            eventoBC.saveOrUpdate(evento);
+            eventoBC.saveOrUpdate(evento, usuario);
         } catch (Exception ex) {
             throw new LogServiceException(LogExceptionTipo.logExAoInserirLog);
         }
     }
-    
-    @GET
-    @Path("/test")
-    @Produces(MediaType.APPLICATION_JSON)
-    public LogReturnTO getReturn(){
-        return new LogReturnTO(new Integer("1"), "skuhfuidhs ihisu hhd uishui sd ");
-    } 
 }

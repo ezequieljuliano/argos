@@ -204,7 +204,7 @@ public class DadosPadraoBC {
         evento.setEntidade(entidadeBC.findByCodigo(1));
         evento.setEventoNivel(eventoNivelBC.findByCodigo(1));
         evento.setEventoTipo(eventoTipoBC.findByCodigo(1));
-        eventoBC.saveOrUpdate(evento);
+        eventoBC.saveOrUpdate(evento, usuarioBC.findByUserName("adm"));
 
         Evento evento2 = new Evento();
         evento2.setHostName("LUIZ-NB");
@@ -218,7 +218,7 @@ public class DadosPadraoBC {
         evento2.setEntidade(entidadeBC.findByCodigo(1));
         evento2.setEventoNivel(eventoNivelBC.findByCodigo(2));
         evento2.setEventoTipo(eventoTipoBC.findByCodigo(3));
-        eventoBC.saveOrUpdate(evento2);
+        eventoBC.saveOrUpdate(evento2, usuarioBC.findByUserName("adm"));
 
         Evento evento3 = new Evento();
         evento3.setHostName("EVANDRO-NB");
@@ -232,7 +232,7 @@ public class DadosPadraoBC {
         evento3.setEntidade(entidadeBC.findByCodigo(2));
         evento3.setEventoNivel(eventoNivelBC.findByCodigo(3));
         evento3.setEventoTipo(eventoTipoBC.findByCodigo(7));
-        eventoBC.saveOrUpdate(evento3);
+        eventoBC.saveOrUpdate(evento3, usuarioBC.findByUserName("normal"));
 
         Evento evento4 = new Evento();
         evento4.setHostName("LUCIANO-PC");
@@ -246,7 +246,7 @@ public class DadosPadraoBC {
         evento4.setEntidade(entidadeBC.findByCodigo(2));
         evento4.setEventoNivel(eventoNivelBC.findByCodigo(5));
         evento4.setEventoTipo(eventoTipoBC.findByCodigo(7));
-        eventoBC.saveOrUpdate(evento4);
+        eventoBC.saveOrUpdate(evento4, usuarioBC.findByUserName("normal"));
     }
 
         

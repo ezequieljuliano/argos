@@ -21,16 +21,26 @@ package br.com.ezequieljuliano.argos.service;
  */
 public enum LogExceptionTipo {
 
-    logExUsuarioInvalido("Usuário Inválido"),
-    logExEventoNivelInvalido("Evento Nível Inválido"),
-    logExEventoTipoInvalido("Evento Tipo Inválido"), logExAoInserirLog("Erro ao Inserir Log");
+    logExUsuarioInvalido(1, "Usuário Inválido"),
+    logExEventoNivelInvalido(2, "Evento Nível Inválido"),
+    logExEventoTipoInvalido(3, "Evento Tipo Inválido"),
+    logExAoInserirLog(4, "Erro ao Inserir Log"),
+    logExUsuarioSemEntidade(5, "Usuário sem Entidade Vinculada"),
+    logExUsuarioInativo(6, "Usuário está Inativo");
+    
+    private Integer codigo;
     private String descricao;
 
-    private LogExceptionTipo(String descricao) {
+    private LogExceptionTipo(Integer codigo, String descricao) {
+        this.codigo = codigo;
         this.descricao = descricao;
     }
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
     }
 }

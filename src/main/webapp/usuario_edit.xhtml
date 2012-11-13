@@ -61,19 +61,19 @@
                     <h:outputLabel value="Nome de Usuário*" for="userName"/>
                     <p:inputText value="#{usuarioMB.bean.userName}" id="userName" 
                                  onkeyup="this.value = this.value.toLowerCase()" label="Nome de Usuário" 
-                                 disabled="#{usuarioMB.bean.id != null}" required="true" size="40"/>
+                                 disabled="#{usuarioMB.bean.id != null}" required="true" size="60"/>
 
                     <h:outputLabel for="pwd1" value="Senha*" />  
                     <p:password id="pwd1" value="#{usuarioMB.bean.password}" 
                                 feedback="true" redisplay="true"  
                                 promptLabel="Informe a senha" weakLabel="Senha fraca"
                                 disabled="#{usuarioMB.bean.id != null}"
-                                goodLabel="Senha boa" strongLabel="Senha forte" size="40" required="true"/>
+                                goodLabel="Senha boa" strongLabel="Senha forte" size="60" required="true"/>
 
                     <h:outputLabel value="E-mail*" for="email"/>
                     <p:inputText value="#{usuarioMB.bean.email}" 
                                  onkeyup="this.value = this.value.toLowerCase()" 
-                                 id="email" label="E-mail" required="true" size="40"/>
+                                 id="email" label="E-mail" required="true" size="60"/>
 
                     <h:outputText value="Perfil*" />  
                     <h:selectOneRadio id="perfil" value="#{usuarioMB.bean.perfil}" label="Perfil" required="true">  
@@ -81,11 +81,11 @@
                     </h:selectOneRadio>
 
                     <h:outputLabel value="API Key" for="apiKey"/>
-                    <p:inputText value="#{usuarioMB.bean.apiKey}" id="apiKey" label="API Key" disabled="true" size="40"/>
+                    <p:inputText value="#{usuarioMB.bean.apiKey}" id="apiKey" label="API Key" readonly="true" size="60"/>
 
                     <h:outputLabel value="Entidade"/>
                     <h:panelGrid columns="2" id="entidade">
-                        <p:inputText value="#{usuarioMB.bean.entidade.nome}" id="entNome" disabled="true" size="40" />
+                        <p:inputText value="#{usuarioMB.bean.entidade.nome}" id="entNome" disabled="true" size="60" />
                         <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show(); return false;" />
                     </h:panelGrid> 
                 </h:panelGrid> 
