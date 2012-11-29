@@ -17,14 +17,18 @@ package br.com.ezequieljuliano.argos.domain;
 
 import br.com.ezequieljuliano.argos.util.Data;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.eclipse.persistence.nosql.annotations.DataFormatType;
@@ -91,6 +95,10 @@ public class Evento implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinField(name="eventoTipoId")
     private EventoTipo eventoTipo;
+    
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinField(name="valorCustomizadoList")
+    private List<EventoValorCustomizado> valorCustomizadoList = new ArrayList<EventoValorCustomizado>();
 
     public Evento() {
         super();    
@@ -191,7 +199,19 @@ public class Evento implements Serializable {
     public void setEventoTipo(EventoTipo eventoTipo) {
         this.eventoTipo = eventoTipo;
     }
+      
+    public List<EventoValorCustomizado> getValorCustomizadoList() {
+        return valorCustomizadoList;
+    }
 
+    public void setValorCustomizadoList(List<EventoValorCustomizado> valorCustomizadoList) {
+        this.valorCustomizadoList = valorCustomizadoList;
+    }
+    
+    public void addValorCustomizado(EventoValorCustomizado valorCustomizado){
+        getValorCustomizadoList().add(valorCustomizado);
+    }
+    
     @Override
     public boolean equals(Object obj) {
          if (obj == null) {

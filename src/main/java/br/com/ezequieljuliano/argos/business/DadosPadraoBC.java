@@ -17,8 +17,10 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.domain.EventoValorCustomizado;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
@@ -45,6 +47,8 @@ public class DadosPadraoBC {
     private UsuarioBC usuarioBC;
     @Inject
     private EventoBC eventoBC;
+    @Inject
+    private EventoCampoCustomizadoBC eventoCampoCustomBC;
 
     private void insereEventoTipo() throws ValidationException {
         if (eventoTipoBC.findByCodigo(1) == null) {
@@ -85,7 +89,7 @@ public class DadosPadraoBC {
         if (eventoTipoBC.findByCodigo(6) == null) {
             EventoTipo eTipo = new EventoTipo();
             eTipo.setCodigo(6);
-            eTipo.setDescricao("Ameaca");
+            eTipo.setDescricao("Ameaça");
             eTipo.setSituacao(Situacao.ativo);
             eventoTipoBC.saveOrUpdate(eTipo);
         }
@@ -93,6 +97,27 @@ public class DadosPadraoBC {
             EventoTipo eTipo = new EventoTipo();
             eTipo.setCodigo(7);
             eTipo.setDescricao("Exclusão");
+            eTipo.setSituacao(Situacao.ativo);
+            eventoTipoBC.saveOrUpdate(eTipo);
+        }
+		if (eventoTipoBC.findByCodigo(8) == null) {
+            EventoTipo eTipo = new EventoTipo();
+            eTipo.setCodigo(8);
+            eTipo.setDescricao("Inclusão");
+            eTipo.setSituacao(Situacao.ativo);
+            eventoTipoBC.saveOrUpdate(eTipo);
+        }
+		if (eventoTipoBC.findByCodigo(9) == null) {
+            EventoTipo eTipo = new EventoTipo();
+            eTipo.setCodigo(9);
+            eTipo.setDescricao("Consulta");
+            eTipo.setSituacao(Situacao.ativo);
+            eventoTipoBC.saveOrUpdate(eTipo);
+        }
+		if (eventoTipoBC.findByCodigo(10) == null) {
+            EventoTipo eTipo = new EventoTipo();
+            eTipo.setCodigo(10);
+            eTipo.setDescricao("Validação");
             eTipo.setSituacao(Situacao.ativo);
             eventoTipoBC.saveOrUpdate(eTipo);
         }
@@ -142,7 +167,7 @@ public class DadosPadraoBC {
         if (eventoNivelBC.findByCodigo(6) == null) {
             EventoNivel eNivel = new EventoNivel();
             eNivel.setCodigo(6);
-            eNivel.setDescricao("Excecao");
+            eNivel.setDescricao("Exceção");
             eNivel.setSituacao(Situacao.ativo);
             eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
@@ -192,6 +217,21 @@ public class DadosPadraoBC {
     }
 
     private void insereLogs() throws ValidationException, Exception {
+        EventoCampoCustomizado ecc = new EventoCampoCustomizado();
+        ecc.setDescricao("Cnpj");
+        ecc.setEntidade(entidadeBC.findByCodigo(1));
+        eventoCampoCustomBC.saveOrUpdate(ecc);
+        
+        EventoCampoCustomizado ecc2 = new EventoCampoCustomizado();
+        ecc2.setDescricao("Setor");
+        ecc2.setEntidade(entidadeBC.findByCodigo(1));
+        eventoCampoCustomBC.saveOrUpdate(ecc2);
+        
+        EventoCampoCustomizado ecc3 = new EventoCampoCustomizado();
+        ecc3.setDescricao("Área");
+        ecc3.setEntidade(entidadeBC.findByCodigo(2));
+        eventoCampoCustomBC.saveOrUpdate(ecc3);
+        
         Evento evento = new Evento();
         evento.setHostName("EZEQUIEL-NB");
         evento.setMensagem("Realizada uma autenticação no sistema MsysComercial");
@@ -204,6 +244,17 @@ public class DadosPadraoBC {
         evento.setEntidade(entidadeBC.findByCodigo(1));
         evento.setEventoNivel(eventoNivelBC.findByCodigo(1));
         evento.setEventoTipo(eventoTipoBC.findByCodigo(1));
+              
+        EventoValorCustomizado eveVlCustom = new EventoValorCustomizado();
+        eveVlCustom.setEventoCampoCustomizado(ecc);
+        eveVlCustom.setValor("05845333903");
+        evento.addValorCustomizado(eveVlCustom);
+        
+        EventoValorCustomizado eveVlCustom2 = new EventoValorCustomizado();
+        eveVlCustom2.setEventoCampoCustomizado(ecc2);
+        eveVlCustom2.setValor("TesteSetor");
+        evento.addValorCustomizado(eveVlCustom2);
+          
         eventoBC.saveOrUpdate(evento, usuarioBC.findByUserName("adm"));
 
         Evento evento2 = new Evento();
@@ -218,6 +269,19 @@ public class DadosPadraoBC {
         evento2.setEntidade(entidadeBC.findByCodigo(1));
         evento2.setEventoNivel(eventoNivelBC.findByCodigo(2));
         evento2.setEventoTipo(eventoTipoBC.findByCodigo(3));
+        
+//        EventoValorCustomizado eveVlCustom2 = new EventoValorCustomizado();
+//        eveVlCustom2.setEvento(evento2);
+//        eveVlCustom2.setEventoCampoCustomizado(evc2);
+//        eveVlCustom2.setValor("TesteSetor");
+//        evento2.getEventoValorCustomizadoList().add(eveVlCustom2);
+//        
+//        EventoValorCustomizado eveVlCustom3 = new EventoValorCustomizado();
+//        eveVlCustom3.setEvento(evento2);
+//        eveVlCustom3.setEventoCampoCustomizado(evc);
+//        eveVlCustom3.setValor("544654");
+//        evento2.getEventoValorCustomizadoList().add(eveVlCustom3);
+        
         eventoBC.saveOrUpdate(evento2, usuarioBC.findByUserName("adm"));
 
         Evento evento3 = new Evento();

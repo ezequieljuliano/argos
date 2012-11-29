@@ -7,8 +7,10 @@
         <class>br.com.ezequieljuliano.argos.domain.EventoNivel</class>
         <class>br.com.ezequieljuliano.argos.domain.EventoTipo</class>
         <class>br.com.ezequieljuliano.argos.domain.Usuario</class>
-        <class>br.com.ezequieljuliano.argos.domain.Evento</class>
         <class>br.com.ezequieljuliano.argos.domain.UsuarioEvento</class>
+        <class>br.com.ezequieljuliano.argos.domain.Evento</class>
+        <class>br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado</class>
+        <class>br.com.ezequieljuliano.argos.domain.EventoValorCustomizado</class>
         <properties>
             <property name="eclipselink.target-database" value="org.eclipse.persistence.nosql.adapters.mongo.MongoPlatform"/>
             <property name="eclipselink.nosql.connection-spec" value="org.eclipse.persistence.nosql.adapters.mongo.MongoConnectionSpec"/>
