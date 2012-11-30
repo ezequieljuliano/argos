@@ -197,6 +197,7 @@ public class DadosPadraoBC {
         if (usuarioBC.findByUserName("adm") == null) {
             Usuario user = new Usuario();
             user.setUserName("adm");
+            user.setEntidade(entidadeBC.findByCodigo(1));
             user.setEmail("adm@adm.com.br");
             user.setPassword("123");
             user.setPerfil(UsuarioPerfil.administrador);
@@ -218,17 +219,17 @@ public class DadosPadraoBC {
 
     private void insereLogs() throws ValidationException, Exception {
         EventoCampoCustomizado ecc = new EventoCampoCustomizado();
-        ecc.setDescricao("Cnpj");
+        ecc.setDescricao("AAA");
         ecc.setEntidade(entidadeBC.findByCodigo(1));
         eventoCampoCustomBC.saveOrUpdate(ecc);
         
         EventoCampoCustomizado ecc2 = new EventoCampoCustomizado();
-        ecc2.setDescricao("Setor");
+        ecc2.setDescricao("BBB");
         ecc2.setEntidade(entidadeBC.findByCodigo(1));
         eventoCampoCustomBC.saveOrUpdate(ecc2);
         
         EventoCampoCustomizado ecc3 = new EventoCampoCustomizado();
-        ecc3.setDescricao("Área");
+        ecc3.setDescricao("CCC");
         ecc3.setEntidade(entidadeBC.findByCodigo(2));
         eventoCampoCustomBC.saveOrUpdate(ecc3);
         

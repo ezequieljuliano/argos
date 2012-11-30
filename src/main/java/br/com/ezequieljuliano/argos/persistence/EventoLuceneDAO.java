@@ -63,7 +63,7 @@ public class EventoLuceneDAO implements Serializable {
 
     @Inject
     public void init() {
-        analyzer = new StandardAnalyzer(Constantes.getVersion());
+        analyzer = new StandardAnalyzer(Constantes.getLuceneVersion());
     }
     
     private Document criarDocumento(Evento evento) throws IOException {
@@ -89,7 +89,7 @@ public class EventoLuceneDAO implements Serializable {
     }
 
     public void salvar(Evento evento) {
-        IndexWriterConfig indexConfig = new IndexWriterConfig(Constantes.getVersion(), analyzer);
+        IndexWriterConfig indexConfig = new IndexWriterConfig(Constantes.getLuceneVersion(), analyzer);
         IndexWriter indexWriter;
         try {
             indexWriter = new IndexWriter(directory, indexConfig);
@@ -103,7 +103,7 @@ public class EventoLuceneDAO implements Serializable {
     }
 
     public List<Evento> findByFiltro(EventoPesquisaFiltro filtro) throws ParseException {
-        Query query = new QueryParser(Constantes.getVersion(), filtro.getFiltroTipo().getLuceneIndex(), analyzer).parse(filtro.getPesquisaValor());
+        Query query = new QueryParser(Constantes.getLuceneVersion(), filtro.getFiltroTipo().getLuceneIndex(), analyzer).parse(filtro.getPesquisaValor());
         return executeQuery(query, filtro);
     }
 

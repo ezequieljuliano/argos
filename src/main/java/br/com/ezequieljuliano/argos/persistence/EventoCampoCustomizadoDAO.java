@@ -15,8 +15,12 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,5 +30,35 @@ import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 public class EventoCampoCustomizadoDAO extends BaseDAO<EventoCampoCustomizado, String> {
 
     private static final long serialVersionUID = 1L;
-    
+
+    public List<EventoCampoCustomizado> findByDescricao(String descricao) {
+        String jpql = "select ecc from EventoCampoCustomizado ecc where ecc.descricao = :descricao";
+        Query qry = createQuery(jpql);
+        qry.setParameter("descricao", descricao);
+
+        List<EventoCampoCustomizado> eventoCampoCustomizadoList = qry.getResultList();
+        if (eventoCampoCustomizadoList == null || eventoCampoCustomizadoList.isEmpty()) {
+            return new ArrayList<EventoCampoCustomizado>();
+        }
+        return eventoCampoCustomizadoList;
+    }
+
+    public EventoCampoCustomizado findByDescricaoAndEntidade(String descricao, Entidade entidade) {
+        String jpql = "select ecc from EventoCampoCustomizado ecc where ecc.descricao = :descricao";
+        Query qry = createQuery(jpql);
+        qry.setParameter("descricao", descricao);
+
+        List<EventoCampoCustomizado> eventoCampoCustomizadoList = qry.getResultList();
+        if (eventoCampoCustomizadoList == null || eventoCampoCustomizadoList.isEmpty()) {
+            return null;
+        }
+
+        for (EventoCampoCustomizado obj : eventoCampoCustomizadoList) {
+            if (obj.getEntidade().equals(entidade)) {
+                return obj;
+            }
+        }
+
+        return null;
+    }
 }

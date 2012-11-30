@@ -16,13 +16,9 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Basic;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.eclipse.persistence.nosql.annotations.DataFormatType;
 import org.eclipse.persistence.nosql.annotations.Field;
@@ -33,16 +29,11 @@ import org.eclipse.persistence.nosql.annotations.NoSql;
  *
  * @author Ezequiel Juliano Müller
  */
-@Entity
+@Embeddable
 @NoSql(dataType = "EventoValorCustomizado", dataFormat = DataFormatType.MAPPED)
 public class EventoValorCustomizado implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue
-    @Field(name = "_id")
-    private String id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinField(name="eventoCampoCustomizadoId")
@@ -54,14 +45,6 @@ public class EventoValorCustomizado implements Serializable {
 
     public EventoValorCustomizado() {
         super();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public EventoCampoCustomizado getEventoCampoCustomizado() {
@@ -80,25 +63,4 @@ public class EventoValorCustomizado implements Serializable {
         this.valor = valor;
     }
  
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final EventoValorCustomizado other = (EventoValorCustomizado) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
 }

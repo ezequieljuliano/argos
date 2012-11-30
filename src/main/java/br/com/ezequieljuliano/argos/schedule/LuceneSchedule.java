@@ -44,7 +44,7 @@ public class LuceneSchedule implements Serializable {
     public void reIndex() {
 
         try {
-            File file = new File(Constantes.getIndexDirectory());
+            File file = new File(Constantes.getLuceneIndexDirectory());
             Directory disco = FSDirectory.open(file);
             luceneManager.backup(directory, disco);
         } catch (Exception e) {

@@ -25,8 +25,8 @@ import org.apache.lucene.util.Version;
 public class Constantes {
 
     //ÍNDICES DE DIRETÓRIOS
-    private static final String DIRECTORY_INDEX = "/Index/";
-    private static final String ROOT_FOLDER = "/Argos-Lucene/";
+    private static final String LUCENE_DIRECTORY_INDEX = "/Index/";
+    private static final String LUCENE_ROOT_FOLDER = "/Argos-Lucene/";
     
     //ÍNDICES PARA O LUCENE
     public static final String TUDO = "TUDO";
@@ -47,21 +47,21 @@ public class Constantes {
     public static final String INDICE_EVENTO_TIPO_ID = "INDICE_EVENTO_TIPO_ID";
     public static final String INDICE_EVENTO_TIPO_DESCRICAO = "INDICE_EVENTO_TIPO_DESCRICAO";
 
-    public static String getIndexDirectory() {
-        return getRootFolder() + DIRECTORY_INDEX;
+    public static String getLuceneIndexDirectory() {
+        return getLuceneRootFolder() + LUCENE_DIRECTORY_INDEX;
     }
 
-    public static String getRootFolder() {
+    public static String getLuceneRootFolder() {
         Configuracoes config;
         try {
             config = Configuracoes.load();
-            return config.getLuceneIndices() + ROOT_FOLDER;
+            return config.getLuceneIndices() + LUCENE_ROOT_FOLDER;
         } catch (Exception ex) {
-            return ROOT_FOLDER;
+            return LUCENE_ROOT_FOLDER;
         }
     }
 
-    public static Version getVersion() {
+    public static Version getLuceneVersion() {
         return Version.LUCENE_36;
     }
 }

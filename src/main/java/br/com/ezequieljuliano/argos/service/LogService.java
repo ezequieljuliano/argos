@@ -1,16 +1,20 @@
 package br.com.ezequieljuliano.argos.service;
 
 import br.com.ezequieljuliano.argos.business.EventoBC;
+import br.com.ezequieljuliano.argos.business.EventoCampoCustomizadoBC;
 import br.com.ezequieljuliano.argos.business.EventoNivelBC;
 import br.com.ezequieljuliano.argos.business.EventoTipoBC;
 import br.com.ezequieljuliano.argos.business.UsuarioBC;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import br.com.ezequieljuliano.argos.domain.EventoValorCustomizado;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.exception.LogServiceException;
 import br.com.ezequieljuliano.argos.service.to.EventoTO;
+import br.com.ezequieljuliano.argos.service.to.EventoValorCustomizadoTO;
 import br.com.ezequieljuliano.argos.service.to.LogReturnTO;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -33,6 +37,8 @@ public class LogService {
     private EventoTipoBC eventoTipoBC;
     @Inject
     private EventoBC eventoBC;
+    @Inject
+    private EventoCampoCustomizadoBC eventoCampoCustomizadoBC;
 
     @POST
     @Path("/{apiKey}")
@@ -52,8 +58,8 @@ public class LogService {
                 throw new LogServiceException(LogExceptionTipo.logExUsuarioSemEntidade);
             }
             //Verifica se o usuário não está inativo
-            if (usuario.isInativo()){
-              throw new LogServiceException(LogExceptionTipo.logExUsuarioInativo);  
+            if (usuario.isInativo()) {
+                throw new LogServiceException(LogExceptionTipo.logExUsuarioInativo);
             }
             //Valida se o nível do log está cadastrado
             EventoNivel eveNivel = eventoNivelBC.findByCodigo(evento.getEventoNivelCodigo());
@@ -65,6 +71,8 @@ public class LogService {
             if (eveTipo == null) {
                 throw new LogServiceException(LogExceptionTipo.logExEventoTipoInvalido);
             }
+            //Verifica e insere os campos personalizados no sistema
+            ArmazenaCamposCustomizados(evento, entidade);
             //Insere os logs no sistema
             ArmazenaLogs(evento, entidade, eveNivel, eveTipo, usuario);
         } catch (LogServiceException ex) {
@@ -88,9 +96,38 @@ public class LogService {
             evento.setEntidade(entidade);
             evento.setEventoNivel(eveNivel);
             evento.setEventoTipo(eveTipo);
+
+            //Insere os valores personalizados
+            for (EventoValorCustomizadoTO eveVlCustomTO : log.getValoresCustomizados()) {
+                if (!eveVlCustomTO.getCampo().equals("") && (!eveVlCustomTO.getValor().equals(""))) {
+                    EventoValorCustomizado eveVlCustom = new EventoValorCustomizado();
+                    eveVlCustom.setValor(eveVlCustomTO.getValor());
+                    eveVlCustom.setEventoCampoCustomizado(eventoCampoCustomizadoBC.findByDescricaoAndEntidade(eveVlCustomTO.getCampo(), entidade));
+                    evento.addValorCustomizado(eveVlCustom);
+                }
+            }
+
             eventoBC.saveOrUpdate(evento, usuario);
         } catch (Exception ex) {
             throw new LogServiceException(LogExceptionTipo.logExAoInserirLog);
+        }
+    }
+
+    private void ArmazenaCamposCustomizados(EventoTO log, Entidade entidade) throws LogServiceException {
+        try {
+            for (EventoValorCustomizadoTO eveVlCustomTO : log.getValoresCustomizados()) {
+                if (!eveVlCustomTO.getCampo().equals("") && (!eveVlCustomTO.getValor().equals(""))) {
+                    EventoCampoCustomizado obj = eventoCampoCustomizadoBC.findByDescricaoAndEntidade(eveVlCustomTO.getCampo(), entidade);
+                    if (obj == null) {
+                        obj = new EventoCampoCustomizado();
+                        obj.setDescricao(eveVlCustomTO.getCampo());
+                        obj.setEntidade(entidade);
+                        eventoCampoCustomizadoBC.saveOrUpdate(obj);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new LogServiceException(LogExceptionTipo.logExAoInserirCampoCustomizado);
         }
     }
 }

@@ -26,7 +26,8 @@ public enum LogExceptionTipo {
     logExEventoTipoInvalido(3, "Evento Tipo Inválido"),
     logExAoInserirLog(4, "Erro ao Inserir Log"),
     logExUsuarioSemEntidade(5, "Usuário sem Entidade Vinculada"),
-    logExUsuarioInativo(6, "Usuário está Inativo");
+    logExUsuarioInativo(6, "Usuário está Inativo"),
+    logExAoInserirCampoCustomizado(7, "Erro ao Inserir Campos Customizados");
     
     private Integer codigo;
     private String descricao;

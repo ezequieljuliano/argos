@@ -52,7 +52,7 @@ public class LuceneManager implements Serializable {
     }
 
     public void levantarServico() throws IOException {
-        File file = new File(Constantes.getIndexDirectory());
+        File file = new File(Constantes.getLuceneIndexDirectory());
         if (!file.exists()) {
             file.mkdirs();
         }

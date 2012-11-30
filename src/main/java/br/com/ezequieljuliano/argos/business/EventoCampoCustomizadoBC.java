@@ -15,11 +15,14 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoCampoCustomizadoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.List;
+import javax.inject.Inject;
 
 /**
  *
@@ -29,6 +32,8 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class EventoCampoCustomizadoBC extends DelegateCrud<EventoCampoCustomizado, String, EventoCampoCustomizadoDAO> {
 
     private static final long serialVersionUID = 1L;
+    @Inject
+    private EventoCampoCustomizadoDAO dao;
 
     public void saveOrUpdate(EventoCampoCustomizado eventoCampoCustomizado) throws ValidationException {
         if (eventoCampoCustomizado.getId() == null) {
@@ -36,5 +41,13 @@ public class EventoCampoCustomizadoBC extends DelegateCrud<EventoCampoCustomizad
         } else {
             update(eventoCampoCustomizado);
         }
+    }
+
+    public List<EventoCampoCustomizado> findByDescricao(String descricao) {
+        return dao.findByDescricao(descricao);
+    }
+
+    public EventoCampoCustomizado findByDescricaoAndEntidade(String descricao, Entidade entidade) {
+        return dao.findByDescricaoAndEntidade(descricao, entidade);
     }
 }
