@@ -8,8 +8,8 @@
     <artifactId>Argos</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
-    <name>Argos</name>
+ 
+	<name>Argos</name>
     <description></description>
     <url></url>
 
