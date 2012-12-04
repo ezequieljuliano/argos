@@ -84,7 +84,7 @@ public class EventoLuceneDAO implements Serializable {
         document.add(new Field(Constantes.INDICE_EVENTO_NIVEL_DESCRICAO, evento.getEventoNivel().getDescricao(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_EVENTO_TIPO_ID, evento.getEventoTipo().getId(), Store.YES, Index.ANALYZED));
         document.add(new Field(Constantes.INDICE_EVENTO_TIPO_DESCRICAO, evento.getEventoTipo().getDescricao(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.TUDO, evento.getConteudo(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_TUDO, evento.getConteudo(), Store.YES, Index.ANALYZED));
         return document;
     }
 

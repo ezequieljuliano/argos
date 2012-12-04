@@ -24,12 +24,21 @@ import org.apache.lucene.util.Version;
  */
 public class Constantes {
 
-    //ÍNDICES DE DIRETÓRIOS
-    private static final String LUCENE_DIRECTORY_INDEX = "/Index/";
-    private static final String LUCENE_ROOT_FOLDER = "/Argos-Lucene/";
+    //LUCENE - ÍNDICES DE DIRETÓRIOS
+    private static final String LUCENE_DIRECTORY_INDEX = "/INDEX/";
+    private static final String LUCENE_ROOT_FOLDER = "/ARGOS-LUCENE/";
     
-    //ÍNDICES PARA O LUCENE
-    public static final String TUDO = "TUDO";
+    //LUCENE - ÍNDICES DE DADOS
+    //EVENTO NÍVEL
+    public static final String INDICE_EVENTONIVEL_ID = "INDICE_EVENTONIVEL_ID";
+    public static final String INDICE_EVENTONIVEL_CODIGO = "INDICE_EVENTONIVEL_CODIGO";
+    public static final String INDICE_EVENTONIVEL_DESCRICAO = "INDICE_EVENTONIVEL_DESCRICAO";
+    public static final String INDICE_EVENTONIVEL_SITUACAO = "INDICE_EVENTONIVEL_SITUCAO";
+    public static final String INDICE_EVENTONIVEL_ALERTA = "INDICE_EVENTONIVEL_ALERTA";
+    public static final String INDICE_EVENTONIVEL_TUDO = "INDICE_EVENTONIVEL_TUDO";
+    
+    //EVENTO - ÍNDICES
+    public static final String INDICE_EVENTO_TUDO = "TUDO";
     public static final String INDICE_EVENTO_ID = "INDICE_EVENTO_ID";
     public static final String INDICE_EVENTO_MENSAGEM = "INDICE_EVENTO_MENSAGEM";
     public static final String INDICE_HOST_NAME = "INDICE_HOST_NAME";
@@ -63,5 +72,5 @@ public class Constantes {
 
     public static Version getLuceneVersion() {
         return Version.LUCENE_36;
-    }
+    }       
 }

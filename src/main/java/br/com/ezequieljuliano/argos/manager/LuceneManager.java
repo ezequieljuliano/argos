@@ -26,6 +26,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 
 /**
@@ -44,25 +45,57 @@ public class LuceneManager implements Serializable {
     public void init() {
         directory = new RAMDirectory();
         try {
-            levantarServico();
+            iniciarServico();
         } catch (IOException e) {
             Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE,
                     null, e);
         }
     }
 
-    public void levantarServico() throws IOException {
-        File file = new File(Constantes.getLuceneIndexDirectory());
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        Directory disco = FSDirectory.open(file);
+    private void iniciarServico() throws IOException {
+        File file = getNewFile();
+        //Cria Diretório
+        Directory disco = getDiretorio(file);
         backup(disco, directory);
     }
 
-    public void backup(Directory deDiretorio, Directory paraDiretoria) throws IOException {
+    public void backup(Directory deDiretorio, Directory paraDiretorio) throws IOException {
         for (String file : deDiretorio.listAll()) {
-            deDiretorio.copy(paraDiretoria, file, file);
+            deDiretorio.copy(paraDiretorio, file, file);
         }
+    }
+
+    private static boolean isWindows() { // Detecta SO Windows
+        String os = System.getProperty("os.name").toLowerCase();
+        return (os.indexOf("win") >= 0);
+    }
+
+    public Directory getDiretorio(File file) {
+        if (file == null) {
+            file = getNewFile();
+        }
+        if (isWindows()) {
+            try {
+                return FSDirectory.open(file); // Abre Diretorio em ambientes Windows
+            } catch (IOException ex) {
+                Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                return NIOFSDirectory.open(file); // Abre Diretorio em ambientes Unix
+            } catch (IOException ex) {
+                Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+
+    public File getNewFile() {
+        File file = new File(Constantes.getLuceneIndexDirectory());
+        //Se o diretório não exitir cria ele
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 }

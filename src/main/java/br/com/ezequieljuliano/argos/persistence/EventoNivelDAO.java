@@ -15,17 +15,22 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
+import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import java.util.List;
 import javax.persistence.Query;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
+import org.apache.lucene.document.Field.Store;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @PersistenceController
-public class EventoNivelDAO extends BaseDAO<EventoNivel, String> {
+public class EventoNivelDAO extends GenericDAO<EventoNivel, String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,5 +43,37 @@ public class EventoNivelDAO extends BaseDAO<EventoNivel, String> {
             return null;
         }
         return eventoNivelList.get(0);
+    }
+
+    @Override
+    public Document getLuceneDocument(EventoNivel obj) {
+        Document document = new Document();
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ID, obj.getId(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_CODIGO, Integer.toString(obj.getCodigo()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_DESCRICAO, obj.getDescricao(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_SITUACAO, obj.getSituacao().getNome(), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ALERTA, Boolean.toString(obj.getAlerta()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_TUDO, getLuceneConteudoString(obj), Store.YES, Index.ANALYZED));
+        return document;
+    }
+
+    @Override
+    public String getLuceneIndiceChave() {
+        return Constantes.INDICE_EVENTONIVEL_ID;
+    }
+
+    @Override
+    public String getLuceneConteudoString(EventoNivel obj) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(obj.getId());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(obj.getCodigo());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(obj.getDescricao());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(obj.getSituacao().getNome());
+        stringBuilder.append(" \n ");
+        stringBuilder.append(Boolean.toString(obj.getAlerta()));
+        return stringBuilder.toString();
     }
 }

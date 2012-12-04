@@ -47,7 +47,7 @@ public enum EventoTipoPesquisa implements Serializable {
     public String getLuceneIndex() {
         switch (this) {
             case etpTudo:
-                return Constantes.TUDO;
+                return Constantes.INDICE_EVENTO_TUDO;
             case etpEventoMensagem:
                 return Constantes.INDICE_EVENTO_MENSAGEM;
             case etpHostName:
@@ -73,7 +73,7 @@ public enum EventoTipoPesquisa implements Serializable {
             case etpEventoTipoDescricao:
                 return Constantes.INDICE_EVENTO_TIPO_DESCRICAO;
             default:
-                return Constantes.TUDO;
+                return Constantes.INDICE_EVENTO_TUDO;
         }
     }
 }

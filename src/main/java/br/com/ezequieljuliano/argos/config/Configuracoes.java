@@ -32,7 +32,7 @@ public class Configuracoes {
     }
 
     private Configuracoes(Properties properties) {
-        this.properties = properties;
+        Configuracoes.properties = properties;
     }
 
     public static Configuracoes load() throws Exception {
