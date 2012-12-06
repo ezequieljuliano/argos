@@ -27,6 +27,7 @@ import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import br.gov.frameworkdemoiselle.transaction.Transactional;
 import java.sql.Timestamp;
 import javax.inject.Inject;
 
@@ -100,21 +101,21 @@ public class DadosPadraoBC {
             eTipo.setSituacao(Situacao.ativo);
             eventoTipoBC.saveOrUpdate(eTipo);
         }
-		if (eventoTipoBC.findByCodigo(8) == null) {
+        if (eventoTipoBC.findByCodigo(8) == null) {
             EventoTipo eTipo = new EventoTipo();
             eTipo.setCodigo(8);
             eTipo.setDescricao("Inclusão");
             eTipo.setSituacao(Situacao.ativo);
             eventoTipoBC.saveOrUpdate(eTipo);
         }
-		if (eventoTipoBC.findByCodigo(9) == null) {
+        if (eventoTipoBC.findByCodigo(9) == null) {
             EventoTipo eTipo = new EventoTipo();
             eTipo.setCodigo(9);
             eTipo.setDescricao("Consulta");
             eTipo.setSituacao(Situacao.ativo);
             eventoTipoBC.saveOrUpdate(eTipo);
         }
-		if (eventoTipoBC.findByCodigo(10) == null) {
+        if (eventoTipoBC.findByCodigo(10) == null) {
             EventoTipo eTipo = new EventoTipo();
             eTipo.setCodigo(10);
             eTipo.setDescricao("Validação");
@@ -197,7 +198,7 @@ public class DadosPadraoBC {
         if (usuarioBC.findByUserName("adm") == null) {
             Usuario user = new Usuario();
             user.setUserName("adm");
-            user.setEntidade(entidadeBC.findByCodigo(1));
+            user.setEntidade(entidadeBC.findByCodigo(2));
             user.setEmail("adm@adm.com.br");
             user.setPassword("123");
             user.setPerfil(UsuarioPerfil.administrador);
@@ -211,7 +212,7 @@ public class DadosPadraoBC {
             user.setEmail("normal@normal.com.br");
             user.setPassword("123");
             user.setEntidade(entidadeBC.findByCodigo(2));
-            user.setPerfil(UsuarioPerfil.normal);
+            user.setPerfil(UsuarioPerfil.administrador);
             user.setSituacao(Situacao.ativo);
             usuarioBC.saveOrUpdate(user);
         }
@@ -222,17 +223,17 @@ public class DadosPadraoBC {
         ecc.setDescricao("AAA");
         ecc.setEntidade(entidadeBC.findByCodigo(1));
         eventoCampoCustomBC.saveOrUpdate(ecc);
-        
+
         EventoCampoCustomizado ecc2 = new EventoCampoCustomizado();
         ecc2.setDescricao("BBB");
         ecc2.setEntidade(entidadeBC.findByCodigo(1));
         eventoCampoCustomBC.saveOrUpdate(ecc2);
-        
+
         EventoCampoCustomizado ecc3 = new EventoCampoCustomizado();
         ecc3.setDescricao("CCC");
         ecc3.setEntidade(entidadeBC.findByCodigo(2));
         eventoCampoCustomBC.saveOrUpdate(ecc3);
-        
+
         Evento evento = new Evento();
         evento.setHostName("EZEQUIEL-NB");
         evento.setMensagem("Realizada uma autenticação no sistema MsysComercial");
@@ -245,17 +246,17 @@ public class DadosPadraoBC {
         evento.setEntidade(entidadeBC.findByCodigo(1));
         evento.setEventoNivel(eventoNivelBC.findByCodigo(1));
         evento.setEventoTipo(eventoTipoBC.findByCodigo(1));
-              
+
         EventoValorCustomizado eveVlCustom = new EventoValorCustomizado();
         eveVlCustom.setEventoCampoCustomizado(ecc);
         eveVlCustom.setValor("05845333903");
         evento.addValorCustomizado(eveVlCustom);
-        
+
         EventoValorCustomizado eveVlCustom2 = new EventoValorCustomizado();
         eveVlCustom2.setEventoCampoCustomizado(ecc2);
         eveVlCustom2.setValor("TesteSetor");
         evento.addValorCustomizado(eveVlCustom2);
-          
+
         eventoBC.saveOrUpdate(evento, usuarioBC.findByUserName("adm"));
 
         Evento evento2 = new Evento();
@@ -270,19 +271,7 @@ public class DadosPadraoBC {
         evento2.setEntidade(entidadeBC.findByCodigo(1));
         evento2.setEventoNivel(eventoNivelBC.findByCodigo(2));
         evento2.setEventoTipo(eventoTipoBC.findByCodigo(3));
-        
-//        EventoValorCustomizado eveVlCustom2 = new EventoValorCustomizado();
-//        eveVlCustom2.setEvento(evento2);
-//        eveVlCustom2.setEventoCampoCustomizado(evc2);
-//        eveVlCustom2.setValor("TesteSetor");
-//        evento2.getEventoValorCustomizadoList().add(eveVlCustom2);
-//        
-//        EventoValorCustomizado eveVlCustom3 = new EventoValorCustomizado();
-//        eveVlCustom3.setEvento(evento2);
-//        eveVlCustom3.setEventoCampoCustomizado(evc);
-//        eveVlCustom3.setValor("544654");
-//        evento2.getEventoValorCustomizadoList().add(eveVlCustom3);
-        
+
         eventoBC.saveOrUpdate(evento2, usuarioBC.findByUserName("adm"));
 
         Evento evento3 = new Evento();
@@ -314,8 +303,8 @@ public class DadosPadraoBC {
         eventoBC.saveOrUpdate(evento4, usuarioBC.findByUserName("normal"));
     }
 
-        
     @Startup
+    @Transactional
     public void InsereDados() throws ValidationException, Exception {
         insereEventoNivel();
         insereEventoTipo();

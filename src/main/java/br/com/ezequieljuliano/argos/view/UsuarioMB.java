@@ -52,6 +52,7 @@ public class UsuarioMB {
     private Parameter<String> id;
     
     private Usuario bean;
+    
     private ArrayList<SelectItem> perfil;
     
     public Usuario getBean() {

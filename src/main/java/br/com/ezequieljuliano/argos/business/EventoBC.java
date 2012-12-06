@@ -16,13 +16,16 @@
 package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioEvento;
 import br.com.ezequieljuliano.argos.persistence.EventoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import java.sql.Timestamp;
+import java.util.List;
 import javax.inject.Inject;
+import org.apache.lucene.queryParser.ParseException;
 
 /**
  *
@@ -34,7 +37,7 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
     private static final long serialVersionUID = 1L;
     
     @Inject
-    private EventoLuceneBC luceneBC;
+    private EventoDAO dao;
     
     @Inject
     private UsuarioEventoBC usuarioEventoBC;
@@ -45,8 +48,6 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
         } else {
             update(evento);
         }
-        //Faz a indexação com o Lucene
-        luceneBC.salvar(evento);
         //Insere Usuário relacionado ao Evento
         gravarUsuarioEvento(evento, usuario);
     }
@@ -59,5 +60,9 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
             usuEve.setUsuario(usuario);
             usuarioEventoBC.saveOrUpdate(usuEve);
         }
+    }
+
+    public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro filtro) throws ParseException {
+        return dao.findByPesquisaFiltro(filtro);
     }
 }

@@ -41,8 +41,10 @@ public class EntidadeMB {
     
     @Inject
     private EntidadeBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
     

@@ -51,27 +51,27 @@ public enum EventoTipoPesquisa implements Serializable {
             case etpEventoMensagem:
                 return Constantes.INDICE_EVENTO_MENSAGEM;
             case etpHostName:
-                return Constantes.INDICE_HOST_NAME;
+                return Constantes.INDICE_EVENTO_HOSTNAME;
             case etpHostUser:
-                return Constantes.INDICE_HOST_USER;
+                return Constantes.INDICE_EVENTO_HOSTUSER;
             case etpHostIp:
-                return Constantes.INDICE_HOST_IP;
+                return Constantes.INDICE_EVENTO_HOSTIP;
             case etpFonte:
-                return Constantes.INDICE_FONTE;
+                return Constantes.INDICE_EVENTO_FONTE;
             case etpNome:
-                return Constantes.INDICE_NOME;
+                return Constantes.INDICE_EVENTO_NOME;
             case etpOcorrenciaDtHr:
-                return Constantes.INDICE_OCORRENCIA_DTHR;
+                return Constantes.INDICE_EVENTO_OCORRENCIADTHR;
             case etpPalavrasChave:
-                return Constantes.INDICE_PALAVRAS_CHAVE;
+                return Constantes.INDICE_EVENTO_PALAVRASCHAVE;
             case etpEntidadeNome:
                 return Constantes.INDICE_ENTIDADE_NOME;
             case etpEntidadeCadastroNacional:
                 return Constantes.INDICE_ENTIDADE_CADASTRONACIONAL;
             case etpEventoNivelDescricao:
-                return Constantes.INDICE_EVENTO_NIVEL_DESCRICAO;
+                return Constantes.INDICE_EVENTO_NIVELDESCRICAO;
             case etpEventoTipoDescricao:
-                return Constantes.INDICE_EVENTO_TIPO_DESCRICAO;
+                return Constantes.INDICE_EVENTO_TIPODESCRICAO;
             default:
                 return Constantes.INDICE_EVENTO_TUDO;
         }

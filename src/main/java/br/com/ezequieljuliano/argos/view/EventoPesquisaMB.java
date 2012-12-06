@@ -16,7 +16,7 @@
 package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.EntidadeBC;
-import br.com.ezequieljuliano.argos.business.EventoLuceneBC;
+import br.com.ezequieljuliano.argos.business.EventoBC;
 import br.com.ezequieljuliano.argos.business.EventoNivelBC;
 import br.com.ezequieljuliano.argos.business.EventoTipoBC;
 import br.com.ezequieljuliano.argos.domain.Entidade;
@@ -44,7 +44,7 @@ public class EventoPesquisaMB {
     private static final long serialVersionUID = 1L;
     
     @Inject
-    private EventoLuceneBC luceneBC;
+    private EventoBC eventoBC;
     
     @Inject
     private EntidadeBC entidadeBC;
@@ -159,7 +159,7 @@ public class EventoPesquisaMB {
             EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, 
                     selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
             try {
-                eventos = luceneBC.findByFiltro(filtro);
+                eventos = eventoBC.findByPesquisaFiltro(filtro);
             } catch (Exception e) {
                 messageContext.add(e.getMessage(), SeverityType.ERROR);
             }

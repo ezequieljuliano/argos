@@ -25,29 +25,29 @@ public class EventoPesquisaFiltro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private EventoTipoPesquisa filtroTipo;
-    private String pesquisaValor;
+    private EventoTipoPesquisa tipoDoFiltro;
+    private String textoDaPesquisa;
     private Entidade entidade;
     private EventoNivel eventoNivel;
     private EventoTipo eventoTipo;
     private Usuario usuario;
 
-    public EventoPesquisaFiltro(EventoTipoPesquisa filtroTipo, String pesquisaValor,
+    public EventoPesquisaFiltro(EventoTipoPesquisa tipoDoFiltro, String textoDaPesquisa,
             Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) throws Exception {
         this.usuario = usuario;
-        this.filtroTipo = filtroTipo;
-        this.pesquisaValor = pesquisaValor;
-        this.entidade = entidadeTratada(entidade);
+        this.tipoDoFiltro = tipoDoFiltro;
+        this.textoDaPesquisa = textoDaPesquisa;
+        this.entidade = validaEntidade(entidade);
         this.eventoNivel = eventoNivel;
         this.eventoTipo = eventoTipo;
     }
 
     public EventoTipoPesquisa getFiltroTipo() {
-        return filtroTipo;
+        return tipoDoFiltro;
     }
 
     public String getPesquisaValor() {
-        return pesquisaValor;
+        return textoDaPesquisa;
     }
 
     public Entidade getEntidade() {
@@ -62,7 +62,7 @@ public class EventoPesquisaFiltro implements Serializable {
         return eventoTipo;
     }
 
-    private Entidade entidadeTratada(Entidade entidade) throws Exception {
+    private Entidade validaEntidade(Entidade entidade) throws Exception {
         //Verifica seu perfil se for normal deve possuir entidade para filrar
         if (!usuario.getPerfil().equals(UsuarioPerfil.administrador)) {
             if (usuario.getEntidade() != null) {

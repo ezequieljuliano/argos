@@ -24,6 +24,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.search.Filter;
 
 /**
  *
@@ -48,11 +49,12 @@ public class EventoNivelDAO extends GenericDAO<EventoNivel, String> {
     @Override
     public Document getLuceneDocument(EventoNivel obj) {
         Document document = new Document();
-        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ID, obj.getId(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTONIVEL_CODIGO, Integer.toString(obj.getCodigo()), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTONIVEL_DESCRICAO, obj.getDescricao(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTONIVEL_SITUACAO, obj.getSituacao().getNome(), Store.YES, Index.ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ALERTA, Boolean.toString(obj.getAlerta()), Store.YES, Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ID, obj.getId(), Store.YES, Index.NOT_ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_CODIGO, Integer.toString(obj.getCodigo()), Store.YES, Index.NOT_ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_DESCRICAO, obj.getDescricao(), Store.YES, Index.NOT_ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_SITUACAOCODIGO, obj.getSituacao().toString(), Store.YES, Index.NOT_ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_SITUACAO, obj.getSituacao().getNome(), Store.YES, Index.NOT_ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTONIVEL_ALERTA, Boolean.toString(obj.getAlerta()), Store.YES, Index.NOT_ANALYZED));
         document.add(new Field(Constantes.INDICE_EVENTONIVEL_TUDO, getLuceneConteudoString(obj), Store.YES, Index.ANALYZED));
         return document;
     }
@@ -71,9 +73,16 @@ public class EventoNivelDAO extends GenericDAO<EventoNivel, String> {
         stringBuilder.append(" \n ");
         stringBuilder.append(obj.getDescricao());
         stringBuilder.append(" \n ");
+        stringBuilder.append(obj.getSituacao().toString());
+        stringBuilder.append(" \n ");
         stringBuilder.append(obj.getSituacao().getNome());
         stringBuilder.append(" \n ");
         stringBuilder.append(Boolean.toString(obj.getAlerta()));
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Filter getLuceneFiltroDeRestricao() {
+        return null;
     }
 }

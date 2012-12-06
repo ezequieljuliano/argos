@@ -34,6 +34,7 @@ import javax.inject.Inject;
 public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private UsuarioDAO dao;
 
