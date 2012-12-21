@@ -42,9 +42,9 @@ public class EventoTipoBC extends DelegateCrud<EventoTipo, String, EventoTipoDAO
             throw new ValidationException("Código já cadastrado!");
         }
         if (eventoTipo.getId() == null) {
-            insert(eventoTipo);
+            dao.insert(eventoTipo);
         } else {
-            update(eventoTipo);
+            dao.update(eventoTipo);
         }
     }
 

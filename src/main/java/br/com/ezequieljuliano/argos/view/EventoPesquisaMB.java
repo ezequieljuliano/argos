@@ -153,7 +153,7 @@ public class EventoPesquisaMB {
     }
 
     public void pesquisar() throws Exception {
-        if (campoPesquisa == null || campoPesquisa.length() == 0) {
+        if (campoPesquisa.equals("") || campoPesquisa.length() == 0) {
             messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
         } else {
             EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, 

@@ -19,6 +19,7 @@ import br.com.ezequieljuliano.argos.domain.UsuarioEvento;
 import br.com.ezequieljuliano.argos.persistence.UsuarioEventoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import javax.inject.Inject;
 
 /**
  *
@@ -28,12 +29,15 @@ import br.gov.frameworkdemoiselle.template.DelegateCrud;
 public class UsuarioEventoBC extends DelegateCrud<UsuarioEvento, String, UsuarioEventoDAO> {
 
     private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private UsuarioEventoDAO dao;
 
     public void saveOrUpdate(UsuarioEvento usuarioEvento) {
         if (usuarioEvento.getId() == null) {
-            insert(usuarioEvento);
+            dao.insert(usuarioEvento);
         } else {
-            update(usuarioEvento);
+            dao.update(usuarioEvento);
         }
     }
 

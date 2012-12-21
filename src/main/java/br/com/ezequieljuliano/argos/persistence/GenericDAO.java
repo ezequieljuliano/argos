@@ -16,9 +16,7 @@
 package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.constant.Constantes;
-import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import br.gov.frameworkdemoiselle.template.JPACrud;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -54,9 +53,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType, KeyType> {
 
     private static final long serialVersionUID = 1L;
-    
     private Analyzer analyzer;
-    
     @Inject
     private Directory directory;
 
@@ -67,8 +64,11 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
 
     //Métodos que devem ser escritos nas classes extendidas
     public abstract Document getLuceneDocument(DomainType obj);
+
     public abstract String getLuceneIndiceChave();
+
     public abstract String getLuceneConteudoString(DomainType obj);
+
     public abstract Filter getLuceneFiltroDeRestricao();
 
     private IndexWriter getIndexWriter() {
@@ -100,7 +100,7 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
             }
         }
     }
-    
+
     private void luceneExcluir(KeyType id) {
         IndexWriter indexWriter;
         try {
@@ -114,7 +114,7 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
                     null, exception);
         }
     }
-    
+
     private void luceneAtualizar(DomainType obj) {
         Document doc = getLuceneDocument(obj);
         if (doc != null) {
@@ -159,7 +159,10 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
                     int docId = hits[i].doc;
                     Document d = searcher.doc(docId);
                     KeyType id = (KeyType) d.get(getLuceneIndiceChave());
-                    objList.add(super.load(id));
+                    DomainType domain = super.load(id);
+                    if (domain != null) {
+                        objList.add(domain);
+                    }
                 }
                 return objList;
             }
@@ -169,7 +172,7 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
         }
         return new ArrayList<DomainType>();
     }
-    
+
     /*
      * Tipo de consulta mais básico para procurar um índice. TermQuery pode ser construído usando um termo único.
      */
@@ -178,8 +181,8 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
         Query query = new TermQuery(term);
         return luceneExecutarQuery(query);
     }
-    
-     /*
+
+    /*
      * Você pode procurar usando uma palavra prefixada com o PrefixQuery, que é usado para contruir uma 
      * consulta que corresponda aos documentos que contêm os termos que iniciam com um prefixo de palavra especificada. 
      */
@@ -188,20 +191,20 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
         Query query = new PrefixQuery(term);
         return luceneExecutarQuery(query);
     }
-    
-     /*
+
+    /*
      * Um WildcardQuery implementa uma consulta com caractere curinga, podendo fazer procuras como
      * arch* (permitindo localizar documentos que contém architect, architecture, etc.). Dois caracteres curingas padrão são usados:
-        * para zero ou mais
-        ? para um ou mais
+     * para zero ou mais
+     ? para um ou mais
      */
     public List<DomainType> luceneWildCardQuery(String indice, String texto) {
         Term term = new Term(indice, texto);
         Query query = new WildcardQuery(term);
         return luceneExecutarQuery(query);
     }
-    
-     /*
+
+    /*
      *  Você pode procurar por termos semelhantes com o FuzzyQuery, que corresponde às palavras 
      *  que são semelhantes a sua palavra especificada.
      */
@@ -210,8 +213,19 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
         Query query = new FuzzyQuery(term);
         return luceneExecutarQuery(query);
     }
-    
-     /*
+
+    /*
+     * Você pode procurar em um intervalo usando o RangeQuery. Todos os termos são organizados de maneira 
+     * lexicográfica no índice. O RangeQuery do Lucene permite que os usuários procurem termos dentro de um 
+     * intervalo.O intervalo pode ser especificado usando um termo de início e um termo de encerramento, 
+     * que pode ser incluído ou excluído.
+     */
+    public List<DomainType> luceneLongRangeQuery(String indice, Long inicio, Long fim) {
+        NumericRangeQuery<Long> newLongRange = NumericRangeQuery.newLongRange(indice, inicio, fim, true, true);
+        return luceneExecutarQuery(newLongRange);
+    }
+
+    /*
      * QueryParser é útil para analisar cadeias de consultas inseridas pelo usuário. 
      * Ele pode ser usado para analisar expressões de consultas inseridas pelo usuário em um objeto de consulta do Lucene, 
      * que pode ser transmitido para o método de procura do IndexSearcher.Ele pode analisar expressões de consultas completas. 
@@ -249,8 +263,7 @@ public abstract class GenericDAO<DomainType, KeyType> extends JPACrud<DomainType
 
     @Override
     public void delete(KeyType id) {
-        super.delete(id);
         luceneExcluir(id);
+        super.delete(id);
     }
- 
 }

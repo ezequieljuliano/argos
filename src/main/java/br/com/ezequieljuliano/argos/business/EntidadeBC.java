@@ -21,6 +21,7 @@ import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -47,9 +48,9 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
             throw new ValidationException("Cadastro Nacional já cadastrado!");
         }
         if (entidade.getId() == null) {
-            insert(entidade);
+            dao.insert(entidade);
         } else {
-            update(entidade);
+            dao.update(entidade);
         }
     }
 
@@ -74,4 +75,13 @@ public class EntidadeBC extends DelegateCrud<Entidade, String, EntidadeDAO> {
     public Entidade findByCadastroNacional(String cadastroNacional) {
         return dao.findByCadastroNacional(cadastroNacional);
     }
+    
+    public List<Entidade> findByNome(String nome){
+        return dao.findByNome(nome);
+    }
+    
+    public List<Entidade> findByALL(String pesquisa) {
+        return dao.findByALL(pesquisa);
+    }
+    
 }

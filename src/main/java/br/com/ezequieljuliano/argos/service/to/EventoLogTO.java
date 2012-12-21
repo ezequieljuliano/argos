@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Ezequiel Juliano Müller
  */
 @XmlRootElement
-public class EventoTO {
+public class EventoLogTO {
 
     private String hostName;
     private String hostIp;
@@ -42,7 +41,7 @@ public class EventoTO {
     private Integer eventoNivelCodigo;
     private Integer eventoTipoCodigo;
 
-    public EventoTO() {
+    public EventoLogTO() {
     }
 
     public String getHostName() {

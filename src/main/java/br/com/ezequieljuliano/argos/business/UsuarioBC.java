@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
+import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
@@ -24,6 +25,7 @@ import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.UniqId;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -62,9 +64,9 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         if (usuario.getId() == null) {
             //Gerar Hash da senha
             generatePasswordKey(usuario);
-            insert(usuario);
+            dao.insert(usuario);
         } else {
-            update(usuario);
+            dao.update(usuario);
         }
     }
 
@@ -116,4 +118,9 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     public Usuario findByApiKey(String apiKey) {
         return dao.findByApiKey(apiKey);
     }
+
+    public List<Usuario> findByALL(String pesquisa) {
+        return dao.findByALL(pesquisa);
+    }
+
 }

@@ -15,7 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.exception;
 
-import br.com.ezequieljuliano.argos.service.LogExceptionTipo;
+import br.com.ezequieljuliano.argos.service.EventoLogExceptionTipo;
 
 /**
  *
@@ -23,14 +23,14 @@ import br.com.ezequieljuliano.argos.service.LogExceptionTipo;
  */
 public class LogServiceException extends Exception {
 
-    private LogExceptionTipo logEx;
+    private EventoLogExceptionTipo logEx;
 
-    public LogServiceException(LogExceptionTipo logEx) {
+    public LogServiceException(EventoLogExceptionTipo logEx) {
         super(logEx.getDescricao());
         this.logEx = logEx;
     }
 
-    public LogExceptionTipo getLogEx() {
+    public EventoLogExceptionTipo getLogEx() {
         return logEx;
     }
 }

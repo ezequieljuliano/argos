@@ -56,6 +56,14 @@ public class EntidadeDAO extends GenericDAO<Entidade, String> {
         }
         return entidadeList.get(0);
     }
+    
+    public List<Entidade> findByNome(String nome) {
+        return super.luceneParserQuery(Constantes.INDICE_ENTIDADE_NOME, nome);
+    }
+
+    public List<Entidade> findByALL(String pesquisa) {
+        return super.luceneParserQuery(Constantes.INDICE_ENTIDADE_TUDO, pesquisa);
+    }
 
     @Override
     public Document getLuceneDocument(Entidade obj) {

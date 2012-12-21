@@ -37,9 +37,9 @@ public class EventoCampoCustomizadoBC extends DelegateCrud<EventoCampoCustomizad
 
     public void saveOrUpdate(EventoCampoCustomizado eventoCampoCustomizado) throws ValidationException {
         if (eventoCampoCustomizado.getId() == null) {
-            insert(eventoCampoCustomizado);
+            dao.insert(eventoCampoCustomizado);
         } else {
-            update(eventoCampoCustomizado);
+            dao.update(eventoCampoCustomizado);
         }
     }
 

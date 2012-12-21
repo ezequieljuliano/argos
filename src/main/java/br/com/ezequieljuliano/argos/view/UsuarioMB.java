@@ -51,8 +51,9 @@ public class UsuarioMB {
     @Inject
     private Parameter<String> id;
     
-    private Usuario bean;
-    
+    private Usuario bean = null;
+    private List<Usuario> beanList = null;
+    private String campoPesquisa = null;
     private ArrayList<SelectItem> perfil;
     
     public Usuario getBean() {
@@ -67,6 +68,25 @@ public class UsuarioMB {
     
     public void setBean(Usuario bean) {
         this.bean = bean;
+    }
+
+    public List<Usuario> getBeanList() {
+        if (beanList == null) {
+            this.beanList = bc.findAll();
+        }
+        return beanList;
+    }
+
+    public void setBeanList(List<Usuario> beanList) {
+        this.beanList = beanList;
+    }
+
+    public String getCampoPesquisa() {
+        return campoPesquisa;
+    }
+
+    public void setCampoPesquisa(String campoPesquisa) {
+        this.campoPesquisa = campoPesquisa;
     }
     
     @Transactional
@@ -102,7 +122,22 @@ public class UsuarioMB {
     }
     
     public List<Usuario> getList() {
-        return this.bc.findAll();
+        return getBeanList();
+    }
+
+    public void findByALL() {
+        if (!campoPesquisa.equals("")) {
+            this.beanList = bc.findByALL(campoPesquisa);
+            if (beanList.isEmpty()) {
+                messageContext.add("A pesquisa não retornou nenhum resultado!", SeverityType.WARN);
+            }
+        } else {
+            this.beanList = bc.findAll();
+        }
+    }
+
+    public void cancelarPesquisa() {
+        this.beanList = bc.findAll();
     }
     
     public void handleSelect(SelectEvent e) {

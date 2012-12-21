@@ -140,4 +140,9 @@ public class UsuarioDAO extends GenericDAO<Usuario, String> {
     public Filter getLuceneFiltroDeRestricao() {
         return null;
     }
+    
+    public List<Usuario> findByALL(String pesquisa) {
+        return super.luceneParserQuery(Constantes.INDICE_USUARIO_TUDO, pesquisa);
+    }
+    
 }

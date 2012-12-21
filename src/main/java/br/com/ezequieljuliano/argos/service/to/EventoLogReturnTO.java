@@ -22,17 +22,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Ezequiel Juliano Müller
  */
 @XmlRootElement
-public class LogReturnTO {
+public class EventoLogReturnTO {
     
     private Integer codigo;
     private String descricao;
 
-    public LogReturnTO(Integer codigo, String descricao) {
+    public EventoLogReturnTO(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public LogReturnTO() {
+    public EventoLogReturnTO() {
     
     }
 

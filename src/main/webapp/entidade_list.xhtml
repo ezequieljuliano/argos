@@ -3,7 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
 
     <ui:define name="body">
-        <h:form rendered="#{securityContext.hasRole('@A')}">
+        <h:form id="frm" rendered="#{securityContext.hasRole('@A')}">
 
             <p:toolbar>
                 <p:toolbarGroup>
@@ -13,12 +13,21 @@
 
             <br />
 
+            <p:panel id="pnPesquisa">
+                <h:outputText value="Pesquisar por:" />
+                <h:panelGrid columns="3" >
+                    <p:inputText value="#{entidadeMB.campoPesquisa}" style="width: 350px" id="campoPesquisa" />  
+                    <p:commandButton value="Pesquisar" action="#{entidadeMB.findByALL()}" image="ui-icon ui-icon-circle-zoomin" update=":frm:list"/>
+                    <p:commandButton value="Cancelar" action="#{entidadeMB.cancelarPesquisa()}" image="ui-icon ui-icon-refresh" update=":frm:list"/>
+                </h:panelGrid>
+            </p:panel>
+
             <p:dataTable selectionMode="single" 
                          rowKey="#{bean.id}" id="list" var="bean" 
                          value="#{entidadeMB.list}" 
                          emptyMessage="Não existem registros para exibir"> 
                 <p:ajax event="rowSelect" listener="#{entidadeMB.handleSelect}" />
-                
+
                 <f:facet name="header">Lista de Entidades</f:facet>
 
                 <p:column headerText="Código">

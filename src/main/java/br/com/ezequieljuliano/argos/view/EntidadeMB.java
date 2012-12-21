@@ -36,7 +36,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ViewController
 public class EntidadeMB {
-
+    
     private static final long serialVersionUID = 1L;
     
     @Inject
@@ -45,25 +45,46 @@ public class EntidadeMB {
     @Inject
     private MessageContext messageContext;
     
-    @Inject
+    @Inject 
     private Parameter<String> id;
     
-    private Entidade bean;
-
+    private Entidade bean = null;
+    private List<Entidade> beanList = null;
+    private String campoPesquisa = null;
+    
     public Entidade getBean() {
         if (bean == null) {
             bean = new Entidade();
-            if (this.id.getValue() != null) {
+            if (id.getValue() != null) {
                 this.bean = bc.load(this.id.getValue());
             }
         }
         return bean;
     }
-
+    
     public void setBean(Entidade bean) {
         this.bean = bean;
     }
-
+    
+    public List<Entidade> getBeanList() {
+        if (beanList == null) {
+            this.beanList = bc.findAll();
+        }
+        return beanList;
+    }
+    
+    public void setBeanList(List<Entidade> beanList) {
+        this.beanList = beanList;
+    }
+    
+    public String getCampoPesquisa() {
+        return campoPesquisa;
+    }
+    
+    public void setCampoPesquisa(String campoPesquisa) {
+        this.campoPesquisa = campoPesquisa;
+    }
+    
     @Transactional
     public void salvar() {
         try {
@@ -75,7 +96,7 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     @Transactional
     public void inativar() {
         try {
@@ -85,7 +106,7 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao inativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     @Transactional
     public void ativar() {
         try {
@@ -95,11 +116,26 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao ativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     public List<Entidade> getList() {
-        return this.bc.findAll();
+        return getBeanList();
     }
-
+    
+    public void findByALL() {
+        if (!campoPesquisa.equals("")) {
+            this.beanList = bc.findByALL(campoPesquisa);
+            if (beanList.isEmpty()) {
+                messageContext.add("A pesquisa não retornou nenhum resultado!", SeverityType.WARN);
+            }
+        } else {
+            this.beanList = bc.findAll();
+        }
+    }
+    
+    public void cancelarPesquisa() {
+        this.beanList = bc.findAll();        
+    }
+    
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("entidade_edit.jsf?faces-redirect=true&id=" + ((Entidade) e.getObject()).getId());

@@ -36,6 +36,7 @@ import org.apache.lucene.search.TermsFilter;
 public class EventoDAO extends GenericDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
+    
     private Filter luceneFilter = null;
 
     @Override

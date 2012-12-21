@@ -19,7 +19,7 @@ package br.com.ezequieljuliano.argos.service;
  *
  * @author Ezequiel Juliano Müller
  */
-public enum LogExceptionTipo {
+public enum EventoLogExceptionTipo {
 
     logExUsuarioInvalido(1, "Usuário Inválido"),
     logExEventoNivelInvalido(2, "Evento Nível Inválido"),
@@ -27,12 +27,15 @@ public enum LogExceptionTipo {
     logExAoInserirLog(4, "Erro ao Inserir Log"),
     logExUsuarioSemEntidade(5, "Usuário sem Entidade Vinculada"),
     logExUsuarioInativo(6, "Usuário está Inativo"),
-    logExAoInserirCampoCustomizado(7, "Erro ao Inserir Campos Customizados");
+    logExAoInserirCampoCustomizado(7, "Erro ao Inserir Campos Customizados"), 
+    logExEntidadeInativa(8, "Entidade está Inativa"), 
+    logExEventoNivelInativo(9, "Evento Nível está Inativo"), 
+    logExEventoTipoInativo(10, "Evento Tipo está Inativo");
     
     private Integer codigo;
     private String descricao;
 
-    private LogExceptionTipo(Integer codigo, String descricao) {
+    private EventoLogExceptionTipo(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }

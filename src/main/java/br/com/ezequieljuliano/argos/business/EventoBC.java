@@ -44,9 +44,9 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
 
     public void saveOrUpdate(Evento evento, Usuario usuario) {
         if (evento.getId() == null) {
-            insert(evento);
+            dao.insert(evento);
         } else {
-            update(evento);
+            dao.update(evento);
         }
         //Insere Usuário relacionado ao Evento
         gravarUsuarioEvento(evento, usuario);

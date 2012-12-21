@@ -100,7 +100,7 @@
                         </p:selectOneMenu>  
                     </h:panelGrid>
                 </h:panelGrid>
-                
+
                 <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
                 <p:commandButton value="Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" update=":frm" immediate="true"/> 
             </p:panel>
@@ -119,11 +119,11 @@
                         </p:selectOneMenu>  
                     </h:panelGrid>
                 </h:panelGrid>
-                
+
                 <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
                 <p:commandButton value="Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
             </p:panel>
-            
+
             <br />
 
             <p:dialog width="600" height="400" showHeader="false" widgetVar="dlgEvento" modal="true" closable="true" position="top">
@@ -169,9 +169,22 @@
                         <h:outputText value="#{eventoPesquisaMB.evento.entidade.nome}"/>
                         <br />
                         <br />
-                        <h:outputText value="Descrição: "/>
+                        <h:outputText value="Mensagem: "/>
                         <br />
                         <h:outputText value="#{eventoPesquisaMB.evento.mensagem}"/>
+                        <br />
+                        <br />
+                        <p:dataTable id="listVlCustom" var="vlCustom" 
+                                     value="#{eventoPesquisaMB.evento.valorCustomizadoList}"                          
+                                     emptyMessage="Não existem registros para exibir"> 
+                            <f:facet name="header">Valores Customizados</f:facet>
+                            <p:column headerText="Campo">
+                                <h:outputText value="#{vlCustom.eventoCampoCustomizado.descricao}" />
+                            </p:column>
+                            <p:column headerText="Valor">
+                                <h:outputText value="#{vlCustom.valor}" />
+                            </p:column>
+                        </p:dataTable>
 
                     </p:fieldset>
                 </h:panelGroup>  
