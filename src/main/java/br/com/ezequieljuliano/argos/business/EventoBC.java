@@ -21,7 +21,6 @@ import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioEvento;
 import br.com.ezequieljuliano.argos.persistence.EventoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.inject.Inject;
@@ -32,21 +31,18 @@ import org.apache.lucene.queryParser.ParseException;
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
+public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
 
     private static final long serialVersionUID = 1L;
-    
-    @Inject
-    private EventoDAO dao;
     
     @Inject
     private UsuarioEventoBC usuarioEventoBC;
 
     public void saveOrUpdate(Evento evento, Usuario usuario) {
         if (evento.getId() == null) {
-            dao.insert(evento);
+            getDAO().insert(evento);
         } else {
-            dao.update(evento);
+            getDAO().save(evento);
         }
         //Insere Usuário relacionado ao Evento
         gravarUsuarioEvento(evento, usuario);
@@ -63,6 +59,6 @@ public class EventoBC extends DelegateCrud<Evento, String, EventoDAO> {
     }
 
     public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro filtro) throws ParseException {
-        return dao.findByPesquisaFiltro(filtro);
+        return getDAO().findByPesquisaFiltro(filtro);
     }
 }

@@ -64,7 +64,6 @@ public class EventoNivelMB {
         this.bean = bean;
     }
 
-    @Transactional
     public void salvar() {
         try {
             bc.saveOrUpdate(bean);
@@ -76,7 +75,6 @@ public class EventoNivelMB {
         }
     }
 
-    @Transactional
     public void inativar() {
         try {
             bc.inativar(bean);
@@ -86,7 +84,6 @@ public class EventoNivelMB {
         }
     }
 
-    @Transactional
     public void ativar() {
         try {
             bc.ativar(bean);

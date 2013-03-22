@@ -17,46 +17,30 @@ package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import org.eclipse.persistence.nosql.annotations.DataFormatType;
-import org.eclipse.persistence.nosql.annotations.Field;
-import org.eclipse.persistence.nosql.annotations.NoSql;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@Entity
-@NoSql(dataType="EventoNivel", dataFormat=DataFormatType.MAPPED)
+@Document
 public class EventoNivel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue
-    @Field(name="_id")
     private String id;
     
-    @Basic
-    @Field(name="codigo")
+    @Indexed
     private int codigo;
     
-    @Basic
-    @Field(name="descricao")
+    @Indexed
     private String descricao;
     
-    @Basic
-    @Field(name="situacao")
-    @Enumerated(EnumType.ORDINAL)
     private Situacao situacao = Situacao.ativo;
     
-    @Basic
-    @Field(name="alerta")
     private Boolean alerta = true;
 
     public EventoNivel() {

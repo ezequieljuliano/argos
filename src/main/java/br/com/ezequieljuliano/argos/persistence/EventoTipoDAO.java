@@ -15,69 +15,22 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
-import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
-import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import java.util.List;
-import javax.persistence.Query;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.search.Filter;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@PersistenceController
+@Repository
 public class EventoTipoDAO extends GenericDAO<EventoTipo, String> {
 
     private static final long serialVersionUID = 1L;
 
     public EventoTipo findByCodigo(int codigo) {
-        String jpql = "select e from EventoTipo e where e.codigo = :codigo";
-        Query qry = createQuery(jpql);
-        qry.setParameter("codigo", codigo);
-        List<EventoTipo> eventoTipoList = qry.getResultList();
-        if (eventoTipoList == null || eventoTipoList.isEmpty()) {
-            return null;
-        }
-        return eventoTipoList.get(0);
-    }
-
-    @Override
-    public Document getLuceneDocument(EventoTipo obj) {
-        Document document = new Document();
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_ID, obj.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_CODIGO, Integer.toString(obj.getCodigo()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_DESCRICAO, obj.getDescricao(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_SITUACAOCODIGO, obj.getSituacao().toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_SITUACAO, obj.getSituacao().getNome(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOTIPO_TUDO, getLuceneConteudoString(obj), Field.Store.YES, Field.Index.ANALYZED));
-        return document;
-    }
-
-    @Override
-    public String getLuceneIndiceChave() {
-        return Constantes.INDICE_EVENTOTIPO_ID;
-    }
-
-    @Override
-    public String getLuceneConteudoString(EventoTipo obj) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(obj.getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getDescricao());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getSituacao().toString());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getSituacao().getNome());
-        return stringBuilder.toString();
-    }
-
-    @Override
-    public Filter getLuceneFiltroDeRestricao() {
-        return null;
+        Query query = new Query(Criteria.where("codigo").is(codigo));
+        return getMongoOperations().findOne(query, EventoTipo.class);
     }
 }

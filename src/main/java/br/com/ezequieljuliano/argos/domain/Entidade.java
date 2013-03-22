@@ -17,47 +17,36 @@ package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import org.eclipse.persistence.nosql.annotations.DataFormatType;
-import org.eclipse.persistence.nosql.annotations.Field;
-import org.eclipse.persistence.nosql.annotations.NoSql;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@Entity
-@NoSql(dataType="Entidade", dataFormat=DataFormatType.MAPPED)
+@Document
 public class Entidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue
-    @Field(name="_id")
     private String id;
     
-    @Basic
-    @Field(name="codigo")
+    @Indexed
     private int codigo;
     
-    @Basic
-    @Field(name="cadastroNacional")
+    @Indexed
     private String cadastroNacional;
     
-    @Basic
-    @Field(name="nome")
+    @Indexed
     private String nome;
     
-    @Basic
-    @Field(name="situacao")
-    @Enumerated(EnumType.ORDINAL)
     private Situacao situacao = Situacao.ativo;
+    
+    @DBRef
+    private Entidade entidadeAcima;
 
     public Entidade() {
         super();
@@ -101,6 +90,14 @@ public class Entidade implements Serializable {
 
     public void setSituacao(Situacao situacao) {
         this.situacao = situacao;
+    }
+
+    public Entidade getEntidadeAcima() {
+        return entidadeAcima;
+    }
+
+    public void setEntidadeAcima(Entidade entidadeAcima) {
+        this.entidadeAcima = entidadeAcima;
     }
 
     public boolean isAtivo() {

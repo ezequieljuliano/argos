@@ -22,7 +22,6 @@ import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.Parameter;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,22 +35,18 @@ import org.primefaces.event.SelectEvent;
  */
 @ViewController
 public class EntidadeMB {
-    
+
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private EntidadeBC bc;
-    
     @Inject
     private MessageContext messageContext;
-    
-    @Inject 
+    @Inject
     private Parameter<String> id;
-    
     private Entidade bean = null;
     private List<Entidade> beanList = null;
     private String campoPesquisa = null;
-    
+
     public Entidade getBean() {
         if (bean == null) {
             bean = new Entidade();
@@ -61,31 +56,30 @@ public class EntidadeMB {
         }
         return bean;
     }
-    
+
     public void setBean(Entidade bean) {
         this.bean = bean;
     }
-    
+
     public List<Entidade> getBeanList() {
         if (beanList == null) {
             this.beanList = bc.findAll();
         }
         return beanList;
     }
-    
+
     public void setBeanList(List<Entidade> beanList) {
         this.beanList = beanList;
     }
-    
+
     public String getCampoPesquisa() {
         return campoPesquisa;
     }
-    
+
     public void setCampoPesquisa(String campoPesquisa) {
         this.campoPesquisa = campoPesquisa;
     }
-    
-    @Transactional
+
     public void salvar() {
         try {
             bc.saveOrUpdate(bean);
@@ -96,8 +90,7 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
     }
-    
-    @Transactional
+
     public void inativar() {
         try {
             bc.inativar(bean);
@@ -106,8 +99,7 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao inativar o registro!", SeverityType.ERROR);
         }
     }
-    
-    @Transactional
+
     public void ativar() {
         try {
             bc.ativar(bean);
@@ -116,14 +108,14 @@ public class EntidadeMB {
             messageContext.add("Ocorreu um erro ao ativar o registro!", SeverityType.ERROR);
         }
     }
-    
+
     public List<Entidade> getList() {
         return getBeanList();
     }
-    
-    public void findByALL() {
+
+    public void findByNome() {
         if (!campoPesquisa.equals("")) {
-            this.beanList = bc.findByALL(campoPesquisa);
+            this.beanList = bc.findByNome(campoPesquisa);
             if (beanList.isEmpty()) {
                 messageContext.add("A pesquisa não retornou nenhum resultado!", SeverityType.WARN);
             }
@@ -131,11 +123,11 @@ public class EntidadeMB {
             this.beanList = bc.findAll();
         }
     }
-    
+
     public void cancelarPesquisa() {
-        this.beanList = bc.findAll();        
+        this.beanList = bc.findAll();
     }
-    
+
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("entidade_edit.jsf?faces-redirect=true&id=" + ((Entidade) e.getObject()).getId());

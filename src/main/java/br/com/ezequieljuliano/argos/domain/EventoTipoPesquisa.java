@@ -65,9 +65,9 @@ public enum EventoTipoPesquisa implements Serializable {
             case etpPalavrasChave:
                 return Constantes.INDICE_EVENTO_PALAVRASCHAVE;
             case etpEntidadeNome:
-                return Constantes.INDICE_ENTIDADE_NOME;
+                return Constantes.INDICE_EVENTO_ENTIDADENOME;
             case etpEntidadeCadastroNacional:
-                return Constantes.INDICE_ENTIDADE_CADASTRONACIONAL;
+                return Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL;
             case etpEventoNivelDescricao:
                 return Constantes.INDICE_EVENTO_NIVELDESCRICAO;
             case etpEventoTipoDescricao:

@@ -52,7 +52,6 @@ public class EventoLogService {
     @Path("/{apiKey}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
     public EventoLogReturnTO efetuarLogging(@PathParam("apiKey") String apiKey, EventoLogTO evento) {
         try {
             //Valida o usuário se está habilitado para enviar Logs

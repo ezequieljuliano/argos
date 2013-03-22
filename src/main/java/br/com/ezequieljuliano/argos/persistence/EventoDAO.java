@@ -20,24 +20,55 @@ import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.EventoValorCustomizado;
 import br.com.ezequieljuliano.argos.util.Data;
-import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
 import java.util.List;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.TermsFilter;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@PersistenceController
-public class EventoDAO extends GenericDAO<Evento, String> {
+@Repository
+public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
     
     private Filter luceneFilter = null;
+
+    public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro filtro) {
+        //Reset no filter
+        luceneFilter = null;
+        //Monta filtro padrão
+        TermsFilter termFilter = new TermsFilter();
+        //Variavel de controle
+        boolean possuiFilter = false;
+        //Verifica se o filtro possui entidade
+        if (filtro.getEntidade() != null) {
+            Term termEntidade = new Term(Constantes.INDICE_EVENTO_ENTIDADEID, filtro.getEntidade().getId());
+            termFilter.addTerm(termEntidade);
+            possuiFilter = true;
+        }
+        //Verifica se o filtro possui tipo
+        if (filtro.getEventoTipo() != null) {
+            Term termTipo = new Term(Constantes.INDICE_EVENTO_TIPOID, filtro.getEventoTipo().getId());
+            termFilter.addTerm(termTipo);
+            possuiFilter = true;
+        }
+        //Verifica se o filtro possui nível
+        if (filtro.getEventoNivel() != null) {
+            Term termNivel = new Term(Constantes.INDICE_EVENTO_NIVELID, filtro.getEventoNivel().getId());
+            termFilter.addTerm(termNivel);
+            possuiFilter = true;
+        }
+        if (possuiFilter) {
+            luceneFilter = termFilter;
+        }
+        return super.luceneParserQuery(filtro.getFiltroTipo().getLuceneIndex(), filtro.getPesquisaValor());
+    }
 
     @Override
     public Document getLuceneDocument(Evento obj) {
@@ -67,17 +98,17 @@ public class EventoDAO extends GenericDAO<Evento, String> {
             document.add(new Field(Constantes.INDICE_EVENTO_VLCUSTOM_CAMPOENTIDADEID, eventoVlCustom.getEventoCampoCustomizado().getEntidade().getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }
 
-        document.add(new Field(Constantes.INDICE_EVENTO_TUDO, getLuceneConteudoString(obj), Field.Store.YES, Field.Index.ANALYZED));
+        document.add(new Field(Constantes.INDICE_EVENTO_TUDO, getLuceneContentString(obj), Field.Store.YES, Field.Index.ANALYZED));
         return document;
     }
 
     @Override
-    public String getLuceneIndiceChave() {
+    public String getLuceneIndexKey() {
         return Constantes.INDICE_EVENTO_ID;
     }
 
     @Override
-    public String getLuceneConteudoString(Evento obj) {
+    public String getLuceneContentString(Evento obj) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(obj.getId());
         stringBuilder.append(" \n ");
@@ -133,37 +164,12 @@ public class EventoDAO extends GenericDAO<Evento, String> {
     }
 
     @Override
-    public Filter getLuceneFiltroDeRestricao() {
+    public Filter getLuceneFilterRestriction() {
         return luceneFilter;
     }
 
-    public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro filtro) {
-        //Adicona filtro padrão
-        luceneFilter = null;
-        Boolean possuiFiltro = false;
-        //Monta filtro padrão
-        TermsFilter termFilter = new TermsFilter();
-        //Verifica se o filtro possui entidade
-        if (filtro.getEntidade() != null) {
-            Term termEntidade = new Term(Constantes.INDICE_EVENTO_ENTIDADEID, filtro.getEntidade().getId());
-            termFilter.addTerm(termEntidade);
-            possuiFiltro = true;
-        }
-        //Verifica se o filtro possui tipo
-        if (filtro.getEventoTipo() != null) {
-            Term termTipo = new Term(Constantes.INDICE_EVENTO_TIPOID, filtro.getEventoTipo().getId());
-            termFilter.addTerm(termTipo);
-            possuiFiltro = true;
-        }
-        //Verifica se o filtro possui nível
-        if (filtro.getEventoNivel() != null) {
-            Term termNivel = new Term(Constantes.INDICE_EVENTO_NIVELID, filtro.getEventoNivel().getId());
-            termFilter.addTerm(termNivel);
-            possuiFiltro = true;
-        }
-        if (possuiFiltro) {
-            luceneFilter = termFilter;
-        }
-        return super.luceneParserQuery(filtro.getFiltroTipo().getLuceneIndex(), filtro.getPesquisaValor());
+    @Override
+    public String getValueIdKey(Evento obj) {
+        return obj.getId();
     }
 }

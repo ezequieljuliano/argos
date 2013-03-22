@@ -15,72 +15,23 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
-import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
-import br.gov.frameworkdemoiselle.stereotype.PersistenceController;
-import java.util.List;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.TermsFilter;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@PersistenceController
+@Repository
 public class EventoCampoCustomizadoDAO extends GenericDAO<EventoCampoCustomizado, String> {
 
     private static final long serialVersionUID = 1L;
-    private Filter luceneFilter = null;
 
     public EventoCampoCustomizado findByDescricaoAndEntidade(String descricao, Entidade entidade) {
-        //Adiciona o filtro por entidade
-        Term term = new Term(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_ENTIDADEID, entidade.getId());
-        TermsFilter termFilter = new TermsFilter();
-        termFilter.addTerm(term);
-        luceneFilter = termFilter;
-        //Busca por descrição respeitando o filtro
-        List<EventoCampoCustomizado> objList = super.luceneTermQuery(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_DESCRICAO, descricao);
-        if (objList == null || objList.isEmpty()) {
-            return null;
-        }
-        return objList.get(0);
-    }
-
-    @Override
-    public Document getLuceneDocument(EventoCampoCustomizado obj) {
-        Document document = new Document();
-        document.add(new Field(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_ID, obj.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_DESCRICAO, obj.getDescricao(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_ENTIDADEID, obj.getEntidade().getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_TUDO, getLuceneConteudoString(obj), Field.Store.YES, Field.Index.ANALYZED));
-        return document;
-    }
-
-    @Override
-    public String getLuceneIndiceChave() {
-        return Constantes.INDICE_EVENTOCAMPOCUSTOMIZADO_ID;
-    }
-
-    @Override
-    public String getLuceneConteudoString(EventoCampoCustomizado obj) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(obj.getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getDescricao());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getNome());
-        return stringBuilder.toString();
-    }
-
-    @Override
-    public Filter getLuceneFiltroDeRestricao() {
-        return luceneFilter;
+        Query query = new Query(Criteria.where("descricao").is(descricao).and("entidade").is(entidade));
+        return getMongoOperations().findOne(query, EventoCampoCustomizado.class);
     }
 }

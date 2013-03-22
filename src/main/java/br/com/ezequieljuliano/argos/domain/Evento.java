@@ -20,82 +20,53 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.eclipse.persistence.nosql.annotations.DataFormatType;
-import org.eclipse.persistence.nosql.annotations.Field;
-import org.eclipse.persistence.nosql.annotations.JoinField;
-import org.eclipse.persistence.nosql.annotations.NoSql;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@Entity
-@NoSql(dataType="Evento", dataFormat=DataFormatType.MAPPED)
+@Document
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue
-    @Field(name="_id")
     private String id;
     
-    @Basic
-    @Field(name="hostName")
-    private String hostName;
-    
-    @Basic
-    @Field(name="hostIp")
-    private String hostIp;
-    
-    @Basic
-    @Field(name="hostUser")
-    private String hostUser;
-    
-    @Basic
-    @Field(name="mensagem")
-    private String mensagem;
-    
-    @Basic
-    @Field(name="fonte")
-    private String fonte;
-    
-    @Basic
-    @Field(name="nome")
-    private String nome;
-    
-    @Basic
-    @Field(name="ocorrenciaDtHr")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Indexed
     private Date ocorrenciaDtHr;
     
-    @Basic
-    @Field(name="palavrasChave")
+    @Indexed
+    private String hostName;
+    
+    @Indexed
+    private String hostIp;
+    
+    @Indexed
+    private String hostUser;
+    
+    private String mensagem;
+    
+    private String fonte;
+    
+    @Indexed
+    private String nome;
+    
     private String palavrasChave;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinField(name="entidadeId")
+    @DBRef
     private Entidade entidade;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinField(name="eventoNivelId")
+    @DBRef
     private EventoNivel eventoNivel;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinField(name="eventoTipoId")
+    @DBRef
     private EventoTipo eventoTipo;
     
-    @ElementCollection
-    @Field(name="valorCustomizadoList")
     private List<EventoValorCustomizado> valorCustomizadoList = new ArrayList<EventoValorCustomizado>();
 
     public Evento() {

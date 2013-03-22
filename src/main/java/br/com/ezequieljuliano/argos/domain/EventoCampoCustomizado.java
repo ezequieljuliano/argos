@@ -17,38 +17,27 @@ package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import org.eclipse.persistence.nosql.annotations.DataFormatType;
-import org.eclipse.persistence.nosql.annotations.Field;
-import org.eclipse.persistence.nosql.annotations.JoinField;
-import org.eclipse.persistence.nosql.annotations.NoSql;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@Entity
-@NoSql(dataType = "EventoCampoCustomizado", dataFormat = DataFormatType.MAPPED)
+@Document
 public class EventoCampoCustomizado implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue
-    @Field(name = "_id")
     private String id;
     
-    @Basic
-    @Field(name = "descricao")
+    @Indexed
     private String descricao;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinField(name="entidadeId")
+    @DBRef
     private Entidade entidade;
 
     public EventoCampoCustomizado() {

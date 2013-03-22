@@ -303,8 +303,6 @@ public class DadosPadraoBC {
         eventoBC.saveOrUpdate(evento4, usuarioBC.findByUserName("normal"));
     }
 
-    @Startup
-    @Transactional
     public void InsereDados() throws ValidationException, Exception {
         insereEventoNivel();
         insereEventoTipo();

@@ -15,7 +15,6 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
-import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
@@ -24,21 +23,16 @@ import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
 import br.com.ezequieljuliano.argos.util.UniqId;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
+public class UsuarioBC extends GenericBC<Usuario, String, UsuarioDAO> {
 
     private static final long serialVersionUID = 1L;
-    
-    @Inject
-    private UsuarioDAO dao;
 
     public void saveOrUpdate(Usuario usuario) throws ValidationException {
         //Verifica se nome de usuário já existe
@@ -64,9 +58,9 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
         if (usuario.getId() == null) {
             //Gerar Hash da senha
             generatePasswordKey(usuario);
-            dao.insert(usuario);
+            getDAO().insert(usuario);
         } else {
-            dao.update(usuario);
+            getDAO().save(usuario);
         }
     }
 
@@ -85,11 +79,11 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     }
 
     public Usuario findByUserName(String userName) {
-        return dao.findByUserName(userName);
+        return getDAO().findByUserName(userName);
     }
 
     public Usuario findByEmail(String email) {
-        return dao.findByEmail(email);
+        return getDAO().findByEmail(email);
     }
 
     public void generateApiKey(Usuario usuario) {
@@ -104,11 +98,11 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
 
     public Usuario login(String userName, String password) {
         String passwordKey = UniqId.getInstance().hashString(password);
-        return dao.login(userName, passwordKey);
+        return getDAO().login(userName, passwordKey);
     }
 
     public Entidade findEntidadeByApiKey(String apiKey) {
-        Usuario user = dao.findByApiKey(apiKey);
+        Usuario user = getDAO().findByApiKey(apiKey);
         if ((user != null) && (user.getEntidade() != null)) {
             return user.getEntidade();
         }
@@ -116,11 +110,10 @@ public class UsuarioBC extends DelegateCrud<Usuario, String, UsuarioDAO> {
     }
 
     public Usuario findByApiKey(String apiKey) {
-        return dao.findByApiKey(apiKey);
+        return getDAO().findByApiKey(apiKey);
     }
 
-    public List<Usuario> findByALL(String pesquisa) {
-        return dao.findByALL(pesquisa);
+    public List<Usuario> findListByUserName(String userName) {
+        return getDAO().findListByUserName(userName);
     }
-
 }

@@ -23,7 +23,6 @@ import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,23 +38,19 @@ import org.primefaces.event.SelectEvent;
  */
 @ViewController
 public class UsuarioMB {
-    
+
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private UsuarioBC bc;
-    
     @Inject
     private MessageContext messageContext;
-    
     @Inject
     private Parameter<String> id;
-    
     private Usuario bean = null;
     private List<Usuario> beanList = null;
     private String campoPesquisa = null;
     private ArrayList<SelectItem> perfil;
-    
+
     public Usuario getBean() {
         if (bean == null) {
             bean = new Usuario();
@@ -65,7 +60,7 @@ public class UsuarioMB {
         }
         return bean;
     }
-    
+
     public void setBean(Usuario bean) {
         this.bean = bean;
     }
@@ -88,8 +83,7 @@ public class UsuarioMB {
     public void setCampoPesquisa(String campoPesquisa) {
         this.campoPesquisa = campoPesquisa;
     }
-    
-    @Transactional
+
     public void salvar() {
         try {
             bc.saveOrUpdate(bean);
@@ -100,8 +94,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
     }
-    
-    @Transactional
+
     public void inativar() {
         try {
             bc.inativar(bean);
@@ -110,8 +103,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao inativar o registro!", SeverityType.ERROR);
         }
     }
-    
-    @Transactional
+
     public void ativar() {
         try {
             bc.ativar(bean);
@@ -120,14 +112,14 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao ativar o registro!", SeverityType.ERROR);
         }
     }
-    
+
     public List<Usuario> getList() {
         return getBeanList();
     }
 
-    public void findByALL() {
+    public void findByUserName() {
         if (!campoPesquisa.equals("")) {
-            this.beanList = bc.findByALL(campoPesquisa);
+            this.beanList = bc.findListByUserName(campoPesquisa);
             if (beanList.isEmpty()) {
                 messageContext.add("A pesquisa não retornou nenhum resultado!", SeverityType.WARN);
             }
@@ -139,7 +131,7 @@ public class UsuarioMB {
     public void cancelarPesquisa() {
         this.beanList = bc.findAll();
     }
-    
+
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("usuario_edit.jsf?faces-redirect=true&id=" + ((Usuario) e.getObject()).getId());
@@ -147,7 +139,7 @@ public class UsuarioMB {
             Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<SelectItem> getPerfis() {
         if (this.perfil == null) {
             this.perfil = new ArrayList<SelectItem>();
@@ -157,8 +149,7 @@ public class UsuarioMB {
         }
         return perfil;
     }
-    
-    @Transactional
+
     public void generateApiKey() {
         try {
             bc.generateApiKey(bean);
@@ -168,8 +159,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao gerar a API Key!", SeverityType.ERROR);
         }
     }
-    
-    @Transactional
+
     public void trocarSenha() {
         try {
             bc.generatePasswordKey(bean);

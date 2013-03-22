@@ -21,37 +21,24 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
-import org.apache.lucene.store.RAMDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
-@ApplicationScoped
+@Component
 public class LuceneManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Produces
+    @Autowired
     private Directory directory;
-
-    @Inject
-    public void init() {
-        directory = new RAMDirectory();
-        try {
-            iniciarServico();
-        } catch (IOException e) {
-            Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE,
-                    null, e);
-        }
-    }
-
+    
     private void iniciarServico() throws IOException {
         File file = getNewFile();
         //Cria Diretório
@@ -98,4 +85,9 @@ public class LuceneManager implements Serializable {
         }
         return file;
     }
+
+    public Directory getDirectory() {
+        return directory;
+    }
+    
 }

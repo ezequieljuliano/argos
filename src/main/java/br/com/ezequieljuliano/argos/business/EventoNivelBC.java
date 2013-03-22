@@ -20,20 +20,15 @@ import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoNivelDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
-import javax.inject.Inject;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivelDAO> {
+public class EventoNivelBC extends GenericBC<EventoNivel, String, EventoNivelDAO> {
 
     private static final long serialVersionUID = 1L;
-    
-    @Inject
-    private EventoNivelDAO dao;
 
     public void saveOrUpdate(EventoNivel eventoNivel) throws ValidationException {
         //Verifica se código já não foi cadastrado
@@ -42,9 +37,9 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
             throw new ValidationException("Código já cadastrado!");
         }
         if (eventoNivel.getId() == null) {
-            dao.insert(eventoNivel);
+            getDAO().insert(eventoNivel);
         } else {
-            dao.update(eventoNivel);
+            getDAO().save(eventoNivel);
         }
     }
 
@@ -63,6 +58,6 @@ public class EventoNivelBC extends DelegateCrud<EventoNivel, String, EventoNivel
     }
 
     public EventoNivel findByCodigo(int codigo) {
-        return dao.findByCodigo(codigo);
-    }    
+        return getDAO().findByCodigo(codigo);
+    }
 }

@@ -20,30 +20,25 @@ import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoCampoCustomizadoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
-import javax.inject.Inject;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class EventoCampoCustomizadoBC extends DelegateCrud<EventoCampoCustomizado, String, EventoCampoCustomizadoDAO> {
+public class EventoCampoCustomizadoBC extends GenericBC<EventoCampoCustomizado, String, EventoCampoCustomizadoDAO> {
 
     private static final long serialVersionUID = 1L;
-   
-    @Inject
-    private EventoCampoCustomizadoDAO dao;
 
     public void saveOrUpdate(EventoCampoCustomizado eventoCampoCustomizado) throws ValidationException {
         if (eventoCampoCustomizado.getId() == null) {
-            dao.insert(eventoCampoCustomizado);
+            getDAO().insert(eventoCampoCustomizado);
         } else {
-            dao.update(eventoCampoCustomizado);
+            getDAO().save(eventoCampoCustomizado);
         }
     }
 
     public EventoCampoCustomizado findByDescricaoAndEntidade(String descricao, Entidade entidade) {
-        return dao.findByDescricaoAndEntidade(descricao, entidade);
+        return getDAO().findByDescricaoAndEntidade(descricao, entidade);
     }
 }

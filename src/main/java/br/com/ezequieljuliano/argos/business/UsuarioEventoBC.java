@@ -18,26 +18,21 @@ package br.com.ezequieljuliano.argos.business;
 import br.com.ezequieljuliano.argos.domain.UsuarioEvento;
 import br.com.ezequieljuliano.argos.persistence.UsuarioEventoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.template.DelegateCrud;
-import javax.inject.Inject;
 
 /**
  *
  * @author Ezequiel Juliano Müller
  */
 @BusinessController
-public class UsuarioEventoBC extends DelegateCrud<UsuarioEvento, String, UsuarioEventoDAO> {
+public class UsuarioEventoBC extends GenericBC<UsuarioEvento, String, UsuarioEventoDAO> {
 
     private static final long serialVersionUID = 1L;
-    
-    @Inject
-    private UsuarioEventoDAO dao;
 
     public void saveOrUpdate(UsuarioEvento usuarioEvento) {
         if (usuarioEvento.getId() == null) {
-            dao.insert(usuarioEvento);
+            getDAO().insert(usuarioEvento);
         } else {
-            dao.update(usuarioEvento);
+            getDAO().save(usuarioEvento);
         }
     }
 

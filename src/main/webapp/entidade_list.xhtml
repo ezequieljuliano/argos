@@ -14,10 +14,10 @@
             <br />
 
             <p:panel id="pnPesquisa">
-                <h:outputText value="Pesquisar por:" />
+                <h:outputText value="Pesquisar Nome por:" />
                 <h:panelGrid columns="3" >
                     <p:inputText value="#{entidadeMB.campoPesquisa}" style="width: 350px" id="campoPesquisa" />  
-                    <p:commandButton value="Pesquisar" action="#{entidadeMB.findByALL()}" image="ui-icon ui-icon-circle-zoomin" update=":frm:list"/>
+                    <p:commandButton value="Pesquisar" action="#{entidadeMB.findByNome()}" image="ui-icon ui-icon-circle-zoomin" update=":frm:list"/>
                     <p:commandButton value="Cancelar" action="#{entidadeMB.cancelarPesquisa()}" image="ui-icon ui-icon-refresh" update=":frm:list"/>
                 </h:panelGrid>
             </p:panel>
