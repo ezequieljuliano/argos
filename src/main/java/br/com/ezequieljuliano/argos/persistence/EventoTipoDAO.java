@@ -16,6 +16,7 @@
 package br.com.ezequieljuliano.argos.persistence;
 
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
+import java.util.List;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,10 @@ public class EventoTipoDAO extends GenericDAO<EventoTipo, String> {
     public EventoTipo findByCodigo(int codigo) {
         Query query = new Query(Criteria.where("codigo").is(codigo));
         return getMongoOperations().findOne(query, EventoTipo.class);
+    }
+
+    public List<EventoTipo> findListByDescricao(String descricao) {
+        Query query = new Query(Criteria.where("descricao").regex(descricao, "i"));
+        return getMongoOperations().find(query, EventoTipo.class);
     }
 }

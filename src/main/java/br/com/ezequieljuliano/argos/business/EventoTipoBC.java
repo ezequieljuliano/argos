@@ -20,6 +20,7 @@ import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoTipoDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import java.util.List;
 
 /**
  *
@@ -59,5 +60,9 @@ public class EventoTipoBC extends GenericBC<EventoTipo, String, EventoTipoDAO> {
 
     public EventoTipo findByCodigo(int codigo) {
         return getDAO().findByCodigo(codigo);
+    }
+
+    public List<EventoTipo> findListByDescricao(String descricao) {
+        return getDAO().findListByDescricao(descricao);
     }
 }

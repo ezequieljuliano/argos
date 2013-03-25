@@ -10,10 +10,20 @@
                     <p:commandButton value="Voltar" action="/usuario_list.jsf?faces-redirect=true" immediate="true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
                     <p:commandButton value="Novo" action="/usuario_edit.jsf?faces-redirect=true" rendered="#{usuarioMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
                     <p:commandButton value="Salvar" action="#{usuarioMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
+
+                    <p:commandButton value="Deletar" onclick="confirmation.show()"
+                                     rendered="#{usuarioMB.bean.id != null}" type="button" immediate="true" ajax="false" image="ui-icon-trash" />
+                    <p:confirmDialog message="Tem certeza que deseja deletar este registro?"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{usuarioMB.deletar()}" immediate="true"/>
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button" />
+                    </p:confirmDialog>
+
                     <p:commandButton value="Inativar" action="#{usuarioMB.inativar()}" rendered="#{usuarioMB.bean.ativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
                     <p:commandButton value="Ativar" action="#{usuarioMB.ativar()}" rendered="#{usuarioMB.bean.inativo and usuarioMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                     <p:commandButton value="Gerar API Key" action="#{usuarioMB.generateApiKey()}" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-extlink" update="frm"/>
-                    <p:commandButton value="Trocar Senha" onclick="dlgTrocarSenha.show(); return false;" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-key"/>
+                    <p:commandButton value="Trocar Senha" onclick="dlgTrocarSenha.show();
+                            return false;" rendered="#{usuarioMB.bean.id != null}" image="ui-icon ui-icon-key"/>
                 </p:toolbarGroup>
             </p:toolbar>
 
@@ -86,7 +96,8 @@
                     <h:outputLabel value="Entidade"/>
                     <h:panelGrid columns="2" id="entidade">
                         <p:inputText value="#{usuarioMB.bean.entidade.nome}" id="entNome" disabled="true" size="60" />
-                        <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show(); return false;" />
+                        <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show();
+                            return false;" />
                     </h:panelGrid> 
                 </h:panelGrid> 
 

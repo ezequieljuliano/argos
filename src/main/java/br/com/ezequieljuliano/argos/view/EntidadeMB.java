@@ -91,6 +91,17 @@ public class EntidadeMB {
         }
     }
 
+    public String deletar() {
+        try {
+            bc.delete(bean.getId());
+            messageContext.add("Registro deletado com sucesso!", SeverityType.INFO);
+            return getPreviousView();
+        } catch (Exception e) {
+            messageContext.add("Ocorreu um erro ao deletar o registro!", SeverityType.ERROR);
+        }
+        return "";
+    }
+
     public void inativar() {
         try {
             bc.inativar(bean);
@@ -134,5 +145,9 @@ public class EntidadeMB {
         } catch (Exception ex) {
             Logger.getLogger(EntidadeMB.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String getPreviousView() {
+        return "./entidade_list.xhtml";
     }
 }

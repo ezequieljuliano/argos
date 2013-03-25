@@ -10,6 +10,15 @@
                     <p:commandButton value="Voltar" action="/evento_nivel_list.jsf?faces-redirect=true" immediate="true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
                     <p:commandButton value="Novo" action="/evento_nivel_edit.jsf?faces-redirect=true" rendered="#{eventoNivelMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
                     <p:commandButton value="Salvar" action="#{eventoNivelMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
+
+                    <p:commandButton value="Deletar" onclick="confirmation.show()"
+                                     rendered="#{eventoNivelMB.bean.id != null}" type="button" immediate="true" ajax="false" image="ui-icon-trash" />
+                    <p:confirmDialog message="Tem certeza que deseja deletar este registro?"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{eventoNivelMB.deletar()}" immediate="true"/>
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button" />
+                    </p:confirmDialog>
+
                     <p:commandButton value="Inativar" action="#{eventoNivelMB.inativar()}" rendered="#{eventoNivelMB.bean.ativo and eventoNivelMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
                     <p:commandButton value="Ativar" action="#{eventoNivelMB.ativar()}" rendered="#{eventoNivelMB.bean.inativo and eventoNivelMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                 </p:toolbarGroup>

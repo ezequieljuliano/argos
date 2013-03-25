@@ -10,6 +10,15 @@
                     <p:commandButton value="Voltar" action="/entidade_list.jsf?faces-redirect=true" immediate="true" ajax="false" image="ui-icon ui-icon-arrowthick-1-w"/>
                     <p:commandButton value="Novo" action="/entidade_edit.jsf?faces-redirect=true" rendered="#{entidadeMB.bean.id != null}" ajax="false" image="ui-icon ui-icon-document"/>
                     <p:commandButton value="Salvar" action="#{entidadeMB.salvar()}" image="ui-icon ui-icon-disk" update="frm"/>
+
+                    <p:commandButton value="Deletar" onclick="confirmation.show()"
+                                     rendered="#{entidadeMB.bean.id != null}" type="button" immediate="true" ajax="false" image="ui-icon-trash" />
+                    <p:confirmDialog message="Tem certeza que deseja deletar este registro?"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{entidadeMB.deletar()}" immediate="true"/>
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button" />
+                    </p:confirmDialog>
+
                     <p:commandButton value="Inativar" action="#{entidadeMB.inativar()}" rendered="#{entidadeMB.bean.ativo and entidadeMB.bean.id != null}" image="ui-icon ui-icon-circle-close" update="frm"/>
                     <p:commandButton value="Ativar" action="#{entidadeMB.ativar()}" rendered="#{entidadeMB.bean.inativo and entidadeMB.bean.id != null}" image="ui-icon ui-icon-circle-check" update="frm"/>
                 </p:toolbarGroup>

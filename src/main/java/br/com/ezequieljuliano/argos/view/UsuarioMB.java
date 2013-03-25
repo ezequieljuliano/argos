@@ -113,6 +113,17 @@ public class UsuarioMB {
         }
     }
 
+    public String deletar() {
+        try {
+            bc.delete(bean.getId());
+            messageContext.add("Registro deletado com sucesso!", SeverityType.INFO);
+            return getPreviousView();
+        } catch (Exception e) {
+            messageContext.add("Ocorreu um erro ao deletar o registro!", SeverityType.ERROR);
+        }
+        return "";
+    }
+
     public List<Usuario> getList() {
         return getBeanList();
     }
@@ -168,5 +179,9 @@ public class UsuarioMB {
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao trocar a senha!", SeverityType.ERROR);
         }
+    }
+
+    private String getPreviousView() {
+        return "./usuario_list.xhtml";
     }
 }

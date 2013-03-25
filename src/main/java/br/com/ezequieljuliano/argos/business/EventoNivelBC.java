@@ -20,6 +20,7 @@ import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EventoNivelDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import java.util.List;
 
 /**
  *
@@ -59,5 +60,9 @@ public class EventoNivelBC extends GenericBC<EventoNivel, String, EventoNivelDAO
 
     public EventoNivel findByCodigo(int codigo) {
         return getDAO().findByCodigo(codigo);
+    }
+
+    public List<EventoNivel> findListByDescricao(String descricao) {
+        return getDAO().findListByDescricao(descricao);
     }
 }

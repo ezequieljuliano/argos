@@ -22,7 +22,6 @@ import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.Parameter;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,17 +37,15 @@ import org.primefaces.event.SelectEvent;
 public class EventoNivelMB {
 
     private static final long serialVersionUID = 1L;
-    
     @Inject
     private EventoNivelBC bc;
-    
     @Inject
     private MessageContext messageContext;
-    
     @Inject
     private Parameter<String> id;
-    
     private EventoNivel bean;
+    private List<EventoNivel> beanList = null;
+    private String campoPesquisa = null;
 
     public EventoNivel getBean() {
         if (bean == null) {
@@ -64,6 +61,40 @@ public class EventoNivelMB {
         this.bean = bean;
     }
 
+    public String getCampoPesquisa() {
+        return campoPesquisa;
+    }
+
+    public void setCampoPesquisa(String campoPesquisa) {
+        this.campoPesquisa = campoPesquisa;
+    }
+
+    public List<EventoNivel> getBeanList() {
+        if (beanList == null) {
+            this.beanList = bc.findAll();
+        }
+        return beanList;
+    }
+
+    public void setBeanList(List<EventoNivel> beanList) {
+        this.beanList = beanList;
+    }
+
+    public void findByDescricao() {
+        if (!campoPesquisa.equals("")) {
+            this.beanList = bc.findListByDescricao(campoPesquisa);
+            if (beanList.isEmpty()) {
+                messageContext.add("A pesquisa não retornou nenhum resultado!", SeverityType.WARN);
+            }
+        } else {
+            this.beanList = bc.findAll();
+        }
+    }
+
+    public void cancelarPesquisa() {
+        this.beanList = bc.findAll();
+    }
+
     public void salvar() {
         try {
             bc.saveOrUpdate(bean);
@@ -73,6 +104,17 @@ public class EventoNivelMB {
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
+    }
+
+    public String deletar() {
+        try {
+            bc.delete(bean.getId());
+            messageContext.add("Registro deletado com sucesso!", SeverityType.INFO);
+            return getPreviousView();
+        } catch (Exception e) {
+            messageContext.add("Ocorreu um erro ao deletar o registro!", SeverityType.ERROR);
+        }
+        return "";
     }
 
     public void inativar() {
@@ -94,7 +136,7 @@ public class EventoNivelMB {
     }
 
     public List<EventoNivel> getList() {
-        return this.bc.findAll();
+        return getBeanList();
     }
 
     public void handleSelect(SelectEvent e) {
@@ -103,5 +145,9 @@ public class EventoNivelMB {
         } catch (Exception ex) {
             Logger.getLogger(EventoNivelMB.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String getPreviousView() {
+        return "./evento_nivel_list.xhtml";
     }
 }
