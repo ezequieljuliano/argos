@@ -27,6 +27,7 @@ public class Constantes {
     //LUCENE - ÍNDICES DE DIRETÓRIOS
     private static final String LUCENE_DIRECTORY_INDEX = "/INDEX/";
     private static final String LUCENE_ROOT_FOLDER = "/ARGOS-LUCENE/";
+    
     //LUCENE - ÍNDICES DE DADOS
     //EVENTO
     public static final String INDICE_EVENTO_ID = "INDICE_EVENTO_ID";
@@ -66,6 +67,6 @@ public class Constantes {
     }
 
     public static Version getLuceneVersion() {
-        return Version.LUCENE_36;
+        return Version.LUCENE_42;
     }
 }

@@ -18,8 +18,8 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -77,7 +77,6 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
             try {
                 indexWriter = getIndexWriter();
                 indexWriter.addDocument(doc);
-                indexWriter.commit();
                 indexWriter.close();
             } catch (Exception exception) {
                 Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE,
@@ -109,7 +108,6 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
                 String idTerm = doc.get(getLuceneIndexKey());
                 indexWriter = getIndexWriter();
                 indexWriter.updateDocument(new Term(getLuceneIndexKey(), idTerm), doc);
-                indexWriter.commit();
                 indexWriter.close();
             } catch (Exception exception) {
                 Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE,

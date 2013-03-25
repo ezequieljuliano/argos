@@ -63,18 +63,6 @@
             <artifactId>alfred</artifactId>
             <version>1.1.0</version>
         </dependency>
-        
-        <!--Dependencias Lucene-->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>3.6.0</version>
-        </dependency>      
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-highlighter</artifactId>
-            <version>3.6.0</version>
-        </dependency>   
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -82,6 +70,28 @@
             <scope>provided</scope>
         </dependency>
         
+        <!--Dependencias Lucene-->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>4.2.0</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queries</artifactId>
+            <version>4.2.0</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>4.2.0</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>4.2.0</version>
+        </dependency>   
+              
         <!--Dependencias Spring Framework-->
         <dependency>
             <groupId>cglib</groupId>

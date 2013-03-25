@@ -48,7 +48,7 @@ public class LuceneManager implements Serializable {
 
     public void backup(Directory deDiretorio, Directory paraDiretorio) throws IOException {
         for (String file : deDiretorio.listAll()) {
-            deDiretorio.copy(paraDiretorio, file, file);
+            deDiretorio.copy(paraDiretorio, file, file, null);
         }
     }
 

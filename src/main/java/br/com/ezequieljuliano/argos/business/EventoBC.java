@@ -24,7 +24,7 @@ import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 /**
  *

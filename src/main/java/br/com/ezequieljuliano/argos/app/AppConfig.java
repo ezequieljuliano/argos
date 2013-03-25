@@ -1,17 +1,12 @@
 package br.com.ezequieljuliano.argos.app;
 
-import br.com.ezequieljuliano.argos.manager.LuceneManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
 import com.mongodb.Mongo;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
