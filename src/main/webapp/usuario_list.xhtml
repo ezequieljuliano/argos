@@ -30,25 +30,42 @@
 
                 <f:facet name="header">Lista de Usuários</f:facet>
 
-                <p:column headerText="Nome de Usuário">
+                <p:columnGroup type="header">  
+                    <p:row>  
+                        <p:column colspan="5" headerText="Usuário" />  
+                        <p:column colspan="2" headerText="Entidade Relacionada" />  
+                    </p:row>  
+                    <p:row>  
+                        <p:column headerText="Nome de Usuário" />  
+                        <p:column headerText="E-mail" />  
+                        <p:column headerText="Perfil" />  
+                        <p:column headerText="Situação" />  
+                        <p:column headerText="API Key" />
+                        <p:column headerText="Cadastro Nacional" />
+                        <p:column headerText="Nome" />
+                    </p:row>  
+                </p:columnGroup>  
+                <p:column>
                     <h:outputText value="#{bean.userName}" />
                 </p:column>
-                <p:column headerText="E-mail">
+                <p:column>
                     <h:outputText value="#{bean.email}" />
                 </p:column>
-                <p:column headerText="Perfil">
+                <p:column>
                     <h:outputText value="#{bean.perfil.nome}" />
                 </p:column>
-                <p:column headerText="Situação">
+                <p:column>
                     <h:outputText value="#{bean.situacao.nome}" />
                 </p:column>
-                <p:column headerText="API Key">
+                <p:column>
                     <h:outputText value="#{bean.apiKey}" />
                 </p:column>
-                <p:column headerText="Entidade Nome">
+                <p:column>
+                    <h:outputText value="#{bean.entidade.cadastroNacional}" />
+                </p:column>
+                <p:column>
                     <h:outputText value="#{bean.entidade.nome}" />
                 </p:column>
-
             </p:dataTable>
 
         </h:form>

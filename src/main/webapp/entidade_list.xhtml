@@ -30,17 +30,38 @@
 
                 <f:facet name="header">Lista de Entidades</f:facet>
 
-                <p:column headerText="Código">
+                <p:columnGroup type="header">  
+                    <p:row>  
+                        <p:column colspan="4" headerText="Entidade" />  
+                        <p:column colspan="2" headerText="Entidade Acima" />  
+                    </p:row>  
+                    <p:row>  
+                        <p:column headerText="Código" />  
+                        <p:column headerText="Nome" />  
+                        <p:column headerText="Cadastro Nacional" />  
+                        <p:column headerText="Situação" />  
+                        <p:column headerText="Cadastro Nacional" />
+                        <p:column headerText="Nome" />
+                    </p:row>  
+                </p:columnGroup>  
+
+                <p:column>
                     <h:outputText value="#{bean.codigo}" />
                 </p:column>
-                <p:column headerText="Nome">
+                <p:column>
                     <h:outputText value="#{bean.nome}" />
                 </p:column>
-                <p:column headerText="Cadastro Nacional">
+                <p:column>
                     <h:outputText value="#{bean.cadastroNacional}" />
                 </p:column>
-                <p:column headerText="Situação">
+                <p:column>
                     <h:outputText value="#{bean.situacao.nome}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{bean.entidadeAcima.cadastroNacional}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{bean.entidadeAcima.nome}" />
                 </p:column>
 
             </p:dataTable>

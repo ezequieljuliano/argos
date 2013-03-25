@@ -10,8 +10,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 public class LuceneAnalyzerUtil {
 
     private LuceneAnalyzerUtil() {}
-     
-    
+       
     public static StandardAnalyzer get(){
         return new StandardAnalyzer(Constantes.getLuceneVersion());
     }
