@@ -18,7 +18,6 @@ package br.com.ezequieljuliano.argos.persistence;
 import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
-import br.com.ezequieljuliano.argos.domain.EventoValorCustomizado;
 import br.com.ezequieljuliano.argos.util.Data;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,29 +70,20 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         Document document = new Document();
         document.add(new StringField(Constantes.INDICE_EVENTO_ID, obj.getId(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_MENSAGEM, obj.getMensagem(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_NOME, obj.getNome(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_OCORRENCIADTHR, Data.timestampToString(obj.getOcorrenciaDtHr()), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_PALAVRASCHAVE, obj.getPalavrasChave(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_OCORRENCIADTHR, Data.timestampToString(obj.getOcorrenciaDtHr()), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_PALAVRASCHAVE, obj.getPalavrasChave(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADEID, obj.getEntidade().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_NIVELID, obj.getEventoNivel().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_TIPOID, obj.getEventoTipo().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
-
-        //Adiciona ao documento os valores customizados
-        for (EventoValorCustomizado eventoVlCustom : obj.getValorCustomizadoList()) {
-            document.add(new TextField(Constantes.INDICE_EVENTO_VLCUSTOM_VALOR, eventoVlCustom.getValor(), Field.Store.YES));
-            document.add(new StringField(Constantes.INDICE_EVENTO_VLCUSTOM_CAMPOID, eventoVlCustom.getEventoCampoCustomizado().getId(), Field.Store.YES));
-            document.add(new StringField(Constantes.INDICE_EVENTO_VLCUSTOM_CAMPODESCRICAO, eventoVlCustom.getEventoCampoCustomizado().getDescricao(), Field.Store.YES));
-            document.add(new StringField(Constantes.INDICE_EVENTO_VLCUSTOM_CAMPOENTIDADEID, eventoVlCustom.getEventoCampoCustomizado().getEntidade().getId(), Field.Store.YES));
-        }
-
+        document.add(new TextField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_TUDO, getLuceneContentString(obj), Field.Store.YES));
         return document;
     }
@@ -143,19 +133,6 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         stringBuilder.append(obj.getEventoTipo().getCodigo());
         stringBuilder.append(" \n ");
         stringBuilder.append(obj.getEventoTipo().getDescricao());
-
-        //Adiciona a string os valores customizados
-        for (EventoValorCustomizado eventoVlCustom : obj.getValorCustomizadoList()) {
-            stringBuilder.append(" \n ");
-            stringBuilder.append(eventoVlCustom.getValor());
-            stringBuilder.append(" \n ");
-            stringBuilder.append(eventoVlCustom.getEventoCampoCustomizado().getId());
-            stringBuilder.append(" \n ");
-            stringBuilder.append(eventoVlCustom.getEventoCampoCustomizado().getDescricao());
-            stringBuilder.append(" \n ");
-            stringBuilder.append(eventoVlCustom.getEventoCampoCustomizado().getEntidade().getId());
-        }
-
         return stringBuilder.toString();
     }
 

@@ -17,9 +17,7 @@ package br.com.ezequieljuliano.argos.service.to;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,7 +31,6 @@ public class EventoLogTO {
     private String hostIp;
     private String hostUser;
     private String mensagem;
-    private List<EventoValorCustomizadoTO> valoresCustomizados = new ArrayList<EventoValorCustomizadoTO>();
     private String fonte;
     private String nome;
     private String ocorrenciaDtHr;
@@ -122,14 +119,6 @@ public class EventoLogTO {
 
     public void setEventoTipoCodigo(Integer eventoTipoCodigo) {
         this.eventoTipoCodigo = eventoTipoCodigo;
-    }
-
-    public List<EventoValorCustomizadoTO> getValoresCustomizados() {
-        return valoresCustomizados;
-    }
-
-    public void setValoresCustomizados(List<EventoValorCustomizadoTO> valoresCustomizados) {
-        this.valoresCustomizados = valoresCustomizados;
     }
 
     public Date getOcorrenciaDtHrAsDate() {

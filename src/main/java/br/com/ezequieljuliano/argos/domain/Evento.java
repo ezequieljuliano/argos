@@ -66,8 +66,6 @@ public class Evento implements Serializable {
     
     @DBRef
     private EventoTipo eventoTipo;
-    
-    private List<EventoValorCustomizado> valorCustomizadoList = new ArrayList<EventoValorCustomizado>();
 
     public Evento() {
         super();    
@@ -169,17 +167,6 @@ public class Evento implements Serializable {
         this.eventoTipo = eventoTipo;
     }
       
-    public List<EventoValorCustomizado> getValorCustomizadoList() {
-        return valorCustomizadoList;
-    }
-
-    public void setValorCustomizadoList(List<EventoValorCustomizado> valorCustomizadoList) {
-        this.valorCustomizadoList = valorCustomizadoList;
-    }
-    
-    public void addValorCustomizado(EventoValorCustomizado valorCustomizado){
-        getValorCustomizadoList().add(valorCustomizado);
-    }
     
     @Override
     public boolean equals(Object obj) {

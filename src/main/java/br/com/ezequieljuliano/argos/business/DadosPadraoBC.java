@@ -16,19 +16,13 @@
 package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Entidade;
-import br.com.ezequieljuliano.argos.domain.Evento;
-import br.com.ezequieljuliano.argos.domain.EventoCampoCustomizado;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
-import br.com.ezequieljuliano.argos.domain.EventoValorCustomizado;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
-import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
-import br.gov.frameworkdemoiselle.transaction.Transactional;
-import java.sql.Timestamp;
 import javax.inject.Inject;
 
 /**
@@ -48,8 +42,6 @@ public class DadosPadraoBC {
     private UsuarioBC usuarioBC;
     @Inject
     private EventoBC eventoBC;
-    @Inject
-    private EventoCampoCustomizadoBC eventoCampoCustomBC;
 
     private void insereEventoTipo() throws ValidationException {
         if (eventoTipoBC.findByCodigo(1) == null) {
@@ -218,96 +210,10 @@ public class DadosPadraoBC {
         }
     }
 
-    private void insereLogs() throws ValidationException, Exception {
-        EventoCampoCustomizado ecc = new EventoCampoCustomizado();
-        ecc.setDescricao("AAA");
-        ecc.setEntidade(entidadeBC.findByCodigo(1));
-        eventoCampoCustomBC.saveOrUpdate(ecc);
-
-        EventoCampoCustomizado ecc2 = new EventoCampoCustomizado();
-        ecc2.setDescricao("BBB");
-        ecc2.setEntidade(entidadeBC.findByCodigo(1));
-        eventoCampoCustomBC.saveOrUpdate(ecc2);
-
-        EventoCampoCustomizado ecc3 = new EventoCampoCustomizado();
-        ecc3.setDescricao("CCC");
-        ecc3.setEntidade(entidadeBC.findByCodigo(2));
-        eventoCampoCustomBC.saveOrUpdate(ecc3);
-
-        Evento evento = new Evento();
-        evento.setHostName("EZEQUIEL-NB");
-        evento.setMensagem("Realizada uma autenticação no sistema MsysComercial");
-        evento.setHostIp("192.168.0.10");
-        evento.setFonte("MsysComercial");
-        evento.setNome("Autenticação no sistema MsysComercial");
-        evento.setOcorrenciaDtHr(new Timestamp(new java.util.Date().getTime()));
-        evento.setPalavrasChave("AUTENTICAÇÃO;MSYSCOMERCIAL;SISTEMA");
-        evento.setHostUser("Ezequiel");
-        evento.setEntidade(entidadeBC.findByCodigo(1));
-        evento.setEventoNivel(eventoNivelBC.findByCodigo(1));
-        evento.setEventoTipo(eventoTipoBC.findByCodigo(1));
-
-        EventoValorCustomizado eveVlCustom = new EventoValorCustomizado();
-        eveVlCustom.setEventoCampoCustomizado(ecc);
-        eveVlCustom.setValor("05845333903");
-        evento.addValorCustomizado(eveVlCustom);
-
-        EventoValorCustomizado eveVlCustom2 = new EventoValorCustomizado();
-        eveVlCustom2.setEventoCampoCustomizado(ecc2);
-        eveVlCustom2.setValor("TesteSetor");
-        evento.addValorCustomizado(eveVlCustom2);
-
-        eventoBC.saveOrUpdate(evento, usuarioBC.findByUserName("adm"));
-
-        Evento evento2 = new Evento();
-        evento2.setHostName("LUIZ-NB");
-        evento2.setMensagem("Alteração de dados do cliente 50");
-        evento2.setHostIp("192.168.0.66");
-        evento2.setFonte("Cadastro de Clientes");
-        evento2.setNome("Alteração de Clientes");
-        evento2.setOcorrenciaDtHr(new Timestamp(new java.util.Date().getTime()));
-        evento2.setPalavrasChave("ALTERAÇÃO;CLIENTE;SISTEMA");
-        evento2.setHostUser("Luiz");
-        evento2.setEntidade(entidadeBC.findByCodigo(1));
-        evento2.setEventoNivel(eventoNivelBC.findByCodigo(2));
-        evento2.setEventoTipo(eventoTipoBC.findByCodigo(3));
-
-        eventoBC.saveOrUpdate(evento2, usuarioBC.findByUserName("adm"));
-
-        Evento evento3 = new Evento();
-        evento3.setHostName("EVANDRO-NB");
-        evento3.setMensagem("Exclusão de cliente 120");
-        evento3.setHostIp("192.168.0.38");
-        evento3.setFonte("Cadastro de Clientes");
-        evento3.setNome("Exclusão de Clientes");
-        evento3.setOcorrenciaDtHr(new Timestamp(new java.util.Date().getTime()));
-        evento3.setPalavrasChave("EXCLUSÃO;CLIENTE;SISTEMA");
-        evento3.setHostUser("Evandro");
-        evento3.setEntidade(entidadeBC.findByCodigo(2));
-        evento3.setEventoNivel(eventoNivelBC.findByCodigo(3));
-        evento3.setEventoTipo(eventoTipoBC.findByCodigo(7));
-        eventoBC.saveOrUpdate(evento3, usuarioBC.findByUserName("normal"));
-
-        Evento evento4 = new Evento();
-        evento4.setHostName("LUCIANO-PC");
-        evento4.setMensagem("Exclusão de pedido de venda 600");
-        evento4.setHostIp("192.168.0.44");
-        evento4.setFonte("Pedidos de Vendas");
-        evento4.setNome("Exclusão de Pedidos de Vendas");
-        evento4.setOcorrenciaDtHr(new Timestamp(new java.util.Date().getTime()));
-        evento4.setPalavrasChave("EXCLUSÃO;PEDIDO DE VENDA;SISTEMA");
-        evento4.setHostUser("Luciano");
-        evento4.setEntidade(entidadeBC.findByCodigo(2));
-        evento4.setEventoNivel(eventoNivelBC.findByCodigo(5));
-        evento4.setEventoTipo(eventoTipoBC.findByCodigo(7));
-        eventoBC.saveOrUpdate(evento4, usuarioBC.findByUserName("normal"));
-    }
-
     public void InsereDados() throws ValidationException, Exception {
         insereEventoNivel();
         insereEventoTipo();
         insereEntidade();
         insereUsuario();
-        insereLogs();
     }
 }
