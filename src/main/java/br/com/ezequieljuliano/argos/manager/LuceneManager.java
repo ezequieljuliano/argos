@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
@@ -35,29 +37,77 @@ import org.springframework.stereotype.Component;
 public class LuceneManager implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+    /*
+     * Faz um inject do diretório criado no AppConfig
+     */
     @Autowired
     private Directory directory;
-    
+
+    /*
+     * Após construir o objeto carrega os índices do disco para a memória
+     */
+    @PostConstruct
+    public void init() {
+        try {
+            iniciarServico();
+        } catch (IOException e) {
+            Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE,
+                    null, e);
+        }
+    }
+
+    /*
+     * Antes de destruir faz backup dos registros em memória
+     */
+    @PreDestroy
+    public void destroy() {
+        backupMemoryToDisco();
+    }
+
+    public void backupMemoryToDisco() {
+        try {
+            //Abre o diretório do disco rígido
+            File file = getNewFile();
+            //Cria a variável baseado no diretório do disco rígido
+            Directory disco = getDirDisco(file);
+            //Copia da memória para o disco rígido
+            backup(directory, disco);
+        } catch (IOException ex) {
+            Logger.getLogger(LuceneManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*
+     * Inicia o serviço do Lucene carregando do disco rígido para a memória
+     */
     private void iniciarServico() throws IOException {
         File file = getNewFile();
-        //Cria Diretório
-        Directory disco = getDiretorio(file);
+        Directory disco = getDirDisco(file);
+        //Copia do disco rígido para  a memória
         backup(disco, directory);
     }
 
-    public void backup(Directory deDiretorio, Directory paraDiretorio) throws IOException {
+    /*
+     * Faz backup de um diretório para outro
+     */
+    private void backup(Directory deDiretorio, Directory paraDiretorio) throws IOException {
         for (String file : deDiretorio.listAll()) {
             deDiretorio.copy(paraDiretorio, file, file, null);
         }
     }
 
-    private static boolean isWindows() { // Detecta SO Windows
+    /*
+     * Verifica se o sistema operacional é Windows
+     */
+    private static boolean isWindows() {
         String os = System.getProperty("os.name").toLowerCase();
         return (os.indexOf("win") >= 0);
     }
 
-    public Directory getDiretorio(File file) {
+    /*
+     * Abre o diretório do disco rígido
+     */
+    private Directory getDirDisco(File file) {
         if (file == null) {
             file = getNewFile();
         }
@@ -77,7 +127,8 @@ public class LuceneManager implements Serializable {
         return null;
     }
 
-    public File getNewFile() {
+    private File getNewFile() {
+        //Abre ou cria o diretório em disco rígido
         File file = new File(Constantes.getLuceneIndexDirectory());
         //Se o diretório não exitir cria ele
         if (!file.exists()) {
@@ -85,9 +136,4 @@ public class LuceneManager implements Serializable {
         }
         return file;
     }
-
-    public Directory getDirectory() {
-        return directory;
-    }
-    
 }

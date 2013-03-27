@@ -34,7 +34,7 @@ public class UsuarioDAO extends GenericDAO<Usuario, String> {
         Query query = new Query(Criteria.where("userName").is(userName));
         return getMongoOperations().findOne(query, Usuario.class);
     }
-    
+
     public List<Usuario> findListByUserName(String userName) {
         Query query = new Query(Criteria.where("userName").regex(userName, "i"));
         return getMongoOperations().find(query, Usuario.class);

@@ -23,6 +23,8 @@ import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -204,16 +206,20 @@ public class DadosPadraoBC {
             user.setEmail("normal@normal.com.br");
             user.setPassword("123");
             user.setEntidade(entidadeBC.findByCodigo(2));
-            user.setPerfil(UsuarioPerfil.administrador);
+            user.setPerfil(UsuarioPerfil.normal);
             user.setSituacao(Situacao.ativo);
             usuarioBC.saveOrUpdate(user);
         }
     }
 
-    public void InsereDados() throws ValidationException, Exception {
-        insereEventoNivel();
-        insereEventoTipo();
-        insereEntidade();
-        insereUsuario();
+    public void InsereDados() {
+        try {
+            insereEventoNivel();
+            insereEventoTipo();
+            insereEntidade();
+            insereUsuario();
+        } catch (ValidationException ex) {
+            Logger.getLogger(DadosPadraoBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -39,6 +39,7 @@ public class EventoLogTO {
     private Integer eventoTipoCodigo;
 
     public EventoLogTO() {
+        
     }
 
     public String getHostName() {

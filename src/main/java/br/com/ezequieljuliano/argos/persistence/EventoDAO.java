@@ -15,18 +15,25 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
+import br.com.ezequieljuliano.argos.business.EntidadeBC;
 import br.com.ezequieljuliano.argos.constant.Constantes;
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
+import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.util.Data;
-import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.QueryWrapperFilter;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -37,32 +44,44 @@ import org.springframework.stereotype.Repository;
 public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private EntidadeBC entidadeBC;
+    
     private Filter luceneFilter = null;
 
-    public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro filtro) {
+    public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro eventoPesquisaFiltro) {
         //Reset no filter
         luceneFilter = null;
         //Monta filtro padrão
-        List<Term> terms = new ArrayList<Term>();
+        BooleanQuery booleanQuery = new BooleanQuery();
         //Verifica se o filtro possui entidade
-        if (filtro.getEntidade() != null) {
-            Term termEntidade = new Term(Constantes.INDICE_EVENTO_ENTIDADEID, filtro.getEntidade().getId());
-            terms.add(termEntidade);
+        if (eventoPesquisaFiltro.getEntidade() != null) {
+            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, eventoPesquisaFiltro.getEntidade().getId())), BooleanClause.Occur.MUST);
+        } else {
+            //Caso não tenha sido selecionada uma entidade pega as entidades relacionadas ao usuário
+            //Se for administrador traz todas as entidades
+            if (!eventoPesquisaFiltro.getUsuario().getPerfil().equals(UsuarioPerfil.administrador)) {
+                List<Entidade> entidades = entidadeBC.findByUsuario(eventoPesquisaFiltro.getUsuario());
+                for (Entidade entidade : entidades) {
+                    booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.MUST);
+                }
+            }
         }
         //Verifica se o filtro possui tipo
-        if (filtro.getEventoTipo() != null) {
-            Term termTipo = new Term(Constantes.INDICE_EVENTO_TIPOID, filtro.getEventoTipo().getId());
-            terms.add(termTipo);
+        if (eventoPesquisaFiltro.getEventoTipo() != null) {
+            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_TIPOID, eventoPesquisaFiltro.getEventoTipo().getId())), BooleanClause.Occur.MUST);
         }
         //Verifica se o filtro possui nível
-        if (filtro.getEventoNivel() != null) {
-            Term termNivel = new Term(Constantes.INDICE_EVENTO_NIVELID, filtro.getEventoNivel().getId());
-            terms.add(termNivel);
+        if (eventoPesquisaFiltro.getEventoNivel() != null) {
+            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_NIVELID, eventoPesquisaFiltro.getEventoNivel().getId())), BooleanClause.Occur.MUST);
         }
-        if (!terms.isEmpty()) {
-            luceneFilter = (Filter) terms;
+        //Varifica se existem filtros criados
+        if (!booleanQuery.clauses().isEmpty()) {
+            QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(booleanQuery);
+            luceneFilter = queryWrapperFilter;
         }
-        return super.luceneParserQuery(filtro.getFiltroTipo().getLuceneIndex(), filtro.getPesquisaValor());
+        return super.luceneParserQuery(eventoPesquisaFiltro.getTipoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
     }
 
     @Override
@@ -70,20 +89,20 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         Document document = new Document();
         document.add(new StringField(Constantes.INDICE_EVENTO_ID, obj.getId(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_MENSAGEM, obj.getMensagem(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_NOME, obj.getNome(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_OCORRENCIADTHR, Data.timestampToString(obj.getOcorrenciaDtHr()), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_PALAVRASCHAVE, obj.getPalavrasChave(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADEID, obj.getEntidade().getId(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_NIVELID, obj.getEventoNivel().getId(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_TIPOID, obj.getEventoTipo().getId(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_TUDO, getLuceneContentString(obj), Field.Store.YES));
         return document;
     }

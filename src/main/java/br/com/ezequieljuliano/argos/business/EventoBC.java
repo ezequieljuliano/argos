@@ -50,11 +50,11 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
 
     private void gravarUsuarioEvento(Evento evento, Usuario usuario) {
         if ((usuario != null) && (evento != null)) {
-            UsuarioEvento usuEve = new UsuarioEvento();
-            usuEve.setDataHora(new Timestamp(new java.util.Date().getTime()));
-            usuEve.setEvento(evento);
-            usuEve.setUsuario(usuario);
-            usuarioEventoBC.saveOrUpdate(usuEve);
+            UsuarioEvento usuarioEvento = new UsuarioEvento();
+            usuarioEvento.setDataHora(new Timestamp(new java.util.Date().getTime()));
+            usuarioEvento.setEvento(evento);
+            usuarioEvento.setUsuario(usuario);
+            usuarioEventoBC.saveOrUpdate(usuarioEvento);
         }
     }
 

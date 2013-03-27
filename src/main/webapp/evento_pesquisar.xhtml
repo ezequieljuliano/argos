@@ -62,7 +62,7 @@
 
             <p:panel id="pnPesquisaAvancada" rendered="#{eventoPesquisaMB.pesquisaAvancada}">
                 <h:panelGrid columns="3">
-                    <h:panelGrid columns="1" rendered="#{securityContext.hasRole('A')}" >
+                    <h:panelGrid columns="1">
                         <h:outputText value="Entidade:" />
                         <p:selectOneMenu converter="entidadeConverter" value="#{eventoPesquisaMB.selectedEntidade}" style="width: 350px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
@@ -174,18 +174,6 @@
                         <h:outputText value="#{eventoPesquisaMB.evento.mensagem}"/>
                         <br />
                         <br />
-                        <p:dataTable id="listVlCustom" var="vlCustom" 
-                                     value="#{eventoPesquisaMB.evento.valorCustomizadoList}"                          
-                                     emptyMessage="Não existem registros para exibir"> 
-                            <f:facet name="header">Valores Customizados</f:facet>
-                            <p:column headerText="Campo">
-                                <h:outputText value="#{vlCustom.eventoCampoCustomizado.descricao}" />
-                            </p:column>
-                            <p:column headerText="Valor">
-                                <h:outputText value="#{vlCustom.valor}" />
-                            </p:column>
-                        </p:dataTable>
-
                     </p:fieldset>
                 </h:panelGroup>  
                 <f:facet name="footer">

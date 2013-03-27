@@ -57,7 +57,7 @@ public class EventoPesquisaMB {
     
     @Inject
     private MessageContext messageContext;
-     
+    
     @Inject
     private SessionAttributes sessionAttributes;
     
@@ -156,9 +156,9 @@ public class EventoPesquisaMB {
         if (campoPesquisa.equals("") || campoPesquisa.length() == 0) {
             messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
         } else {
-            EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa, 
-                    selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
             try {
+                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa,
+                        selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
                 eventos = eventoBC.findByPesquisaFiltro(filtro);
             } catch (Exception e) {
                 messageContext.add(e.getMessage(), SeverityType.ERROR);
@@ -175,7 +175,7 @@ public class EventoPesquisaMB {
     }
 
     public List<Entidade> getEntidadeList() {
-        return entidadeBC.findAll();
+        return entidadeBC.findByUsuario(sessionAttributes.getUsuario());
     }
 
     public List<EventoNivel> getEventoNivelList() {
@@ -191,5 +191,4 @@ public class EventoPesquisaMB {
         selectedEventoNivel = null;
         selectedEventoTipo = null;
     }
-  
 }

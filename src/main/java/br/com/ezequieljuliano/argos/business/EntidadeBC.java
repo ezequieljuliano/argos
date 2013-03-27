@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
+import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.EntidadeDAO;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
@@ -73,5 +74,9 @@ public class EntidadeBC extends GenericBC<Entidade, String, EntidadeDAO> {
 
     public List<Entidade> findByNome(String nome) {
         return getDAO().findByNome(nome);
+    }
+
+    public List<Entidade> findByUsuario(Usuario usuario) {
+        return getDAO().findByUsuario(usuario);
     }
 }

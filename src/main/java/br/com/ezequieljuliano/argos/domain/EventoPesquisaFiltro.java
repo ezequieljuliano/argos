@@ -33,20 +33,20 @@ public class EventoPesquisaFiltro implements Serializable {
     private Usuario usuario;
 
     public EventoPesquisaFiltro(EventoTipoPesquisa tipoDoFiltro, String textoDaPesquisa,
-            Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) throws Exception {
+            Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) {
         this.usuario = usuario;
         this.tipoDoFiltro = tipoDoFiltro;
         this.textoDaPesquisa = textoDaPesquisa;
-        this.entidade = validaEntidade(entidade);
+        this.entidade = entidade;
         this.eventoNivel = eventoNivel;
         this.eventoTipo = eventoTipo;
     }
 
-    public EventoTipoPesquisa getFiltroTipo() {
+    public EventoTipoPesquisa getTipoDoFiltro() {
         return tipoDoFiltro;
     }
 
-    public String getPesquisaValor() {
+    public String getTextoDaPesquisa() {
         return textoDaPesquisa;
     }
 
@@ -62,16 +62,7 @@ public class EventoPesquisaFiltro implements Serializable {
         return eventoTipo;
     }
 
-    private Entidade validaEntidade(Entidade entidade) throws Exception {
-        //Verifica seu perfil se for normal deve possuir entidade para filrar
-        if (!usuario.getPerfil().equals(UsuarioPerfil.administrador)) {
-            if (usuario.getEntidade() != null) {
-                return usuario.getEntidade();
-            } else {
-                throw new Exception("Usuário normal deve ter entidade relacionada!");
-            }
-        } else {
-            return entidade;
-        }
+    public Usuario getUsuario() {
+        return usuario;
     }
 }

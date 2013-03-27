@@ -13,32 +13,36 @@ import org.apache.lucene.store.RAMDirectory;
 @Configuration
 public class AppConfig {
 
-	public @Bean MongoOperations mongoTemplate(Mongo mongo) {
-		MongoTemplate mongoTemplate = new MongoTemplate(mongo, "Argos");
-		return mongoTemplate;
-	}
+    public @Bean
+    MongoOperations mongoTemplate(Mongo mongo) {
+        MongoTemplate mongoTemplate = new MongoTemplate(mongo, "Argos");
+        return mongoTemplate;
+    }
 
-	/*
-	 * Factory bean that creates the Mongo instance
-	 */
-	public @Bean MongoFactoryBean mongo() {
-		MongoFactoryBean mongo = new MongoFactoryBean();
-		mongo.setHost("localhost");
-		return mongo;
-	}
+    /*
+     * Factory bean that creates the Mongo instance
+     */
+    public @Bean
+    MongoFactoryBean mongo() {
+        MongoFactoryBean mongo = new MongoFactoryBean();
+        mongo.setHost("localhost");
+        return mongo;
+    }
 
-	/*
-	 * Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes
-	 */
-	public @Bean PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
-		return new PersistenceExceptionTranslationPostProcessor();
-	}
-        
-        
-        
-    public @Bean Directory getDirectory() {
+    /*
+     * Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes
+     */
+    public @Bean
+    PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    /*
+     * Inicia o diretório de armazenamento dos índices do Lucene
+     */
+    public @Bean
+    Directory getDirectory() {
         Directory directory = new RAMDirectory();
         return directory;
     }
-
 }

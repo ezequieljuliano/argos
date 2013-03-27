@@ -77,6 +77,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
             try {
                 indexWriter = getIndexWriter();
                 indexWriter.addDocument(doc);
+                indexWriter.commit();
                 indexWriter.close();
             } catch (Exception exception) {
                 Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE,
@@ -92,6 +93,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
             String idTerm = (String) id;
             indexWriter = getIndexWriter();
             indexWriter.deleteDocuments(new Term(getLuceneIndexKey(), idTerm));
+            indexWriter.commit();
             indexWriter.close();
         } catch (Exception exception) {
             Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE,
@@ -108,6 +110,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
                 String idTerm = doc.get(getLuceneIndexKey());
                 indexWriter = getIndexWriter();
                 indexWriter.updateDocument(new Term(getLuceneIndexKey(), idTerm), doc);
+                indexWriter.commit();
                 indexWriter.close();
             } catch (Exception exception) {
                 Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE,
@@ -120,7 +123,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
         try {
             if (q != null) {
                 //Resultados por páginas de documentos
-                int hitsPerPage = 10;
+                int hitsPerPage = 100;
                 //Abre o diretório dos índices
                 IndexReader reader = IndexReader.open(directory);
                 //Cria o buscador dos documentos indexados
@@ -142,7 +145,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
                     int docId = hits[i].doc;
                     Document d = searcher.doc(docId);
                     KeyType id = (KeyType) d.get(getLuceneIndexKey());
-                    DomainType domain = super.load(id);
+                    DomainType domain = load(id);
                     if (domain != null) {
                         objList.add(domain);
                     }
