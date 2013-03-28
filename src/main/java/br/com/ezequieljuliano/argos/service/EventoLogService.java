@@ -27,10 +27,13 @@ public class EventoLogService {
 
     @Inject
     private UsuarioBC usuarioBC;
+    
     @Inject
     private EventoNivelBC eventoNivelBC;
+    
     @Inject
     private EventoTipoBC eventoTipoBC;
+    
     @Inject
     private EventoBC eventoBC;
 

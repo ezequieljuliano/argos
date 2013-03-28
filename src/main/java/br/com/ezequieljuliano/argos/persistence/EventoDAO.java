@@ -15,7 +15,6 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
-import br.com.ezequieljuliano.argos.business.EntidadeBC;
 import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
@@ -23,7 +22,6 @@ import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.util.Data;
 import java.util.List;
-import javax.inject.Inject;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -34,6 +32,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,10 +44,10 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
     
-    @Inject
-    private EntidadeBC entidadeBC;
-    
     private Filter luceneFilter = null;
+    
+    @Autowired
+    private EntidadeDAO entidadeDAO;
 
     public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro eventoPesquisaFiltro) {
         //Reset no filter
@@ -62,9 +61,9 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
             //Caso não tenha sido selecionada uma entidade pega as entidades relacionadas ao usuário
             //Se for administrador traz todas as entidades
             if (!eventoPesquisaFiltro.getUsuario().getPerfil().equals(UsuarioPerfil.administrador)) {
-                List<Entidade> entidades = entidadeBC.findByUsuario(eventoPesquisaFiltro.getUsuario());
+                List<Entidade> entidades = entidadeDAO.findByUsuario(eventoPesquisaFiltro.getUsuario());
                 for (Entidade entidade : entidades) {
-                    booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.MUST);
+                    booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.SHOULD);
                 }
             }
         }
@@ -114,44 +113,27 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     @Override
     public String getLuceneContentString(Evento obj) {
+        String newLineCharacter = System.getProperty("line.separator"); 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(obj.getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getHostName());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getHostIp());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getHostUser());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getMensagem());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getFonte());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getNome());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(Data.timestampToString(obj.getOcorrenciaDtHr()));
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getPalavrasChave());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getCadastroNacional());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEntidade().getNome());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoNivel().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoNivel().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoNivel().getDescricao());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoTipo().getId());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoTipo().getCodigo());
-        stringBuilder.append(" \n ");
-        stringBuilder.append(obj.getEventoTipo().getDescricao());
+        stringBuilder.append(obj.getId()).append(newLineCharacter);
+        stringBuilder.append(obj.getHostName()).append(newLineCharacter);
+        stringBuilder.append(obj.getHostIp()).append(newLineCharacter);
+        stringBuilder.append(obj.getHostUser()).append(newLineCharacter);
+        stringBuilder.append(obj.getMensagem()).append(newLineCharacter);
+        stringBuilder.append(obj.getFonte()).append(newLineCharacter);
+        stringBuilder.append(obj.getNome()).append(newLineCharacter);
+        stringBuilder.append(Data.timestampToString(obj.getOcorrenciaDtHr())).append(newLineCharacter);
+        stringBuilder.append(obj.getPalavrasChave()).append(newLineCharacter);
+        stringBuilder.append(obj.getEntidade().getId()).append(newLineCharacter);
+        stringBuilder.append(obj.getEntidade().getCadastroNacional()).append(newLineCharacter);
+        stringBuilder.append(obj.getEntidade().getCodigo()).append(newLineCharacter);
+        stringBuilder.append(obj.getEntidade().getNome()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoNivel().getId()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoNivel().getCodigo()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoNivel().getDescricao()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoTipo().getId()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoTipo().getCodigo()).append(newLineCharacter);
+        stringBuilder.append(obj.getEventoTipo().getDescricao()).append(newLineCharacter);
         return stringBuilder.toString();
     }
 

@@ -15,15 +15,21 @@
  */
 package br.com.ezequieljuliano.argos.business;
 
+import br.com.ezequieljuliano.argos.config.Configuracoes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Situacao;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.persistence.UsuarioDAO;
+import br.com.ezequieljuliano.argos.util.EmailSender;
+import br.com.ezequieljuliano.argos.util.EmailSender.Servidor;
 import br.com.ezequieljuliano.argos.util.UniqId;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -56,9 +62,22 @@ public class UsuarioBC extends GenericBC<Usuario, String, UsuarioDAO> {
         }
         //Procedimento de Salvar 
         if (usuario.getId() == null) {
+            //Senha informada no sistema
+            String password = usuario.getPassword();
             //Gerar Hash da senha
             generatePasswordKey(usuario);
+            //Persiste na base
             getDAO().insert(usuario);
+            //Envia email com nova senha
+            try {
+                enviarEmailComSenhaParaUsuario(usuario, password);
+            } catch (EmailException ex) {
+                Logger.getLogger(UsuarioBC.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ValidationException("Não foi possível enviar e-mail ao usuário cadastrado!");
+            } catch (Exception ex) {
+                Logger.getLogger(UsuarioBC.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ValidationException("Não foi possível ler o arquivo de configurações do Argos!");
+            }
         } else {
             getDAO().save(usuario);
         }
@@ -115,5 +134,21 @@ public class UsuarioBC extends GenericBC<Usuario, String, UsuarioDAO> {
 
     public List<Usuario> findListByUserName(String userName) {
         return getDAO().findListByUserName(userName);
+    }
+
+    private void enviarEmailComSenhaParaUsuario(Usuario bean, String novaSenha) throws EmailException, Exception {
+        Configuracoes config = Configuracoes.load();
+        new EmailSender()
+                .usando(new Servidor()
+                .endereco(config.getEmailServer())
+                .porta(config.getEmailPort())
+                .usuario(config.getEmailUser())
+                .senha(config.getEmailPassword())
+                .ssl(config.getEmailSSL()))
+                .de(config.getEmailUser(), "Sistema de Logging Argos")
+                .para(bean.getEmail())
+                .comAssunto("Dados de Login no Sistema Argos")
+                .comMensagem("Seu cadastro está concluído, para acessar o sistema use o e-mail " + bean.getEmail() + " e a senha " + novaSenha)
+                .enviar();
     }
 }

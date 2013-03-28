@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <p>
+                O Argos registrou um novo LOG com defini&ccedil;&atilde;o de alerta:<br /><br />
+		Entidade: $entidade
+		<br /><br />
+		T&iacute;tulo: $titulo<br />
+		Data: $data<br />
+		Hora: $hora<br />
+		Usu&aacute;rio do Host: $hostUser<br />
+		IP do Host: $hostIp<br />
+		Nome do Host: $hostName<br />
+		Fonte: $fonte<br />
+		Tipo: $eventoTipo<br />
+		N&iacute;vel: $eventoNivel<br />
+		Palavras-Chave: $palavrasChave<br /><br />
+		Mensagem:<br />$mensagem
+        </p>
+    </body>
+</html>

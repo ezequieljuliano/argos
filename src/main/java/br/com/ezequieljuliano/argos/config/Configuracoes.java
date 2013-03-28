@@ -28,7 +28,6 @@ public class Configuracoes {
     private static Configuracoes instance;
 
     private Configuracoes() {
-        
     }
 
     private Configuracoes(Properties properties) {
@@ -48,5 +47,25 @@ public class Configuracoes {
 
     public String getLuceneIndices() {
         return properties.getProperty("lucene.indices");
+    }
+
+    public String getEmailServer() {
+        return properties.getProperty("email.server");
+    }
+
+    public Integer getEmailPort() {
+        return Integer.parseInt(properties.getProperty("email.port"));
+    }
+
+    public String getEmailPassword() {
+        return properties.getProperty("email.password");
+    }
+
+    public String getEmailUser() {
+        return properties.getProperty("email.user");
+    }
+
+    public Boolean getEmailSSL() {
+        return Boolean.parseBoolean(properties.getProperty("email.ssl"));
     }
 }

@@ -15,6 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import br.com.ezequieljuliano.argos.util.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -66,7 +67,7 @@ public class Evento implements Serializable {
     private EventoTipo eventoTipo;
 
     public Evento() {
-        super();    
+        super();
     }
 
     public String getId() {
@@ -164,11 +165,30 @@ public class Evento implements Serializable {
     public void setEventoTipo(EventoTipo eventoTipo) {
         this.eventoTipo = eventoTipo;
     }
-      
-    
+
+    @Override
+    public String toString() { 
+        String newLineCharacter = System.getProperty("line.separator");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(newLineCharacter);
+        stringBuilder.append("Título: ").append(nome).append(newLineCharacter);
+        stringBuilder.append("Data: ").append(Data.dateToString(ocorrenciaDtHr)).append(newLineCharacter);
+        stringBuilder.append("Hora: ").append(Data.timeToString(ocorrenciaDtHr)).append(newLineCharacter);
+        stringBuilder.append("Usuário do Host: ").append(hostUser).append(newLineCharacter);
+        stringBuilder.append("IP do Host: ").append(hostIp).append(newLineCharacter);
+        stringBuilder.append("Nome do Host: ").append(hostName).append(newLineCharacter);
+        stringBuilder.append("Fonte: ").append(fonte).append(newLineCharacter);
+        stringBuilder.append("Tipo: ").append(eventoTipo.getDescricao()).append(newLineCharacter);
+        stringBuilder.append("Nível: ").append(eventoNivel.getDescricao()).append(newLineCharacter);
+        stringBuilder.append("Palavras-Chave: ").append(palavrasChave).append(newLineCharacter);
+        stringBuilder.append("Entidade: ").append(entidade.getCadastroNacional()).append(" - ").append(entidade.getNome()).append(newLineCharacter);
+        stringBuilder.append("Mensagem: ").append(mensagem).append(newLineCharacter);
+        return stringBuilder.toString();
+    }
+
     @Override
     public boolean equals(Object obj) {
-         if (obj == null) {
+        if (obj == null) {
             return false;
         }
         if (getClass() != obj.getClass()) {
@@ -187,5 +207,4 @@ public class Evento implements Serializable {
         hash = 29 * hash + Objects.hashCode(this.id);
         return hash;
     }
-    
 }

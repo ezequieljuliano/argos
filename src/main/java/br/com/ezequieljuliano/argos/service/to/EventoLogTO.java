@@ -15,8 +15,7 @@
  */
 package br.com.ezequieljuliano.argos.service.to;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import br.com.ezequieljuliano.argos.util.Data;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -39,7 +38,6 @@ public class EventoLogTO {
     private Integer eventoTipoCodigo;
 
     public EventoLogTO() {
-        
     }
 
     public String getHostName() {
@@ -123,10 +121,6 @@ public class EventoLogTO {
     }
 
     public Date getOcorrenciaDtHrAsDate() {
-        try {
-            return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(this.ocorrenciaDtHr);
-        } catch (ParseException ex) {
-            return null;
-        }
+        return Data.stringToTimeStamp(this.ocorrenciaDtHr);
     }
 }
