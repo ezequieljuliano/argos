@@ -19,7 +19,9 @@ import br.com.ezequieljuliano.argos.constant.Constantes;
 import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
+import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
+import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisaAlerta;
 import br.com.ezequieljuliano.argos.util.Data;
 import java.util.List;
 import org.apache.lucene.document.Document;
@@ -80,7 +82,25 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
             QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(booleanQuery);
             luceneFilter = queryWrapperFilter;
         }
-        return super.luceneParserQuery(eventoPesquisaFiltro.getTipoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
+        return super.luceneParserQuery(eventoPesquisaFiltro.getTermoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
+    }
+
+    public Boolean possuiTermosDeAlerta(Evento evento, Usuario usuario) {
+        if (!usuario.getTermosAlerta().isEmpty()) {
+            //Cria query principal
+            BooleanQuery booleanQuery = new BooleanQuery();
+            //Adiciona condição para pegar somente o evento em questão
+            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ID, evento.getId())), BooleanClause.Occur.MUST);
+            //Cria nova query para os termos)
+            BooleanQuery bqTerms = new BooleanQuery();
+            for (UsuarioTermoPesquisaAlerta obj : usuario.getTermosAlerta()) {
+                bqTerms.add(new TermQuery(new Term(obj.getTermo().getLuceneIndex(), obj.getValor())), BooleanClause.Occur.SHOULD);
+            }
+            //Adciona termos (QueryPrincipal AND QueryTermos(TERMO OU TERMO ...) 
+            booleanQuery.add(bqTerms, BooleanClause.Occur.MUST);
+            return (!super.luceneExecQuery(booleanQuery).isEmpty());
+        }
+        return false;
     }
 
     @Override
@@ -113,7 +133,7 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     @Override
     public String getLuceneContentString(Evento obj) {
-        String newLineCharacter = System.getProperty("line.separator"); 
+        String newLineCharacter = System.getProperty("line.separator");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(obj.getId()).append(newLineCharacter);
         stringBuilder.append(obj.getHostName()).append(newLineCharacter);

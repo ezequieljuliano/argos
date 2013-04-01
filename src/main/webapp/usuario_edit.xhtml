@@ -106,8 +106,33 @@
                         <p:inputText value="#{usuarioMB.bean.entidade.nome}" id="entNome" disabled="true" size="60" />
                         <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show();
                             return false;" />
-                    </h:panelGrid> 
+                    </h:panelGrid>                     
                 </h:panelGrid> 
+
+                <p:fieldset legend="Termos Considerados para Envio de Alertas">
+                    <h:panelGrid columns="5">
+                        <h:outputText value="Termo:" />
+                        <p:selectOneMenu style="width: 250px" value="#{usuarioMB.userTermo}">  
+                            <f:selectItems value="#{usuarioMB.termosPesquisas}"/>
+                        </p:selectOneMenu> 
+                        <h:outputText value="Valor:" />
+                        <p:inputText value="#{usuarioMB.userTermoValor}" style="width: 250px" />
+                        <p:commandButton value="Incluir" action="#{usuarioMB.addUsuarioTermoPesquisaAlerta()}" update=":frm" image="ui-icon ui-icon-document"/>
+                    </h:panelGrid>
+                    <p:dataTable id="listTermos" var="term" 
+                                 value="#{usuarioMB.bean.termosAlerta}" 
+                                 emptyMessage="Não existem registros para exibir">        
+                        <p:column headerText="Termo" style="width: 42.5%">
+                            <h:outputText value="#{term.termo.nome}" />
+                        </p:column>
+                        <p:column headerText="Valor" style="width: 42.5%">
+                            <h:outputText value="#{term.valor}" />
+                        </p:column>
+                        <p:column headerText="Excluir" style="width: 2.5%">
+                            <p:commandButton value="Excluir" action="#{usuarioMB.removeUsuarioTermoPesquisaAlerta(term)}" update=":frm" image="ui-icon-trash"/>
+                        </p:column>   
+                    </p:dataTable>
+                </p:fieldset>
 
             </p:fieldset>
 

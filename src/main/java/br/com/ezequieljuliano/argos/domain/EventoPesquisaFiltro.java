@@ -25,25 +25,25 @@ public class EventoPesquisaFiltro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    private EventoTipoPesquisa tipoDoFiltro;
+    private EventoTermoPesquisa termoDoFiltro;
     private String textoDaPesquisa;
     private Entidade entidade;
     private EventoNivel eventoNivel;
     private EventoTipo eventoTipo;
     private Usuario usuario;
 
-    public EventoPesquisaFiltro(EventoTipoPesquisa tipoDoFiltro, String textoDaPesquisa,
+    public EventoPesquisaFiltro(EventoTermoPesquisa termoDoFiltro, String textoDaPesquisa,
             Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) {
         this.usuario = usuario;
-        this.tipoDoFiltro = tipoDoFiltro;
+        this.termoDoFiltro = termoDoFiltro;
         this.textoDaPesquisa = textoDaPesquisa;
         this.entidade = entidade;
         this.eventoNivel = eventoNivel;
         this.eventoTipo = eventoTipo;
     }
 
-    public EventoTipoPesquisa getTipoDoFiltro() {
-        return tipoDoFiltro;
+    public EventoTermoPesquisa getTermoDoFiltro() {
+        return termoDoFiltro;
     }
 
     public String getTextoDaPesquisa() {

@@ -24,7 +24,7 @@ import javax.inject.Named;
  * @author Ezequiel Juliano Müller
  */
 @Named
-public enum EventoTipoPesquisa implements Serializable {
+public enum EventoTermoPesquisa implements Serializable {
     
     etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
     etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
@@ -36,7 +36,7 @@ public enum EventoTipoPesquisa implements Serializable {
     
     private String nome;
 
-    private EventoTipoPesquisa(String nome) {
+    private EventoTermoPesquisa(String nome) {
         this.nome = nome;
     }
 

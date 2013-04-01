@@ -71,7 +71,7 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
     }
 
     private void enviarEmailComAlertaParaUsuario(Evento evento, Usuario usuario) {
-        if (evento.getEventoNivel().getAlerta()) {
+        if ((evento.getEventoNivel().getAlerta()) && (getDAO().possuiTermosDeAlerta(evento, usuario))) {
             try {
                 //Monta o HTML para envio de email
                 String emailMsg = new VelocityTemplate("email/TemplateEnvioLog.vm")

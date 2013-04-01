@@ -16,6 +16,8 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -28,7 +30,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document
 public class Usuario implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -41,7 +43,7 @@ public class Usuario implements Serializable {
     
     private UsuarioPerfil perfil = UsuarioPerfil.normal;
     
-    private Situacao situacao = Situacao.ativo; 
+    private Situacao situacao = Situacao.ativo;
     
     @Indexed
     private String email;
@@ -51,6 +53,8 @@ public class Usuario implements Serializable {
     
     @DBRef
     private Entidade entidade;
+    
+    private List<UsuarioTermoPesquisaAlerta> termosAlerta = new ArrayList<UsuarioTermoPesquisaAlerta>();
 
     public Usuario() {
         super();
@@ -119,7 +123,7 @@ public class Usuario implements Serializable {
     public void setEntidade(Entidade entidade) {
         this.entidade = entidade;
     }
-    
+
     public boolean isAtivo() {
         return situacao.equals(Situacao.ativo);
     }
@@ -128,9 +132,21 @@ public class Usuario implements Serializable {
         return situacao.equals(Situacao.inativo);
     }
 
+    public List<UsuarioTermoPesquisaAlerta> getTermosAlerta() {
+        return termosAlerta;
+    }
+    
+    public void addTermoAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta){
+        this.termosAlerta.add(usuarioTermoPesquisaAlerta);
+    }
+    
+    public void removeTermoAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta){
+        this.termosAlerta.remove(usuarioTermoPesquisaAlerta);
+    }
+
     @Override
     public boolean equals(Object obj) {
-         if (obj == null) {
+        if (obj == null) {
             return false;
         }
         if (getClass() != obj.getClass()) {
@@ -148,5 +164,5 @@ public class Usuario implements Serializable {
         int hash = 3;
         hash = 19 * hash + Objects.hashCode(this.id);
         return hash;
-    }  
+    }
 }

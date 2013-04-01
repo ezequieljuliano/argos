@@ -16,8 +16,10 @@
 package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.UsuarioBC;
+import br.com.ezequieljuliano.argos.domain.EventoTermoPesquisa;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
+import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisaAlerta;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
@@ -38,19 +40,25 @@ import org.primefaces.event.SelectEvent;
  */
 @ViewController
 public class UsuarioMB {
-
+    
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private UsuarioBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
+    
     private Usuario bean = null;
     private List<Usuario> beanList = null;
     private String campoPesquisa = null;
     private ArrayList<SelectItem> perfil;
-
+    private EventoTermoPesquisa userTermo;
+    private String userTermoValor;
+    
     public Usuario getBean() {
         if (bean == null) {
             bean = new Usuario();
@@ -60,30 +68,46 @@ public class UsuarioMB {
         }
         return bean;
     }
-
+    
     public void setBean(Usuario bean) {
         this.bean = bean;
     }
-
+    
     public List<Usuario> getBeanList() {
         if (beanList == null) {
             this.beanList = bc.findAll();
         }
         return beanList;
     }
-
+    
     public void setBeanList(List<Usuario> beanList) {
         this.beanList = beanList;
     }
-
+    
     public String getCampoPesquisa() {
         return campoPesquisa;
     }
-
+    
     public void setCampoPesquisa(String campoPesquisa) {
         this.campoPesquisa = campoPesquisa;
     }
 
+    public EventoTermoPesquisa getUserTermo() {
+        return userTermo;
+    }
+
+    public void setUserTermo(EventoTermoPesquisa userTermo) {
+        this.userTermo = userTermo;
+    }
+
+    public String getUserTermoValor() {
+        return userTermoValor;
+    }
+
+    public void setUserTermoValor(String userTermoValor) {
+        this.userTermoValor = userTermoValor;
+    }
+    
     public void salvar() {
         try {
             bc.saveOrUpdate(bean);
@@ -94,7 +118,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao salvar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     public void inativar() {
         try {
             bc.inativar(bean);
@@ -103,7 +127,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao inativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     public void ativar() {
         try {
             bc.ativar(bean);
@@ -112,7 +136,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao ativar o registro!", SeverityType.ERROR);
         }
     }
-
+    
     public String deletar() {
         try {
             bc.delete(bean.getId());
@@ -123,11 +147,11 @@ public class UsuarioMB {
         }
         return "";
     }
-
+    
     public List<Usuario> getList() {
         return getBeanList();
     }
-
+    
     public void findByUserName() {
         if (!campoPesquisa.equals("")) {
             this.beanList = bc.findListByUserName(campoPesquisa);
@@ -138,11 +162,11 @@ public class UsuarioMB {
             this.beanList = bc.findAll();
         }
     }
-
+    
     public void cancelarPesquisa() {
         this.beanList = bc.findAll();
     }
-
+    
     public void handleSelect(SelectEvent e) {
         try {
             JsfUtils.redireciona("usuario_edit.jsf?faces-redirect=true&id=" + ((Usuario) e.getObject()).getId());
@@ -150,7 +174,7 @@ public class UsuarioMB {
             Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public List<SelectItem> getPerfis() {
         if (this.perfil == null) {
             this.perfil = new ArrayList<SelectItem>();
@@ -160,7 +184,7 @@ public class UsuarioMB {
         }
         return perfil;
     }
-
+    
     public void generateApiKey() {
         try {
             bc.generateApiKey(bean);
@@ -170,7 +194,7 @@ public class UsuarioMB {
             messageContext.add("Ocorreu um erro ao gerar a API Key!", SeverityType.ERROR);
         }
     }
-
+    
     public void trocarSenha() {
         try {
             bc.generatePasswordKey(bean);
@@ -179,6 +203,29 @@ public class UsuarioMB {
         } catch (Exception e) {
             messageContext.add("Ocorreu um erro ao trocar a senha!", SeverityType.ERROR);
         }
+    }
+    
+    public List<SelectItem> getTermosPesquisas() {
+        List<SelectItem> itens = new ArrayList<SelectItem>();
+        for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
+            itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
+        }
+        return itens;
+    }
+
+    public void addUsuarioTermoPesquisaAlerta() {
+        if ((this.userTermo != null) && (!this.userTermoValor.equals(""))) {
+            UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta = new UsuarioTermoPesquisaAlerta(this.userTermo, this.userTermoValor);
+            bean.addTermoAlerta(usuarioTermoPesquisaAlerta);
+            this.userTermo = EventoTermoPesquisa.etpTudo;
+            this.userTermoValor = "";
+        } else {
+            messageContext.add("Selecione um termo e informe um valor!", SeverityType.ERROR);
+        }
+    }
+
+    public void removeUsuarioTermoPesquisaAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta) {
+        bean.removeTermoAlerta(usuarioTermoPesquisaAlerta);
     }
 
     private String getPreviousView() {

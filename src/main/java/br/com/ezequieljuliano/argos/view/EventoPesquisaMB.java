@@ -24,7 +24,7 @@ import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoNivel;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.EventoTipo;
-import br.com.ezequieljuliano.argos.domain.EventoTipoPesquisa;
+import br.com.ezequieljuliano.argos.domain.EventoTermoPesquisa;
 import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -62,7 +62,7 @@ public class EventoPesquisaMB {
     private SessionAttributes sessionAttributes;
     
     private String campoPesquisa;
-    private EventoTipoPesquisa tipoPesquisa;
+    private EventoTermoPesquisa termoDePesquisa;
     private List<Evento> eventos;
     private Evento evento;
     private Boolean pesquisaAvancada;
@@ -71,7 +71,7 @@ public class EventoPesquisaMB {
     private EventoTipo selectedEventoTipo;
 
     public EventoPesquisaMB() {
-        tipoPesquisa = EventoTipoPesquisa.etpTudo;
+        termoDePesquisa = EventoTermoPesquisa.etpTudo;
         pesquisaAvancada = false;
     }
 
@@ -83,12 +83,12 @@ public class EventoPesquisaMB {
         this.campoPesquisa = campoPesquisa;
     }
 
-    public EventoTipoPesquisa getTipoPesquisa() {
-        return tipoPesquisa;
+    public EventoTermoPesquisa getTermoDePesquisa() {
+        return termoDePesquisa;
     }
 
-    public void setTipoPesquisa(EventoTipoPesquisa tipoPesquisa) {
-        this.tipoPesquisa = tipoPesquisa;
+    public void setTermoDePesquisa(EventoTermoPesquisa tipoPesquisa) {
+        this.termoDePesquisa = tipoPesquisa;
     }
 
     public List<Evento> getEventos() {
@@ -157,7 +157,7 @@ public class EventoPesquisaMB {
             messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
         } else {
             try {
-                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(tipoPesquisa, campoPesquisa,
+                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(termoDePesquisa, campoPesquisa,
                         selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
                 eventos = eventoBC.findByPesquisaFiltro(filtro);
             } catch (Exception e) {
@@ -166,9 +166,9 @@ public class EventoPesquisaMB {
         }
     }
 
-    public List<SelectItem> getTipoPesquisas() {
+    public List<SelectItem> getTermosPesquisas() {
         List<SelectItem> itens = new ArrayList<SelectItem>();
-        for (EventoTipoPesquisa eventotipoPesquisa : EventoTipoPesquisa.values()) {
+        for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
             itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
         }
         return itens;

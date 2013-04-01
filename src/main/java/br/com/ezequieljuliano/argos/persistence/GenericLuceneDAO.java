@@ -119,7 +119,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
         }
     }
 
-    private List<DomainType> luceneExecQuery(Query q) {
+    public List<DomainType> luceneExecQuery(Query q) {
         try {
             if (q != null) {
                 //Resultados por páginas de documentos
