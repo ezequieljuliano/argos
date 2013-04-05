@@ -16,6 +16,8 @@
 package br.com.ezequieljuliano.argos.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -46,7 +48,7 @@ public class Entidade implements Serializable {
     private Situacao situacao = Situacao.ativo;
     
     @DBRef
-    private Entidade entidadeAcima;
+    private List<Entidade> entidadesFilhas = new ArrayList<Entidade>();
 
     public Entidade() {
         super();
@@ -92,20 +94,29 @@ public class Entidade implements Serializable {
         this.situacao = situacao;
     }
 
-    public Entidade getEntidadeAcima() {
-        return entidadeAcima;
-    }
-
-    public void setEntidadeAcima(Entidade entidadeAcima) {
-        this.entidadeAcima = entidadeAcima;
-    }
-
     public boolean isAtivo() {
         return situacao.equals(Situacao.ativo);
     }
 
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
+    }
+
+    public List<Entidade> getEntidadesFilhas() {
+        return entidadesFilhas;
+    }
+    
+    public void addEntidadeFilha(Entidade entidade){
+        this.entidadesFilhas.add(entidade);
+    }
+    
+    public void removeEntidadeFilha(Entidade entidade){
+        this.entidadesFilhas.remove(entidade);
+    }
+
+    @Override
+    public String toString() {
+      return this.nome;
     }
 
     @Override

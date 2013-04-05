@@ -54,7 +54,7 @@ public class Usuario implements Serializable {
     @DBRef
     private Entidade entidade;
     
-    private List<UsuarioTermoPesquisaAlerta> termosAlerta = new ArrayList<UsuarioTermoPesquisaAlerta>();
+    private List<UsuarioTermoPesquisa> termosNotificacao = new ArrayList<UsuarioTermoPesquisa>();
 
     public Usuario() {
         super();
@@ -132,16 +132,16 @@ public class Usuario implements Serializable {
         return situacao.equals(Situacao.inativo);
     }
 
-    public List<UsuarioTermoPesquisaAlerta> getTermosAlerta() {
-        return termosAlerta;
+    public List<UsuarioTermoPesquisa> getTermosNotificacao() {
+        return termosNotificacao;
     }
     
-    public void addTermoAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta){
-        this.termosAlerta.add(usuarioTermoPesquisaAlerta);
+    public void addTermoNotificacao(UsuarioTermoPesquisa usuarioTermoPesquisaNotificacao){
+        this.termosNotificacao.add(usuarioTermoPesquisaNotificacao);
     }
     
-    public void removeTermoAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta){
-        this.termosAlerta.remove(usuarioTermoPesquisaAlerta);
+    public void removeTermoNotificacao(UsuarioTermoPesquisa usuarioTermoPesquisaNotificacao){
+        this.termosNotificacao.remove(usuarioTermoPesquisaNotificacao);
     }
 
     @Override

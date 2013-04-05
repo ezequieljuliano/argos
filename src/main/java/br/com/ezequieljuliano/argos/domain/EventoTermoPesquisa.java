@@ -25,12 +25,11 @@ import javax.inject.Named;
  */
 @Named
 public enum EventoTermoPesquisa implements Serializable {
-    
+
     etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
     etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
     etpNome("Nome do Evento"), etpOcorrenciaDtHr("Data/Hora Ocorrência"), etpPalavrasChave("Palavras-Chave"),
-    etpEntidadeNome("Entidade Nome"), etpEntidadeCadastroNacional("Entidade Cadastro Nacional"),
-    etpEventoNivelDescricao("Nível de Evento Descrição"), etpEventoTipoDescricao("Tipo de Evento Descrição");
+    etpEntidade("Entidade"), etpEventoNivel("Evento Nível"), etpEventoTipo("Evento Tipo");
     
     private static final long serialVersionUID = 1L;
     
@@ -64,14 +63,12 @@ public enum EventoTermoPesquisa implements Serializable {
                 return Constantes.INDICE_EVENTO_OCORRENCIADTHR;
             case etpPalavrasChave:
                 return Constantes.INDICE_EVENTO_PALAVRASCHAVE;
-            case etpEntidadeNome:
-                return Constantes.INDICE_EVENTO_ENTIDADENOME;
-            case etpEntidadeCadastroNacional:
-                return Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL;
-            case etpEventoNivelDescricao:
-                return Constantes.INDICE_EVENTO_NIVELDESCRICAO;
-            case etpEventoTipoDescricao:
-                return Constantes.INDICE_EVENTO_TIPODESCRICAO;
+            case etpEntidade:
+                return Constantes.INDICE_EVENTO_ENTIDADEID;
+            case etpEventoNivel:
+                return Constantes.INDICE_EVENTO_NIVELID;
+            case etpEventoTipo:
+                return Constantes.INDICE_EVENTO_TIPOID;
             default:
                 return Constantes.INDICE_EVENTO_TUDO;
         }

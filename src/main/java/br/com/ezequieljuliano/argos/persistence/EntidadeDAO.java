@@ -52,18 +52,23 @@ public class EntidadeDAO extends GenericDAO<Entidade, String> {
         List<Entidade> entidades = new ArrayList<Entidade>();
         //Primeiro valida para verificar se o usuário não é administrador
         if (!usuario.getPerfil().equals(UsuarioPerfil.administrador)) {
-            //Se for usuário normal valida se tem entidade relacionada
+            //Se for usuário normal valida se tem entidade relacionada 
             if (usuario.getEntidade() != null) {
                 //Adiciona na lista por primeiro a entidade vinculada
                 entidades.add(usuario.getEntidade());
-                //Agora busca as entidades abaixo desta e adiciona na lista
-                Query query = new Query(Criteria.where("entidadeAcima").is(usuario.getEntidade()));
-                entidades.addAll(getMongoOperations().find(query, Entidade.class));
+                findEntidadesFilhas(usuario.getEntidade(), entidades);
             }
         } else {
             //Se for administrador retorna todas as entidades
             entidades = findAll();
         }
         return entidades;
+    }
+
+    private void findEntidadesFilhas(Entidade entidade, List<Entidade> returnList) {
+        for (Entidade filha : entidade.getEntidadesFilhas()) {
+            returnList.add(filha);
+            findEntidadesFilhas(filha, returnList);
+        }
     }
 }

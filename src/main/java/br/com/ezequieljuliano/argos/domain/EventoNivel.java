@@ -41,8 +41,6 @@ public class EventoNivel implements Serializable {
     
     private Situacao situacao = Situacao.ativo;
     
-    private Boolean alerta = true;
-
     public EventoNivel() {
         super();
     }
@@ -79,20 +77,17 @@ public class EventoNivel implements Serializable {
         this.situacao = situacao;
     }
 
-    public Boolean getAlerta() {
-        return alerta;
-    }
-
-    public void setAlerta(Boolean alerta) {
-        this.alerta = alerta;
-    }
-
     public boolean isAtivo() {
         return situacao.equals(Situacao.ativo);
     }
 
     public boolean isInativo() {
         return situacao.equals(Situacao.inativo);
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
     }
 
     @Override

@@ -22,16 +22,17 @@ import java.util.Objects;
  *
  * @author Ezequiel Juliano Müller
  */
-public class UsuarioTermoPesquisaAlerta implements Serializable {
+public class UsuarioTermoPesquisa implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     private EventoTermoPesquisa termo;
     private String valor;
 
-    public UsuarioTermoPesquisaAlerta() {
+    public UsuarioTermoPesquisa() {
     }
 
-    public UsuarioTermoPesquisaAlerta(EventoTermoPesquisa termo, String valor) {
+    public UsuarioTermoPesquisa(EventoTermoPesquisa termo, String valor) {
         this.termo = termo;
         this.valor = valor;
     }
@@ -67,7 +68,7 @@ public class UsuarioTermoPesquisaAlerta implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UsuarioTermoPesquisaAlerta other = (UsuarioTermoPesquisaAlerta) obj;
+        final UsuarioTermoPesquisa other = (UsuarioTermoPesquisa) obj;
         if (this.termo != other.termo) {
             return false;
         }

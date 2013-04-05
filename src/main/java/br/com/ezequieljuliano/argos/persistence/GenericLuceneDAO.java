@@ -58,7 +58,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
     
     private IndexWriter getIndexWriter() {
         try {
-            IndexWriterConfig indexConfig = new IndexWriterConfig(Constantes.getLuceneVersion(), analyzer);
+            IndexWriterConfig indexConfig = new IndexWriterConfig(Constantes.getLuceneVersion(), getAnalyzer());
             return new IndexWriter(directory, indexConfig);
         } catch (CorruptIndexException ex) {
             Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE, null, ex);
@@ -222,7 +222,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
     public List<DomainType> luceneParserQuery(String indice, String texto) {
         Query query = null;
         try {
-            query = new QueryParser(Constantes.getLuceneVersion(), indice, analyzer).parse(texto);
+            query = new QueryParser(Constantes.getLuceneVersion(), indice, getAnalyzer()).parse(texto);
         } catch (ParseException ex) {
             Logger.getLogger(getDomainClass().getName()).log(Level.SEVERE, null, ex);
         }
@@ -253,5 +253,8 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
         super.deleteObj(obj); 
     }
     
+    public Analyzer getAnalyzer(){
+        return analyzer;
+    }
     
 }

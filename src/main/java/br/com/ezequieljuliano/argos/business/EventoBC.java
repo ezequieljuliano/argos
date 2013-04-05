@@ -52,8 +52,8 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
         }
         //Insere Usuário relacionado ao Evento
         gravarUsuarioEvento(evento, usuario);
-        //Envia alerta caso esteja configurado para isto
-        enviarEmailComAlertaParaUsuario(evento, usuario);
+        //Envia notificação caso esteja configurado para isto
+        enviarEmailComNotificacaoParaUsuario(evento, usuario);
     }
 
     private void gravarUsuarioEvento(Evento evento, Usuario usuario) {
@@ -70,8 +70,8 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
         return getDAO().findByPesquisaFiltro(filtro);
     }
 
-    private void enviarEmailComAlertaParaUsuario(Evento evento, Usuario usuario) {
-        if ((evento.getEventoNivel().getAlerta()) && (getDAO().possuiTermosDeAlerta(evento, usuario))) {
+    private void enviarEmailComNotificacaoParaUsuario(Evento evento, Usuario usuario) {
+        if (getDAO().possuiTermosDeNotificacao(evento, usuario)) {
             try {
                 //Monta o HTML para envio de email
                 String emailMsg = new VelocityTemplate("email/TemplateEnvioLog.vm")

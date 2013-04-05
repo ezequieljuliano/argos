@@ -15,20 +15,15 @@
  */
 package br.com.ezequieljuliano.argos.view;
 
-import br.com.ezequieljuliano.argos.business.EntidadeBC;
 import br.com.ezequieljuliano.argos.business.EventoBC;
-import br.com.ezequieljuliano.argos.business.EventoNivelBC;
-import br.com.ezequieljuliano.argos.business.EventoTipoBC;
-import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
-import br.com.ezequieljuliano.argos.domain.EventoNivel;
-import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
-import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.domain.EventoTermoPesquisa;
 import br.com.ezequieljuliano.argos.security.SessionAttributes;
+import br.com.ezequieljuliano.argos.domain.FiltroTermo;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
+import br.gov.frameworkdemoiselle.util.Strings;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.model.SelectItem;
@@ -47,48 +42,21 @@ public class EventoPesquisaMB {
     private EventoBC eventoBC;
     
     @Inject
-    private EntidadeBC entidadeBC;
-    
-    @Inject
-    private EventoNivelBC eventoNivelBC;
-    
-    @Inject
-    private EventoTipoBC eventoTipoBC;
-    
-    @Inject
     private MessageContext messageContext;
     
     @Inject
     private SessionAttributes sessionAttributes;
     
-    private String campoPesquisa;
-    private EventoTermoPesquisa termoDePesquisa;
+    private Boolean pesquisaAvancada;
+    private EventoTermoPesquisa termoPesquisa;
+    private Object valorPesquisa;
+    private List<FiltroTermo> termosDePesquisa = new ArrayList<FiltroTermo>();
     private List<Evento> eventos;
     private Evento evento;
-    private Boolean pesquisaAvancada;
-    private Entidade selectedEntidade;
-    private EventoNivel selectedEventoNivel;
-    private EventoTipo selectedEventoTipo;
 
     public EventoPesquisaMB() {
-        termoDePesquisa = EventoTermoPesquisa.etpTudo;
-        pesquisaAvancada = false;
-    }
-
-    public String getCampoPesquisa() {
-        return campoPesquisa;
-    }
-
-    public void setCampoPesquisa(String campoPesquisa) {
-        this.campoPesquisa = campoPesquisa;
-    }
-
-    public EventoTermoPesquisa getTermoDePesquisa() {
-        return termoDePesquisa;
-    }
-
-    public void setTermoDePesquisa(EventoTermoPesquisa tipoPesquisa) {
-        this.termoDePesquisa = tipoPesquisa;
+        this.termoPesquisa = EventoTermoPesquisa.etpTudo;
+        this.pesquisaAvancada = false;
     }
 
     public List<Evento> getEventos() {
@@ -119,54 +87,30 @@ public class EventoPesquisaMB {
     }
 
     public void ativarPesquisaAvancada() {
-        limparFiltroAvancado();
         this.pesquisaAvancada = true;
     }
 
     public void inativarPesquisaAvancada() {
-        limparFiltroAvancado();
         this.pesquisaAvancada = false;
     }
 
-    public Entidade getSelectedEntidade() {
-        return selectedEntidade;
+    public EventoTermoPesquisa getTermoPesquisa() {
+        return termoPesquisa;
     }
 
-    public void setSelectedEntidade(Entidade selectedEntidade) {
-        this.selectedEntidade = selectedEntidade;
+    public void setTermoPesquisa(EventoTermoPesquisa termoPesquisa) {
+        this.termoPesquisa = termoPesquisa;
     }
 
-    public EventoNivel getSelectedEventoNivel() {
-        return selectedEventoNivel;
+    public Object getValorPesquisa() {
+        return valorPesquisa;
     }
 
-    public void setSelectedEventoNivel(EventoNivel selectedEventoNivel) {
-        this.selectedEventoNivel = selectedEventoNivel;
+    public void setValorPesquisa(Object valorPesquisa) {
+        this.valorPesquisa = valorPesquisa;
     }
 
-    public EventoTipo getSelectedEventoTipo() {
-        return selectedEventoTipo;
-    }
-
-    public void setSelectedEventoTipo(EventoTipo selectedEventoTipo) {
-        this.selectedEventoTipo = selectedEventoTipo;
-    }
-
-    public void pesquisar() throws Exception {
-        if (campoPesquisa.equals("") || campoPesquisa.length() == 0) {
-            messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
-        } else {
-            try {
-                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(termoDePesquisa, campoPesquisa,
-                        selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
-                eventos = eventoBC.findByPesquisaFiltro(filtro);
-            } catch (Exception e) {
-                messageContext.add(e.getMessage(), SeverityType.ERROR);
-            }
-        }
-    }
-
-    public List<SelectItem> getTermosPesquisas() {
+    public List<SelectItem> getListTermosPesquisa() {
         List<SelectItem> itens = new ArrayList<SelectItem>();
         for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
             itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
@@ -174,21 +118,52 @@ public class EventoPesquisaMB {
         return itens;
     }
 
-    public List<Entidade> getEntidadeList() {
-        return entidadeBC.findByUsuario(sessionAttributes.getUsuario());
+    public List<FiltroTermo> getTermosDePesquisa() {
+        return termosDePesquisa;
     }
 
-    public List<EventoNivel> getEventoNivelList() {
-        return eventoNivelBC.findAll();
+    public void addTermoDePesquisa() {
+        if (this.termoPesquisa != null) {
+            this.termosDePesquisa.add(new FiltroTermo(this.termoPesquisa, this.valorPesquisa));
+            this.termoPesquisa = EventoTermoPesquisa.etpTudo;
+            this.valorPesquisa = null;
+        } else {
+            messageContext.add("Selecione um termo e informe um valor!", SeverityType.ERROR);
+        }
     }
 
-    public List<EventoTipo> getEventoTipoList() {
-        return eventoTipoBC.findAll();
+    public void removeTermoDePesquisa(FiltroTermo termoPesquisa) {
+        this.termosDePesquisa.remove(termoPesquisa);
     }
 
-    private void limparFiltroAvancado() {
-        selectedEntidade = null;
-        selectedEventoNivel = null;
-        selectedEventoTipo = null;
+    public void pesquisar() throws Exception {
+        if (valorPesquisa == null || Strings.isEmpty(valorPesquisa.toString())) {
+            messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
+        } else {
+            try {
+                //EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(termoPesquisa, valorPesquisa,
+                //        selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
+                //eventos = eventoBC.findByPesquisaFiltro(filtro);
+            } catch (Exception e) {
+                messageContext.add(e.getMessage(), SeverityType.ERROR);
+            }
+        }
     }
+    
+    public Boolean isFiltroEntidade() {
+        return (this.termoPesquisa == EventoTermoPesquisa.etpEntidade);
+    }
+
+    public Boolean isFiltroEventoNivel() {
+        return (this.termoPesquisa == EventoTermoPesquisa.etpEventoNivel);
+    }
+
+    public Boolean isFiltroEventoTipo() {
+        return (this.termoPesquisa == EventoTermoPesquisa.etpEventoTipo);
+    }
+
+    public Boolean isDemaisFitros() {
+        return (!isFiltroEntidade() && !isFiltroEventoNivel() && !isFiltroEventoTipo());
+    }
+    
 }

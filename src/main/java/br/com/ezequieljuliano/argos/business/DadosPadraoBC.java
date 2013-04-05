@@ -124,7 +124,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(1);
             eNivel.setDescricao("Informação");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
         if (eventoNivelBC.findByCodigo(2) == null) {
@@ -132,7 +131,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(2);
             eNivel.setDescricao("Alerta");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
         if (eventoNivelBC.findByCodigo(3) == null) {
@@ -140,7 +138,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(3);
             eNivel.setDescricao("Erro");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
         if (eventoNivelBC.findByCodigo(4) == null) {
@@ -148,7 +145,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(4);
             eNivel.setDescricao("Debug");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
         if (eventoNivelBC.findByCodigo(5) == null) {
@@ -156,7 +152,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(5);
             eNivel.setDescricao("Fatal");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
         if (eventoNivelBC.findByCodigo(6) == null) {
@@ -164,7 +159,6 @@ public class DadosPadraoBC {
             eNivel.setCodigo(6);
             eNivel.setDescricao("Exceção");
             eNivel.setSituacao(Situacao.ativo);
-            eNivel.setAlerta(Boolean.TRUE);
             eventoNivelBC.saveOrUpdate(eNivel);
         }
     }

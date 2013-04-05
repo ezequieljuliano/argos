@@ -21,14 +21,18 @@ import br.com.ezequieljuliano.argos.domain.Evento;
 import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
-import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisaAlerta;
+import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisa;
 import br.com.ezequieljuliano.argos.util.Data;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
@@ -82,23 +86,27 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
             QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(booleanQuery);
             luceneFilter = queryWrapperFilter;
         }
-        return super.luceneParserQuery(eventoPesquisaFiltro.getTermoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
+        return luceneParserQuery(eventoPesquisaFiltro.getTermoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
     }
 
-    public Boolean possuiTermosDeAlerta(Evento evento, Usuario usuario) {
-        if (!usuario.getTermosAlerta().isEmpty()) {
+    public Boolean possuiTermosDeNotificacao(Evento evento, Usuario usuario) {
+        if (!usuario.getTermosNotificacao().isEmpty()) {
             //Cria query principal
             BooleanQuery booleanQuery = new BooleanQuery();
             //Adiciona condição para pegar somente o evento em questão
             booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ID, evento.getId())), BooleanClause.Occur.MUST);
             //Cria nova query para os termos)
             BooleanQuery bqTerms = new BooleanQuery();
-            for (UsuarioTermoPesquisaAlerta obj : usuario.getTermosAlerta()) {
-                bqTerms.add(new TermQuery(new Term(obj.getTermo().getLuceneIndex(), obj.getValor())), BooleanClause.Occur.SHOULD);
+            for (UsuarioTermoPesquisa obj : usuario.getTermosNotificacao()) {
+                try {
+                    bqTerms.add(new QueryParser(Constantes.getLuceneVersion(), obj.getTermo().getLuceneIndex(), getAnalyzer()).parse(obj.getValor()), BooleanClause.Occur.SHOULD);
+                } catch (ParseException ex) {
+                    Logger.getLogger(EventoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             //Adciona termos (QueryPrincipal AND QueryTermos(TERMO OU TERMO ...) 
             booleanQuery.add(bqTerms, BooleanClause.Occur.MUST);
-            return (!super.luceneExecQuery(booleanQuery).isEmpty());
+            return (!luceneExecQuery(booleanQuery).isEmpty());
         }
         return false;
     }
@@ -108,20 +116,20 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         Document document = new Document();
         document.add(new StringField(Constantes.INDICE_EVENTO_ID, obj.getId(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_MENSAGEM, obj.getMensagem(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_NOME, obj.getNome(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_OCORRENCIADTHR, Data.timestampToString(obj.getOcorrenciaDtHr()), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_PALAVRASCHAVE, obj.getPalavrasChave(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADEID, obj.getEntidade().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_NIVELID, obj.getEventoNivel().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_TIPOID, obj.getEventoTipo().getId(), Field.Store.YES));
-        document.add(new StringField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_TUDO, getLuceneContentString(obj), Field.Store.YES));
         return document;
     }

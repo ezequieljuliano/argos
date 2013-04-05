@@ -26,7 +26,7 @@
 
             <br />
 
-            <p:dialog header="Entidade Acima" widgetVar="dlgEntidade" modal="true" closable="true">
+            <p:dialog header="Entidade Filha" widgetVar="dlgEntidade" modal="true" closable="true">
                 <p:panel id="pnPesquisa">
                     <h:outputText value="Pesquisar Nome por:" />
                     <h:panelGrid columns="3" >
@@ -37,7 +37,7 @@
                 </p:panel>
                 <p:dataTable value="#{entidadeMB.list}" var="ent"
                              selectionMode="single"
-                             selection="#{entidadeMB.bean.entidadeAcima}"
+                             selection="#{entidadeMB.entidadeFilha}"
                              rowKey="#{ent.id}" id="listEntidade"
                              paginator="true" rows="10"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
@@ -69,15 +69,41 @@
 
                     <h:outputLabel value="Cadastro Nacional*" for="cadastroNacional"/>
                     <p:inputText value="#{entidadeMB.bean.cadastroNacional}" id="cadastroNacional" label="Cadastro Nacional" required="true" size="40"/>
-
-                    <h:outputLabel value="Entidade Acima"/>
-                    <h:panelGrid columns="2" id="entidade">
-                        <p:inputText value="#{entidadeMB.bean.entidadeAcima.nome}" id="entNome" disabled="true" size="60" />
-                        <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show();
-                            return false;" />
-                    </h:panelGrid> 
-
                 </h:panelGrid> 
+
+                <br />
+
+                <p:fieldset legend="Entidades Filhas">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Entidade Filha"/>
+                        <h:panelGrid columns="3" id="entidade">
+                            <p:inputText value="#{entidadeMB.entidadeFilha.nome}" id="entNome" disabled="true" size="60" />
+                            <p:button image="ui-icon ui-icon-search" onclick="dlgEntidade.show();
+                            return false;" />
+                            <p:commandButton value="Incluir" action="#{entidadeMB.addEntidadeFilha()}" update=":frm" image="ui-icon ui-icon-document"/>
+                        </h:panelGrid> 
+                    </h:panelGrid>
+                    <p:dataTable id="listEntidadesFilhas" var="filha" 
+                                 value="#{entidadeMB.bean.entidadesFilhas}" 
+                                 emptyMessage="Não existem registros para exibir"> 
+                        <p:column headerText="Código" style="width: 10%">
+                            <h:outputText value="#{filha.codigo}"/>
+                        </p:column>
+                        <p:column headerText="Nome" style="width: 50%">
+                            <h:outputText value="#{filha.nome}"/>
+                        </p:column>
+                        <p:column headerText="Cadastro Nacional" style="width: 20%">
+                            <h:outputText value="#{filha.cadastroNacional}"/>
+                        </p:column>
+                        <p:column headerText="Situação" style="width: 17%">
+                            <h:outputText value="#{filha.situacao.nome}"/>
+                        </p:column>
+                        <p:column headerText="Excluir" style="width: 3%">
+                            <p:commandButton value="Excluir" action="#{entidadeMB.removeEntidadeFilha(filha)}" update=":frm" image="ui-icon-trash"/>
+                        </p:column>   
+                    </p:dataTable>
+                </p:fieldset>
+
             </p:fieldset>
 
         </h:form>

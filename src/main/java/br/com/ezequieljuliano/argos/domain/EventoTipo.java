@@ -86,6 +86,12 @@ public class EventoTipo implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return this.descricao;
+    }
+    
+    
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;

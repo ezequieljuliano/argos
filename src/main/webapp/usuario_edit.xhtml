@@ -109,18 +109,57 @@
                     </h:panelGrid>                     
                 </h:panelGrid> 
 
-                <p:fieldset legend="Termos Considerados para Envio de Alertas">
-                    <h:panelGrid columns="5">
+                <p:dialog header="Ajuda para Definição de Valores (Query Builder)" widgetVar="dlgHelpQueryBuilder" modal="true" closable="true">
+                    <h:outputText value="Exemplos de sintaxe de consulta básica para o Apache Lucene"/>
+                    <br />
+                    <h:outputText value="As consultas podem ser mescladas"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta com todas as palavras (AND):"/>
+                    <br />
+                    <h:outputText value="+Palavra1 +Palavra2 +Palavra3"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta com frase exata:"/>
+                    <br />
+                    <h:outputText value="''Palavra 1 Maior é''"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta com pelo menos uma das palavras (OR):"/>
+                    <br />
+                    <h:outputText value="Palavra1 Palavra2 Palavra3"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta sem as palavras (NOT):"/>
+                    <br />
+                    <h:outputText value="-Palavra1 -Palavra2 -Palavra3"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta para valor aproximado:"/>
+                    <br />
+                    <h:outputText value="''Palavra1''~"/>
+                    <br />
+                    <br />
+                    <h:outputText value="Sintaxe de consulta entre um e outro valor:"/>
+                    <br />
+                    <h:outputText value="[Palavra1 TO Palavra2]"/>
+                </p:dialog> 
+
+                <br />
+
+                <p:fieldset legend="Termos Considerados para Envio de Notificações">
+                    <h:panelGrid columns="6">
                         <h:outputText value="Termo:" />
                         <p:selectOneMenu style="width: 250px" value="#{usuarioMB.userTermo}">  
                             <f:selectItems value="#{usuarioMB.termosPesquisas}"/>
                         </p:selectOneMenu> 
-                        <h:outputText value="Valor:" />
+                        <h:outputText value="Valor (Query):" />
+                        <p:commandButton onclick="dlgHelpQueryBuilder.show()" image="ui-icon-help"/>
                         <p:inputText value="#{usuarioMB.userTermoValor}" style="width: 250px" />
-                        <p:commandButton value="Incluir" action="#{usuarioMB.addUsuarioTermoPesquisaAlerta()}" update=":frm" image="ui-icon ui-icon-document"/>
+                        <p:commandButton value="Incluir" action="#{usuarioMB.addUsuarioTermoNotificacao()}" update=":frm" image="ui-icon ui-icon-document"/>
                     </h:panelGrid>
                     <p:dataTable id="listTermos" var="term" 
-                                 value="#{usuarioMB.bean.termosAlerta}" 
+                                 value="#{usuarioMB.bean.termosNotificacao}" 
                                  emptyMessage="Não existem registros para exibir">        
                         <p:column headerText="Termo" style="width: 42.5%">
                             <h:outputText value="#{term.termo.nome}" />
@@ -129,7 +168,7 @@
                             <h:outputText value="#{term.valor}" />
                         </p:column>
                         <p:column headerText="Excluir" style="width: 2.5%">
-                            <p:commandButton value="Excluir" action="#{usuarioMB.removeUsuarioTermoPesquisaAlerta(term)}" update=":frm" image="ui-icon-trash"/>
+                            <p:commandButton value="Excluir" action="#{usuarioMB.removeUsuarioTermoNotificacao(term)}" update=":frm" image="ui-icon-trash"/>
                         </p:column>   
                     </p:dataTable>
                 </p:fieldset>

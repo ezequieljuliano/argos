@@ -37,15 +37,20 @@ import org.primefaces.event.SelectEvent;
 public class EntidadeMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EntidadeBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
+    
     private Entidade bean = null;
     private List<Entidade> beanList = null;
     private String campoPesquisa = null;
+    private Entidade entidadeFilha = null;
 
     public Entidade getBean() {
         if (bean == null) {
@@ -149,5 +154,32 @@ public class EntidadeMB {
 
     private String getPreviousView() {
         return "./entidade_list.xhtml";
+    }
+
+    public Entidade getEntidadeFilha() {
+        return entidadeFilha;
+    }
+
+    public void setEntidadeFilha(Entidade entidadeFilha) {
+        this.entidadeFilha = entidadeFilha;
+    }
+
+    public void addEntidadeFilha() {
+        if (this.entidadeFilha != null) {
+            if (!this.entidadeFilha.getId().equals(bean.getId())) {
+                bean.addEntidadeFilha(entidadeFilha);
+                entidadeFilha = null;
+            } else {
+                messageContext.add("A entidade não pode ser auto-referenciada!", SeverityType.ERROR);
+            }
+        } else {
+            messageContext.add("Você deve selecionar uma entidade!", SeverityType.ERROR);
+        }
+    }
+
+    public void removeEntidadeFilha(Entidade entidade) {
+        if (entidade != null) {
+            bean.removeEntidadeFilha(entidade);
+        }
     }
 }

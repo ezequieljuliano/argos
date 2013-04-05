@@ -19,7 +19,7 @@ import br.com.ezequieljuliano.argos.business.UsuarioBC;
 import br.com.ezequieljuliano.argos.domain.EventoTermoPesquisa;
 import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
-import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisaAlerta;
+import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisa;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
@@ -213,10 +213,10 @@ public class UsuarioMB {
         return itens;
     }
 
-    public void addUsuarioTermoPesquisaAlerta() {
+    public void addUsuarioTermoNotificacao() {
         if ((this.userTermo != null) && (!this.userTermoValor.equals(""))) {
-            UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta = new UsuarioTermoPesquisaAlerta(this.userTermo, this.userTermoValor);
-            bean.addTermoAlerta(usuarioTermoPesquisaAlerta);
+            UsuarioTermoPesquisa usuarioTermoPesquisaNotificacao = new UsuarioTermoPesquisa(this.userTermo, this.userTermoValor);
+            bean.addTermoNotificacao(usuarioTermoPesquisaNotificacao);
             this.userTermo = EventoTermoPesquisa.etpTudo;
             this.userTermoValor = "";
         } else {
@@ -224,8 +224,8 @@ public class UsuarioMB {
         }
     }
 
-    public void removeUsuarioTermoPesquisaAlerta(UsuarioTermoPesquisaAlerta usuarioTermoPesquisaAlerta) {
-        bean.removeTermoAlerta(usuarioTermoPesquisaAlerta);
+    public void removeUsuarioTermoNotificacao(UsuarioTermoPesquisa usuarioTermoNotificacao) {
+        bean.removeTermoNotificacao(usuarioTermoNotificacao);
     }
 
     private String getPreviousView() {
