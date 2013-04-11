@@ -37,12 +37,16 @@ import org.primefaces.event.SelectEvent;
 public class EventoNivelMB {
 
     private static final long serialVersionUID = 1L;
+    
     @Inject
     private EventoNivelBC bc;
+    
     @Inject
     private MessageContext messageContext;
+    
     @Inject
     private Parameter<String> id;
+    
     private EventoNivel bean;
     private List<EventoNivel> beanList = null;
     private String campoPesquisa = null;

@@ -60,7 +60,7 @@
         </style>
         <h:form id="frm" rendered="#{securityContext.hasRole('N')}">
 
-            <p:dialog header="Ajuda para Definição de Valores (Query Builder)" widgetVar="dlgHelpQueryBuilder" modal="true" closable="true">
+            <p:dialog position="center" header="Ajuda para Definição de Valores (Query Builder)" widgetVar="dlgHelpQueryBuilder" modal="true" closable="true">
                 <h:outputText value="Exemplos de sintaxe de consulta básica para o Apache Lucene"/>
                 <br />
                 <h:outputText value="As consultas podem ser mescladas"/>
@@ -101,33 +101,42 @@
                     <h:outputText value="Termo:" />
                     <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.termoPesquisa}">  
                         <p:ajax event="change" update=":frm" process="@this"/>
-                        <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisa}"/>
+                        <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisaModoAvancado}"/>
                     </p:selectOneMenu> 
 
                     <h:panelGrid columns="3" rendered="#{eventoPesquisaMB.isDemaisFitros()}"> 
                         <h:outputText value="Valor (Query):" />
-                        <p:commandButton onclick="dlgHelpQueryBuilder.show()" image="ui-icon-help"/>
+                        <p:commandButton onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
                         <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px" />
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2" rendered="#{eventoPesquisaMB.isFiltroEntidade()}">
+                    <h:panelGrid id="pnEntidade" columns="2" rendered="#{eventoPesquisaMB.isFiltroEntidade()}">
                         <h:outputText value="Entidade:" />
-                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px" />
+                        <p:selectOneMenu converter="entidadeConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
+                            <f:selectItem itemLabel="Selecione..." itemValue="" /> 
+                            <f:selectItems value="#{eventoPesquisaMB.listEntidades}" var="vEntidade" itemLabel="#{vEntidade.nome}" itemValue="#{vEntidade}"/>  
+                        </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoNivel()}">
-                        <h:outputText value="Evento Nível:" />
-                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px" />
+                    <h:panelGrid id="pnEventoNivel" columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoNivel()}">
+                        <h:outputText value="Nível:" />
+                        <p:selectOneMenu converter="eventoNivelConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
+                            <f:selectItem itemLabel="Selecione..." itemValue="" /> 
+                            <f:selectItems value="#{eventoPesquisaMB.listEventoNiveis}" var="vEventoNivel" itemLabel="#{vEventoNivel.descricao}" itemValue="#{vEventoNivel}"/>  
+                        </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoTipo()}">
-                        <h:outputText value="Evento Tipo:" />
-                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px" />
+                    <h:panelGrid id="pnEventoTipo" columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoTipo()}">
+                        <h:outputText value="Tipo:" />
+                        <p:selectOneMenu converter="eventoTipoConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
+                            <f:selectItem itemLabel="Selecione..." itemValue="" /> 
+                            <f:selectItems value="#{eventoPesquisaMB.listEventoTipos}" var="vEventoTipo" itemLabel="#{vEventoTipo.descricao}" itemValue="#{vEventoTipo}"/>  
+                        </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <p:commandButton value="Incluir" action="#{eventoPesquisaMB.addTermoDePesquisa()}" update=":frm:listTermos" image="ui-icon ui-icon-document"/>
+                    <p:commandButton value="Incluir" action="#{eventoPesquisaMB.addTermoDePesquisa()}" update=":frm:pnPesquisaAvancada" image="ui-icon ui-icon-document"/>
                 </h:panelGrid>
-                
+
                 <p:dataTable id="listTermos" var="term" 
                              value="#{eventoPesquisaMB.termosDePesquisa}" 
                              emptyMessage="Não existem registros para exibir">        
@@ -143,22 +152,23 @@
                 </p:dataTable>
 
                 <br />
-                
+
                 <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
                 <p:commandButton value="Modo Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
             </p:panel>
 
             <p:panel id="pnPesquisaBasica" rendered="#{not eventoPesquisaMB.pesquisaAvancada}">
                 <h:panelGrid columns="2">
-                    <h:panelGrid columns="1" >
-                        <h:outputText value="Pesquisar por:" />
-                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" size="40"/>
-                    </h:panelGrid>
-                    <h:panelGrid columns="1" >
-                        <h:outputText value="Pesquisar em:" />
+                    <h:panelGrid columns="2" >
+                        <h:outputText value="Termo:" />
                         <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.termoPesquisa}">  
-                            <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisa}"/>
+                            <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisaModoBasico}"/>
                         </p:selectOneMenu>  
+                    </h:panelGrid>
+                    <h:panelGrid columns="3" >
+                        <h:outputText value="Valor (Query):" />
+                        <p:commandButton onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
+                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px"/>
                     </h:panelGrid>
                 </h:panelGrid>
 
@@ -219,7 +229,7 @@
                     </p:fieldset>
                 </h:panelGroup>  
                 <f:facet name="footer">
-                    <p:commandButton value="Fechar" onclick="dlgEvento.hide()" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: right;" update="frm"/>
+                    <p:commandButton value="Fechar" onclick="dlgEvento.hide();" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: right;" update="frm"/>
                 </f:facet>
             </p:dialog>
 
@@ -230,7 +240,7 @@
                         <h3 class="nome-link">
                             <span class="nivel#{bean.eventoNivel.codigo}">#{bean.eventoNivel.codigo}</span>
 
-                            <p:commandLink onclick="dlgEvento.show()" update=":frm:pEvento">
+                            <p:commandLink onclick="dlgEvento.show();" update=":frm:pEvento">
                                 <h:outputText value="#{bean.nome}"/>
                                 <f:setPropertyActionListener target="#{eventoPesquisaMB.evento}" value="#{bean}"/> 
                             </p:commandLink>

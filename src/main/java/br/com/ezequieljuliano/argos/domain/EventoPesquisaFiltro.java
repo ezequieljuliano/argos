@@ -15,7 +15,18 @@
  */
 package br.com.ezequieljuliano.argos.domain;
 
+import br.com.ezequieljuliano.argos.constant.Constantes;
+import br.com.ezequieljuliano.argos.util.LuceneAnalyzerUtil;
 import java.io.Serializable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.TermQuery;
 
 /**
  *
@@ -24,45 +35,51 @@ import java.io.Serializable;
 public class EventoPesquisaFiltro implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    private EventoTermoPesquisa termoDoFiltro;
-    private String textoDaPesquisa;
-    private Entidade entidade;
-    private EventoNivel eventoNivel;
-    private EventoTipo eventoTipo;
+    private List<FiltroTermo> termosDePesquisa;
     private Usuario usuario;
 
-    public EventoPesquisaFiltro(EventoTermoPesquisa termoDoFiltro, String textoDaPesquisa,
-            Entidade entidade, EventoNivel eventoNivel, EventoTipo eventoTipo, Usuario usuario) {
+    public EventoPesquisaFiltro(List<FiltroTermo> termosDePesquisa, Usuario usuario) {
+        this.termosDePesquisa = termosDePesquisa;
         this.usuario = usuario;
-        this.termoDoFiltro = termoDoFiltro;
-        this.textoDaPesquisa = textoDaPesquisa;
-        this.entidade = entidade;
-        this.eventoNivel = eventoNivel;
-        this.eventoTipo = eventoTipo;
     }
 
-    public EventoTermoPesquisa getTermoDoFiltro() {
-        return termoDoFiltro;
-    }
-
-    public String getTextoDaPesquisa() {
-        return textoDaPesquisa;
-    }
-
-    public Entidade getEntidade() {
-        return entidade;
-    }
-
-    public EventoNivel getEventoNivel() {
-        return eventoNivel;
-    }
-
-    public EventoTipo getEventoTipo() {
-        return eventoTipo;
+    public List<FiltroTermo> getTermosDePesquisa() {
+        return termosDePesquisa;
     }
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public BooleanQuery getBooleanQuery() {
+        BooleanQuery booleanQuery = new BooleanQuery();
+        for (FiltroTermo obj : this.termosDePesquisa) {
+            switch (obj.getKey()) {
+                case etpEntidade: {
+                    Entidade entidade = (Entidade) obj.getValue();
+                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), entidade.getId())), BooleanClause.Occur.MUST);
+                    break;
+                }
+                case etpEventoNivel: {
+                    EventoNivel eventoNivel = (EventoNivel) obj.getValue();
+                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoNivel.getId())), BooleanClause.Occur.MUST);
+                    break;
+                }
+                case etpEventoTipo: {
+                    EventoTipo eventoTipo = (EventoTipo) obj.getValue();
+                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoTipo.getId())), BooleanClause.Occur.MUST);
+                    break;
+                }
+                default: {
+                    String valorPesquisa = (String) obj.getValue();
+                    try {
+                        booleanQuery.add(new QueryParser(Constantes.getLuceneVersion(), obj.getKey().getLuceneIndex(), LuceneAnalyzerUtil.get()).parse(valorPesquisa), BooleanClause.Occur.SHOULD);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(EventoPesquisaFiltro.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+        return booleanQuery;
     }
 }

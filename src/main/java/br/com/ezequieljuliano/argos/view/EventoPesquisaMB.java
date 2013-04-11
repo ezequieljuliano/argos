@@ -15,11 +15,19 @@
  */
 package br.com.ezequieljuliano.argos.view;
 
+import br.com.ezequieljuliano.argos.business.EntidadeBC;
 import br.com.ezequieljuliano.argos.business.EventoBC;
+import br.com.ezequieljuliano.argos.business.EventoNivelBC;
+import br.com.ezequieljuliano.argos.business.EventoTipoBC;
+import br.com.ezequieljuliano.argos.domain.Entidade;
 import br.com.ezequieljuliano.argos.domain.Evento;
+import br.com.ezequieljuliano.argos.domain.EventoNivel;
+import br.com.ezequieljuliano.argos.domain.EventoPesquisaFiltro;
 import br.com.ezequieljuliano.argos.domain.EventoTermoPesquisa;
+import br.com.ezequieljuliano.argos.domain.EventoTipo;
 import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.com.ezequieljuliano.argos.domain.FiltroTermo;
+import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
@@ -42,6 +50,15 @@ public class EventoPesquisaMB {
     private EventoBC eventoBC;
     
     @Inject
+    private EntidadeBC entidadeBC;
+    
+    @Inject 
+    private EventoNivelBC eventoNivelBC;
+    
+    @Inject
+    private EventoTipoBC eventoTipoBC;
+    
+    @Inject
     private MessageContext messageContext;
     
     @Inject
@@ -51,16 +68,17 @@ public class EventoPesquisaMB {
     private EventoTermoPesquisa termoPesquisa;
     private Object valorPesquisa;
     private List<FiltroTermo> termosDePesquisa = new ArrayList<FiltroTermo>();
-    private List<Evento> eventos;
+    private List<Evento> eventos = new ArrayList<Evento>();
     private Evento evento;
 
     public EventoPesquisaMB() {
         this.termoPesquisa = EventoTermoPesquisa.etpTudo;
         this.pesquisaAvancada = false;
+        this.valorPesquisa = null;
     }
 
     public List<Evento> getEventos() {
-        return eventos;
+        return this.eventos;
     }
 
     public void setEventos(List<Evento> eventos) {
@@ -68,10 +86,10 @@ public class EventoPesquisaMB {
     }
 
     public Evento getEvento() {
-        if (evento == null) {
-            evento = new Evento();
+        if (this.evento == null) {
+            this.evento = new Evento();
         }
-        return evento;
+        return this.evento;
     }
 
     public void setEvento(Evento evento) {
@@ -79,7 +97,7 @@ public class EventoPesquisaMB {
     }
 
     public Boolean getPesquisaAvancada() {
-        return pesquisaAvancada;
+        return this.pesquisaAvancada;
     }
 
     public void setPesquisaAvancada(Boolean pesquisaAvancada) {
@@ -88,14 +106,22 @@ public class EventoPesquisaMB {
 
     public void ativarPesquisaAvancada() {
         this.pesquisaAvancada = true;
+        this.termosDePesquisa = new ArrayList<FiltroTermo>();
+        this.termoPesquisa = EventoTermoPesquisa.etpTudo;
+        this.valorPesquisa = null;
+        this.eventos = new ArrayList<Evento>();
     }
 
     public void inativarPesquisaAvancada() {
         this.pesquisaAvancada = false;
+        this.termosDePesquisa = new ArrayList<FiltroTermo>();
+        this.termoPesquisa = EventoTermoPesquisa.etpTudo;
+        this.valorPesquisa = null;
+        this.eventos = new ArrayList<Evento>();
     }
 
     public EventoTermoPesquisa getTermoPesquisa() {
-        return termoPesquisa;
+        return this.termoPesquisa;
     }
 
     public void setTermoPesquisa(EventoTermoPesquisa termoPesquisa) {
@@ -103,14 +129,14 @@ public class EventoPesquisaMB {
     }
 
     public Object getValorPesquisa() {
-        return valorPesquisa;
+        return this.valorPesquisa;
     }
 
     public void setValorPesquisa(Object valorPesquisa) {
         this.valorPesquisa = valorPesquisa;
     }
 
-    public List<SelectItem> getListTermosPesquisa() {
+    public List<SelectItem> getListTermosPesquisaModoAvancado() {
         List<SelectItem> itens = new ArrayList<SelectItem>();
         for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
             itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
@@ -118,34 +144,56 @@ public class EventoPesquisaMB {
         return itens;
     }
 
+    public List<SelectItem> getListTermosPesquisaModoBasico() {
+        List<SelectItem> itens = new ArrayList<SelectItem>();
+        for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
+            if (eventotipoPesquisa.getModoBasico()) {
+                itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
+            }
+        }
+        return itens;
+    }
+
     public List<FiltroTermo> getTermosDePesquisa() {
-        return termosDePesquisa;
+        return this.termosDePesquisa;
     }
 
     public void addTermoDePesquisa() {
-        if (this.termoPesquisa != null) {
+        if ((this.termoPesquisa == null) || (this.valorPesquisa == null) || Strings.isEmpty(this.valorPesquisa.toString())) {
+            messageContext.add("Selecione um termo e informe um valor!", SeverityType.ERROR);
+        } else {
             this.termosDePesquisa.add(new FiltroTermo(this.termoPesquisa, this.valorPesquisa));
             this.termoPesquisa = EventoTermoPesquisa.etpTudo;
             this.valorPesquisa = null;
-        } else {
-            messageContext.add("Selecione um termo e informe um valor!", SeverityType.ERROR);
         }
     }
 
     public void removeTermoDePesquisa(FiltroTermo termoPesquisa) {
         this.termosDePesquisa.remove(termoPesquisa);
+        this.termoPesquisa = EventoTermoPesquisa.etpTudo;
+        this.valorPesquisa = null;
     }
 
     public void pesquisar() throws Exception {
-        if (valorPesquisa == null || Strings.isEmpty(valorPesquisa.toString())) {
-            messageContext.add("Informe algum valor no campo de pesquisa!", SeverityType.WARN);
+        if (this.pesquisaAvancada) {
+            if (this.termosDePesquisa.isEmpty()) {
+                messageContext.add("Selecione um termo e informe um valor!", SeverityType.WARN);
+            } else {
+                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario());
+                this.eventos = eventoBC.findByPesquisaFiltro(filtro);
+            }
         } else {
-            try {
-                //EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(termoPesquisa, valorPesquisa,
-                //        selectedEntidade, selectedEventoNivel, selectedEventoTipo, sessionAttributes.getUsuario());
-                //eventos = eventoBC.findByPesquisaFiltro(filtro);
-            } catch (Exception e) {
-                messageContext.add(e.getMessage(), SeverityType.ERROR);
+            if ((this.termoPesquisa == null) || (this.valorPesquisa == null) || Strings.isEmpty(this.valorPesquisa.toString())) {
+                messageContext.add("Selecione um termo e informe um valor!", SeverityType.WARN);
+            } else {
+                try {
+                    this.termosDePesquisa = new ArrayList<FiltroTermo>();
+                    this.termosDePesquisa.add(new FiltroTermo(this.termoPesquisa, this.valorPesquisa));
+                    EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario());
+                    this.eventos = eventoBC.findByPesquisaFiltro(filtro);
+                } catch (Exception e) {
+                    messageContext.add(e.getMessage(), SeverityType.ERROR);
+                }
             }
         }
     }
@@ -164,6 +212,19 @@ public class EventoPesquisaMB {
 
     public Boolean isDemaisFitros() {
         return (!isFiltroEntidade() && !isFiltroEventoNivel() && !isFiltroEventoTipo());
+    }
+    
+    public List<Entidade> getListEntidades(){
+        Usuario usuario = sessionAttributes.getUsuario();
+        return entidadeBC.findByUsuario(usuario);
+    }
+    
+    public List<EventoNivel> getListEventoNiveis(){
+        return eventoNivelBC.findAll();
+    }
+    
+    public List<EventoTipo> getListEventoTipos(){
+       return eventoTipoBC.findAll();
     }
     
 }

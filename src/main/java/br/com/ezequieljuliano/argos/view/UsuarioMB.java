@@ -208,7 +208,9 @@ public class UsuarioMB {
     public List<SelectItem> getTermosPesquisas() {
         List<SelectItem> itens = new ArrayList<SelectItem>();
         for (EventoTermoPesquisa eventotipoPesquisa : EventoTermoPesquisa.values()) {
-            itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
+            if (eventotipoPesquisa.getModoBasico()) {
+                itens.add(new SelectItem(eventotipoPesquisa, eventotipoPesquisa.getNome()));
+            }
         }
         return itens;
     }
@@ -226,6 +228,8 @@ public class UsuarioMB {
 
     public void removeUsuarioTermoNotificacao(UsuarioTermoPesquisa usuarioTermoNotificacao) {
         bean.removeTermoNotificacao(usuarioTermoNotificacao);
+        this.userTermo = EventoTermoPesquisa.etpTudo;
+        this.userTermoValor = "";
     }
 
     private String getPreviousView() {

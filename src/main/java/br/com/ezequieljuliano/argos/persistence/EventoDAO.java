@@ -50,43 +50,22 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
     
-    private Filter luceneFilter = null;
-    
     @Autowired
     private EntidadeDAO entidadeDAO;
 
     public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro eventoPesquisaFiltro) {
-        //Reset no filter
-        luceneFilter = null;
-        //Monta filtro padrão
         BooleanQuery booleanQuery = new BooleanQuery();
-        //Verifica se o filtro possui entidade
-        if (eventoPesquisaFiltro.getEntidade() != null) {
-            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, eventoPesquisaFiltro.getEntidade().getId())), BooleanClause.Occur.MUST);
-        } else {
-            //Caso não tenha sido selecionada uma entidade pega as entidades relacionadas ao usuário
-            //Se for administrador traz todas as entidades
-            if (!eventoPesquisaFiltro.getUsuario().getPerfil().equals(UsuarioPerfil.administrador)) {
-                List<Entidade> entidades = entidadeDAO.findByUsuario(eventoPesquisaFiltro.getUsuario());
-                for (Entidade entidade : entidades) {
-                    booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.SHOULD);
-                }
+        //Filtro por entidade relacionada ao usuário
+        //Se for administrador traz todas as entidades
+        if (!eventoPesquisaFiltro.getUsuario().getPerfil().equals(UsuarioPerfil.administrador)) {
+            List<Entidade> entidades = entidadeDAO.findByUsuario(eventoPesquisaFiltro.getUsuario());
+            for (Entidade entidade : entidades) {
+                booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.SHOULD);
             }
         }
-        //Verifica se o filtro possui tipo
-        if (eventoPesquisaFiltro.getEventoTipo() != null) {
-            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_TIPOID, eventoPesquisaFiltro.getEventoTipo().getId())), BooleanClause.Occur.MUST);
-        }
-        //Verifica se o filtro possui nível
-        if (eventoPesquisaFiltro.getEventoNivel() != null) {
-            booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_NIVELID, eventoPesquisaFiltro.getEventoNivel().getId())), BooleanClause.Occur.MUST);
-        }
-        //Varifica se existem filtros criados
-        if (!booleanQuery.clauses().isEmpty()) {
-            QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(booleanQuery);
-            luceneFilter = queryWrapperFilter;
-        }
-        return luceneParserQuery(eventoPesquisaFiltro.getTermoDoFiltro().getLuceneIndex(), eventoPesquisaFiltro.getTextoDaPesquisa());
+        //Adciona termos da pesquisa (QueryPrincipal AND QueryTermos(TERMO OU TERMO ...) 
+        booleanQuery.add(eventoPesquisaFiltro.getBooleanQuery(), BooleanClause.Occur.MUST);
+        return luceneExecQuery(booleanQuery);
     }
 
     public Boolean possuiTermosDeNotificacao(Evento evento, Usuario usuario) {
@@ -167,7 +146,7 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     @Override
     public Filter getLuceneFilterRestriction() {
-        return luceneFilter;
+        return null;
     }
 
     @Override

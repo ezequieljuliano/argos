@@ -29,7 +29,7 @@
 
             <br />
 
-            <p:dialog header="Entidade" widgetVar="dlgEntidade" modal="true" closable="true">
+            <p:dialog position="center" header="Entidade" widgetVar="dlgEntidade" modal="true" closable="true">
                 <p:panel id="pnPesquisa">
                     <h:outputText value="Pesquisar Nome por:" />
                     <h:panelGrid columns="3" >
@@ -57,12 +57,12 @@
                         <h:outputText value="#{ent.cadastroNacional}"/>
                     </p:column>
                     <p:column headerText="Situação">
-                        <h:outputText value="#{ent.situacao}"/>
+                        <h:outputText value="#{ent.situacao.nome}"/>
                     </p:column>
                 </p:dataTable>
             </p:dialog>
 
-            <p:dialog header="Trocar Senha" widgetVar="dlgTrocarSenha" modal="true" closable="true">
+            <p:dialog position="center" header="Trocar Senha" widgetVar="dlgTrocarSenha" modal="true" closable="true">
                 <h:panelGrid columns="2">
                     <h:outputLabel for="pwd2" value="Nova Senha" />  
                     <p:password id="pwd2" value="#{usuarioMB.bean.password}" 
@@ -109,7 +109,7 @@
                     </h:panelGrid>                     
                 </h:panelGrid> 
 
-                <p:dialog header="Ajuda para Definição de Valores (Query Builder)" widgetVar="dlgHelpQueryBuilder" modal="true" closable="true">
+                <p:dialog position="center" header="Ajuda para Definição de Valores (Query Builder)" widgetVar="dlgHelpQueryBuilder" modal="true" closable="true">
                     <h:outputText value="Exemplos de sintaxe de consulta básica para o Apache Lucene"/>
                     <br />
                     <h:outputText value="As consultas podem ser mescladas"/>

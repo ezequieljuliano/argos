@@ -26,23 +26,29 @@ import javax.inject.Named;
 @Named
 public enum EventoTermoPesquisa implements Serializable {
 
-    etpTudo("Tudo"), etpEventoMensagem("Mensagem do Evento"), etpHostName("Nome do Host"),
-    etpHostUser("Usuário do Host"), etpHostIp("IP do Host"), etpFonte("Fonte"),
-    etpNome("Nome do Evento"), etpOcorrenciaDtHr("Data/Hora Ocorrência"), etpPalavrasChave("Palavras-Chave"),
-    etpEntidade("Entidade"), etpEventoNivel("Evento Nível"), etpEventoTipo("Evento Tipo");
+    etpTudo("Tudo", Boolean.TRUE), etpEventoMensagem("Mensagem do Evento", Boolean.TRUE), etpHostName("Nome do Host", Boolean.TRUE),
+    etpHostUser("Usuário do Host", Boolean.TRUE), etpHostIp("IP do Host", Boolean.TRUE), etpFonte("Fonte", Boolean.TRUE),
+    etpNome("Nome do Evento", Boolean.TRUE), etpOcorrenciaDtHr("Data/Hora Ocorrência", Boolean.TRUE), etpPalavrasChave("Palavras-Chave", Boolean.TRUE),
+    etpEntidade("Entidade", Boolean.FALSE), etpEventoNivel("Evento Nível", Boolean.FALSE), etpEventoTipo("Evento Tipo", Boolean.FALSE);
     
     private static final long serialVersionUID = 1L;
     
     private String nome;
+    private Boolean modoBasico;
 
-    private EventoTermoPesquisa(String nome) {
+    private EventoTermoPesquisa(String nome, Boolean modoBasico) {
         this.nome = nome;
+        this.modoBasico = modoBasico;
     }
 
     public String getNome() {
         return nome;
     }
 
+    public Boolean getModoBasico() {
+        return modoBasico;
+    }
+    
     public String getLuceneIndex() {
         switch (this) {
             case etpTudo:
