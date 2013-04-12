@@ -50,20 +50,35 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
     
+    private int numHitsResults = 100;
+    
+    private Filter luceneFilter = null;
+    
     @Autowired
     private EntidadeDAO entidadeDAO;
 
     public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro eventoPesquisaFiltro) {
-        BooleanQuery booleanQuery = new BooleanQuery();
+        //Limpa o filtro padrão de restrição caso houver
+        this.luceneFilter = null;
+        //Seta o número de Hits (Resultados da pesquisa)
+        setNumHitsResults(eventoPesquisaFiltro.getNumHitsResults());
         //Filtro por entidade relacionada ao usuário
+        BooleanQuery bqFilter = new BooleanQuery();
         //Se for administrador traz todas as entidades
+        //Caso contrário adiciona filtro de restrição
         if (!eventoPesquisaFiltro.getUsuario().getPerfil().equals(UsuarioPerfil.administrador)) {
             List<Entidade> entidades = entidadeDAO.findByUsuario(eventoPesquisaFiltro.getUsuario());
             for (Entidade entidade : entidades) {
-                booleanQuery.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.SHOULD);
+                bqFilter.add(new TermQuery(new Term(Constantes.INDICE_EVENTO_ENTIDADEID, entidade.getId())), BooleanClause.Occur.SHOULD);
             }
         }
+        //Varifica se existem filtros de restrição adicionados
+        if (!bqFilter.clauses().isEmpty()) {
+            QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(bqFilter);
+            this.luceneFilter = queryWrapperFilter;
+        }
         //Adciona termos da pesquisa (QueryPrincipal AND QueryTermos(TERMO OU TERMO ...) 
+        BooleanQuery booleanQuery = new BooleanQuery();
         booleanQuery.add(eventoPesquisaFiltro.getBooleanQuery(), BooleanClause.Occur.MUST);
         return luceneExecQuery(booleanQuery);
     }
@@ -146,11 +161,25 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     @Override
     public Filter getLuceneFilterRestriction() {
-        return null;
+        return this.luceneFilter;
     }
 
     @Override
-    public String getValueIdKey(Evento obj) {
+    public String getLuceneValueIdKey(Evento obj) {
         return obj.getId();
     }
+
+    @Override
+    public int getLuceneNumHits() {
+       return getNumHitsResults();
+    }
+
+    public int getNumHitsResults() {
+        return numHitsResults;
+    }
+
+    public void setNumHitsResults(int numHitsResults) {
+        this.numHitsResults = numHitsResults;
+    }
+ 
 }

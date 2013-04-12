@@ -4,7 +4,7 @@
     </head>
     <body>
         <p>
-                O Argos registrou um novo LOG com defini&ccedil;&atilde;o de notificaÃ§Ã£o:<br /><br />
+                O Argos registrou um novo LOG com defini&ccedil;&atilde;o de notifica&ccedil;&atilde;o:<br /><br />
 		Entidade: $entidade
 		<br /><br />
 		T&iacute;tulo: $titulo<br />

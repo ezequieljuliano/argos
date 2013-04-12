@@ -97,20 +97,21 @@
             </p:dialog> 
 
             <p:panel id="pnPesquisaAvancada" rendered="#{eventoPesquisaMB.pesquisaAvancada}">
-                <h:panelGrid columns="4">
-                    <h:outputText value="Termo:" />
-                    <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.termoPesquisa}">  
-                        <p:ajax event="change" update=":frm" process="@this"/>
-                        <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisaModoAvancado}"/>
-                    </p:selectOneMenu> 
+                <h:panelGrid columns="5">
+                    <h:panelGrid columns="1">
+                        <h:outputText value="Termo:" />
+                        <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.termoPesquisa}">  
+                            <p:ajax event="change" update=":frm" process="@this"/>
+                            <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisaModoAvancado}"/>
+                        </p:selectOneMenu> 
+                    </h:panelGrid>
 
-                    <h:panelGrid columns="3" rendered="#{eventoPesquisaMB.isDemaisFitros()}"> 
+                    <h:panelGrid columns="1" rendered="#{eventoPesquisaMB.isDemaisFitros()}"> 
                         <h:outputText value="Valor (Query):" />
-                        <p:commandButton onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
                         <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px" />
                     </h:panelGrid>
 
-                    <h:panelGrid id="pnEntidade" columns="2" rendered="#{eventoPesquisaMB.isFiltroEntidade()}">
+                    <h:panelGrid id="pnEntidade" columns="1" rendered="#{eventoPesquisaMB.isFiltroEntidade()}">
                         <h:outputText value="Entidade:" />
                         <p:selectOneMenu converter="entidadeConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
@@ -118,7 +119,7 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid id="pnEventoNivel" columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoNivel()}">
+                    <h:panelGrid id="pnEventoNivel" columns="1" rendered="#{eventoPesquisaMB.isFiltroEventoNivel()}">
                         <h:outputText value="Nível:" />
                         <p:selectOneMenu converter="eventoNivelConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
@@ -126,7 +127,7 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid id="pnEventoTipo" columns="2" rendered="#{eventoPesquisaMB.isFiltroEventoTipo()}">
+                    <h:panelGrid id="pnEventoTipo" columns="1" rendered="#{eventoPesquisaMB.isFiltroEventoTipo()}">
                         <h:outputText value="Tipo:" />
                         <p:selectOneMenu converter="eventoTipoConverter" value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px">  
                             <f:selectItem itemLabel="Selecione..." itemValue="" /> 
@@ -134,7 +135,12 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <p:commandButton value="Incluir" action="#{eventoPesquisaMB.addTermoDePesquisa()}" update=":frm:pnPesquisaAvancada" image="ui-icon ui-icon-document"/>
+                    <h:panelGrid columns="1" >
+                        <h:outputText value="Qtd. Max. Resultados:" />
+                        <p:inputText value="#{eventoPesquisaMB.numHitsResults}" style="width: 130px"/> 
+                    </h:panelGrid>
+
+                    <p:commandButton style="height: 100%" value="Incluir" action="#{eventoPesquisaMB.addTermoDePesquisa()}" update=":frm:pnPesquisaAvancada" image="ui-icon ui-icon-document"/>
                 </h:panelGrid>
 
                 <p:dataTable id="listTermos" var="term" 
@@ -155,25 +161,30 @@
 
                 <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
                 <p:commandButton value="Modo Básico" action="#{eventoPesquisaMB.inativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
+                <p:commandButton value="Ajuda" onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
             </p:panel>
 
             <p:panel id="pnPesquisaBasica" rendered="#{not eventoPesquisaMB.pesquisaAvancada}">
-                <h:panelGrid columns="2">
-                    <h:panelGrid columns="2" >
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="1" >
                         <h:outputText value="Termo:" />
                         <p:selectOneMenu style="width: 250px" value="#{eventoPesquisaMB.termoPesquisa}">  
                             <f:selectItems value="#{eventoPesquisaMB.listTermosPesquisaModoBasico}"/>
                         </p:selectOneMenu>  
                     </h:panelGrid>
-                    <h:panelGrid columns="3" >
+                    <h:panelGrid columns="1" >
                         <h:outputText value="Valor (Query):" />
-                        <p:commandButton onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
-                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px"/>
+                        <p:inputText value="#{eventoPesquisaMB.valorPesquisa}" style="width: 250px"/> 
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" >
+                        <h:outputText value="Qtd. Max. Resultados:" />
+                        <p:inputText value="#{eventoPesquisaMB.numHitsResults}" style="width: 130px"/> 
                     </h:panelGrid>
                 </h:panelGrid>
 
                 <p:commandButton value="Pesquisar" action="#{eventoPesquisaMB.pesquisar()}" image="ui-icon ui-icon-circle-zoomin" update=":frm"/>
                 <p:commandButton value="Modo Avançado" action="#{eventoPesquisaMB.ativarPesquisaAvancada()}" image="ui-icon ui-icon-carat-2-n-s" immediate="true" update=":frm" /> 
+                <p:commandButton value="Ajuda" onclick="dlgHelpQueryBuilder.show();" image="ui-icon-help"/>
             </p:panel>
 
             <br />

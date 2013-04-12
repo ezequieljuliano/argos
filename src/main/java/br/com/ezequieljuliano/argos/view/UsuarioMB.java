@@ -21,6 +21,7 @@ import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisa;
 import br.com.ezequieljuliano.argos.exception.ValidationException;
+import br.com.ezequieljuliano.argos.security.SessionAttributes;
 import br.com.ezequieljuliano.argos.util.JsfUtils;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
@@ -51,6 +52,9 @@ public class UsuarioMB {
     
     @Inject
     private Parameter<String> id;
+    
+    @Inject
+    private SessionAttributes sessionAttributes;
     
     private Usuario bean = null;
     private List<Usuario> beanList = null;
@@ -234,5 +238,9 @@ public class UsuarioMB {
 
     private String getPreviousView() {
         return "./usuario_list.xhtml";
+    }
+    
+    public Usuario getUsuarioLogado(){
+        return sessionAttributes.getUsuario();
     }
 }

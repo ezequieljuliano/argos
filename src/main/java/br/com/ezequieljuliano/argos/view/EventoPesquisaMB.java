@@ -70,6 +70,7 @@ public class EventoPesquisaMB {
     private List<FiltroTermo> termosDePesquisa = new ArrayList<FiltroTermo>();
     private List<Evento> eventos = new ArrayList<Evento>();
     private Evento evento;
+    private int numHitsResults = 100;
 
     public EventoPesquisaMB() {
         this.termoPesquisa = EventoTermoPesquisa.etpTudo;
@@ -96,6 +97,14 @@ public class EventoPesquisaMB {
         this.evento = evento;
     }
 
+    public int getNumHitsResults() {
+        return numHitsResults;
+    }
+
+    public void setNumHitsResults(int numHitsResults) {
+        this.numHitsResults = numHitsResults;
+    }
+    
     public Boolean getPesquisaAvancada() {
         return this.pesquisaAvancada;
     }
@@ -179,7 +188,7 @@ public class EventoPesquisaMB {
             if (this.termosDePesquisa.isEmpty()) {
                 messageContext.add("Selecione um termo e informe um valor!", SeverityType.WARN);
             } else {
-                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario());
+                EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario(), getNumHitsResults());
                 this.eventos = eventoBC.findByPesquisaFiltro(filtro);
             }
         } else {
@@ -189,7 +198,7 @@ public class EventoPesquisaMB {
                 try {
                     this.termosDePesquisa = new ArrayList<FiltroTermo>();
                     this.termosDePesquisa.add(new FiltroTermo(this.termoPesquisa, this.valorPesquisa));
-                    EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario());
+                    EventoPesquisaFiltro filtro = new EventoPesquisaFiltro(this.termosDePesquisa, sessionAttributes.getUsuario(), getNumHitsResults());
                     this.eventos = eventoBC.findByPesquisaFiltro(filtro);
                 } catch (Exception e) {
                     messageContext.add(e.getMessage(), SeverityType.ERROR);

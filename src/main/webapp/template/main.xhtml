@@ -18,7 +18,7 @@
 
     <h:body style="background-color:#f1f1f1;position: relative">
 
-        <h:panelGrid style="width: 100%" columns="2" columnClasses="col-logo,col-menu">
+        <h:panelGrid style="width: 100%" columns="3" columnClasses="col-logo,col-menu">
             <a href="index.jsf"><img src="images/logo.png" border="0" /></a>
             <ui:include src="/menu.xhtml" />
         </h:panelGrid>
@@ -27,8 +27,15 @@
             <ui:insert name="body" />
         </div>
 
-        <p:panel style="position: fixed;bottom: 5px; right: 5px">
-            <h:outputText value="Argos - Sistema de Logging de Aplicações (2012)" styleClass="text-input" />
+        <p:panel style="position: fixed; bottom: 0px; right: 0px; width: 100%;">
+            <h:panelGrid columns="6">
+                <img src="images/userinfo.png" width="24px" height="24px" border="0"/> 
+                <h:outputText value="Você está logado como " />
+                <h:outputText value="#{usuarioMB.usuarioLogado.userName}" />
+                <h:outputText value=" e seu e-mail é " />
+                <h:outputText value="#{usuarioMB.usuarioLogado.email}" />
+               <p:commandButton value="Sair" action="#{securityContext.logout()}" image="ui-icon-closethick"/>
+            </h:panelGrid>
         </p:panel> 
 
         <p:growl id="messages" globalOnly="true" autoUpdate="true" />

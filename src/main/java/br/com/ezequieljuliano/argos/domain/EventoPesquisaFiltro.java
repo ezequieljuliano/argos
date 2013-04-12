@@ -37,10 +37,12 @@ public class EventoPesquisaFiltro implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<FiltroTermo> termosDePesquisa;
     private Usuario usuario;
+    private int numHitsResults;
 
-    public EventoPesquisaFiltro(List<FiltroTermo> termosDePesquisa, Usuario usuario) {
+    public EventoPesquisaFiltro(List<FiltroTermo> termosDePesquisa, Usuario usuario, int numHitsResults) {
         this.termosDePesquisa = termosDePesquisa;
         this.usuario = usuario;
+        this.numHitsResults = numHitsResults;
     }
 
     public List<FiltroTermo> getTermosDePesquisa() {
@@ -49,6 +51,10 @@ public class EventoPesquisaFiltro implements Serializable {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public int getNumHitsResults() {
+        return numHitsResults;
     }
 
     public BooleanQuery getBooleanQuery() {

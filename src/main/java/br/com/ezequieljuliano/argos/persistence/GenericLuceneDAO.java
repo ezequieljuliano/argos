@@ -66,7 +66,8 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
     public abstract String getLuceneIndexKey();
     public abstract String getLuceneContentString(DomainType obj);
     public abstract Filter getLuceneFilterRestriction();
-    public abstract KeyType getValueIdKey(DomainType obj);
+    public abstract KeyType getLuceneValueIdKey(DomainType obj);
+    public abstract int getLuceneNumHits();  
     
     private IndexWriter getIndexWriter() {
         try {
@@ -135,7 +136,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
         try {
             if (q != null) {
                 //Resultados por páginas de documentos
-                int hitsPerPage = 100;
+                int hitsPerPage = getLuceneNumHits();
                 //Abre o diretório dos índices
                 IndexReader reader = IndexReader.open(directory);
                 //Cria o buscador dos documentos indexados
@@ -261,7 +262,7 @@ public abstract class GenericLuceneDAO<DomainType, KeyType> extends GenericDAO<D
 
     @Override
     public void deleteObj(DomainType obj) {
-        luceneDelete(getValueIdKey(obj));
+        luceneDelete(getLuceneValueIdKey(obj));
         super.deleteObj(obj); 
     }
     

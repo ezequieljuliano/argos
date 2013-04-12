@@ -16,7 +16,7 @@
 
 package br.com.ezequieljuliano.argos.app;
 
-import br.com.ezequieljuliano.argos.business.DadosPadraoBC;
+import br.com.ezequieljuliano.argos.business.CargaDeDadosBC;
 import br.gov.frameworkdemoiselle.lifecycle.Startup;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import br.gov.frameworkdemoiselle.util.Beans;
@@ -38,7 +38,7 @@ public class StartApp {
 
         application.setContext(context);
 
-        DadosPadraoBC dados = Beans.getReference(DadosPadraoBC.class);
-        dados.InsereDados();
+        CargaDeDadosBC cargaDeDados = Beans.getReference(CargaDeDadosBC.class);
+        cargaDeDados.gerarCargaDeDados();
     }
 }
