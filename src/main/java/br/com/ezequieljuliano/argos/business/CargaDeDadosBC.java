@@ -47,7 +47,8 @@ public class CargaDeDadosBC {
     private UsuarioBC usuarioBC;
     
     private String[] eventoTipos = new String[]{"Autenticação", "Autorização", "Alteração",
-        "Disponibilidade", "Recurso", "Ameaça", "Exclusão", "Inclusão", "Consulta", "Validação", "Erro"};
+        "Disponibilidade", "Recurso", "Ameaça", "Exclusão", "Inclusão", "Consulta", "Validação",
+        "Erro", "Informação da Máquina"};
     private String[] eventoNiveis = new String[]{"Informação", "Alerta", "Erro", "Debug", "Fatal", "Exceção"};
 
     private void saveEventoTipos() {
@@ -81,7 +82,7 @@ public class CargaDeDadosBC {
             }
         }
     }
-    
+
     private void saveEntidades() {
         if (entidadeBC.findByCodigo(1) == null) {
             try {

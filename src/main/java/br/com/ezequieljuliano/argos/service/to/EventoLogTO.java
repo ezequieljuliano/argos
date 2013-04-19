@@ -29,6 +29,9 @@ public class EventoLogTO {
     private String hostName;
     private String hostIp;
     private String hostUser;
+    private String hostMac;
+    private String sysUser;
+    private String cadastroNacional;
     private String mensagem;
     private String fonte;
     private String nome;
@@ -64,6 +67,30 @@ public class EventoLogTO {
         this.hostUser = hostUser;
     }
 
+    public String getHostMac() {
+        return hostMac;
+    }
+
+    public void setHostMac(String hostMac) {
+        this.hostMac = hostMac;
+    }
+
+    public String getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(String sysUser) {
+        this.sysUser = sysUser;
+    }
+    
+    public String getCadastroNacional() {
+        return cadastroNacional;
+    }
+
+    public void setCadastroNacional(String cadastroNacional) {
+        this.cadastroNacional = cadastroNacional;
+    }
+    
     public String getMensagem() {
         return mensagem;
     }

@@ -57,32 +57,66 @@ public class EventoPesquisaFiltro implements Serializable {
         return numHitsResults;
     }
 
-    public BooleanQuery getBooleanQuery() {
+    private BooleanQuery getQueryEntidades(List<FiltroTermo> filtroTermos) {
         BooleanQuery booleanQuery = new BooleanQuery();
+        for (FiltroTermo obj : filtroTermos) {
+            if (obj.getKey() == EventoTermoPesquisa.etpEntidade) {
+                Entidade entidade = (Entidade) obj.getValue();
+                booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), entidade.getId())), BooleanClause.Occur.SHOULD);
+            }
+        }
+        return booleanQuery;
+    }
+
+    private BooleanQuery getQueryEventoNivel(List<FiltroTermo> filtroTermos) {
+        BooleanQuery booleanQuery = new BooleanQuery();
+        for (FiltroTermo obj : filtroTermos) {
+            if (obj.getKey() == EventoTermoPesquisa.etpEventoNivel) {
+                EventoNivel eventoNivel = (EventoNivel) obj.getValue();
+                booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoNivel.getId())), BooleanClause.Occur.SHOULD);
+            }
+        }
+        return booleanQuery;
+    }
+
+    private BooleanQuery getQueryEventoTipo(List<FiltroTermo> filtroTermos) {
+        BooleanQuery booleanQuery = new BooleanQuery();
+        for (FiltroTermo obj : filtroTermos) {
+            if (obj.getKey() == EventoTermoPesquisa.etpEventoTipo) {
+                EventoTipo eventoTipo = (EventoTipo) obj.getValue();
+                booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoTipo.getId())), BooleanClause.Occur.SHOULD);
+            }
+        }
+        return booleanQuery;
+    }
+
+    public BooleanQuery getBooleanQuery() {
+        //Query principal
+        BooleanQuery booleanQuery = new BooleanQuery();
+        //Adiciona filtro de entidades se houver
+        BooleanQuery queryEntidades = getQueryEntidades(this.termosDePesquisa);
+        if (!queryEntidades.clauses().isEmpty()) {
+            booleanQuery.add(queryEntidades, BooleanClause.Occur.MUST);
+        }
+        //Adiciona filtro de Niveis se houver
+        BooleanQuery queryNiveis = getQueryEventoNivel(this.termosDePesquisa);
+        if (!queryNiveis.clauses().isEmpty()) {
+            booleanQuery.add(queryNiveis, BooleanClause.Occur.MUST);
+        }
+        //Adiciona filtro de Tipo se houver
+        BooleanQuery queryTipos = getQueryEventoTipo(this.termosDePesquisa);
+        if (!queryTipos.clauses().isEmpty()) {
+            booleanQuery.add(queryTipos, BooleanClause.Occur.MUST);
+        }
+        //Adiciona demais condições do filtro
         for (FiltroTermo obj : this.termosDePesquisa) {
-            switch (obj.getKey()) {
-                case etpEntidade: {
-                    Entidade entidade = (Entidade) obj.getValue();
-                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), entidade.getId())), BooleanClause.Occur.MUST);
-                    break;
-                }
-                case etpEventoNivel: {
-                    EventoNivel eventoNivel = (EventoNivel) obj.getValue();
-                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoNivel.getId())), BooleanClause.Occur.MUST);
-                    break;
-                }
-                case etpEventoTipo: {
-                    EventoTipo eventoTipo = (EventoTipo) obj.getValue();
-                    booleanQuery.add(new TermQuery(new Term(obj.getKey().getLuceneIndex(), eventoTipo.getId())), BooleanClause.Occur.MUST);
-                    break;
-                }
-                default: {
-                    String valorPesquisa = (String) obj.getValue();
-                    try {
-                        booleanQuery.add(new QueryParser(Constantes.getLuceneVersion(), obj.getKey().getLuceneIndex(), LuceneAnalyzerUtil.get()).parse(valorPesquisa), BooleanClause.Occur.SHOULD);
-                    } catch (ParseException ex) {
-                        Logger.getLogger(EventoPesquisaFiltro.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            if ((obj.getKey() != EventoTermoPesquisa.etpEntidade) && (obj.getKey() != EventoTermoPesquisa.etpEventoNivel)
+                    && (obj.getKey() != EventoTermoPesquisa.etpEventoTipo)) {
+                String valorPesquisa = (String) obj.getValue();
+                try {
+                    booleanQuery.add(new QueryParser(Constantes.getLuceneVersion(), obj.getKey().getLuceneIndex(), LuceneAnalyzerUtil.get()).parse(valorPesquisa), BooleanClause.Occur.SHOULD);
+                } catch (ParseException ex) {
+                    Logger.getLogger(EventoPesquisaFiltro.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

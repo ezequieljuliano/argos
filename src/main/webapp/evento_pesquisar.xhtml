@@ -193,38 +193,44 @@
                 <h:panelGroup layout="block" id="pEvento">  
                     <p:fieldset legend="#{eventoPesquisaMB.evento.nome}">
 
-                        <h:outputText value="Data: "/>
+                        <h:outputText style="font-weight:bold;" value="Data: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaDtHr}">
                             <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="GMT-03:00"/>
                         </h:outputText> 
                         <h:outputText value=" - "/>
-                        <h:outputText value="Hora: "/>
+                        <h:outputText style="font-weight:bold;" value="Hora: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.ocorrenciaDtHr}">
                             <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
                         </h:outputText>
+                        <h:outputText value=" - "/>
+                        <h:outputText style="font-weight:bold;" value="Usuário Sistema: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.sysUser}"/>
                         <br />
-                        <h:outputText value="Usuário do Host: "/>
+                        <h:outputText style="font-weight:bold;" value="Usuário do Host: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.hostUser}"/>
                         <h:outputText value=" - "/>
-                        <h:outputText value="IP do Host: "/>
+                        <h:outputText style="font-weight:bold;" value="IP do Host: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.hostIp}"/>
-                        <h:outputText value=" - "/>
-                        <h:outputText value="Nome do Host: "/>
-                        <h:outputText value="#{eventoPesquisaMB.evento.hostName}"/>
                         <br />
-                        <h:outputText value="Fonte: "/>
+                        <h:outputText style="font-weight:bold;" value="Nome do Host: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.hostName}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText style="font-weight:bold;" value="MAC do Host: "/>
+                        <h:outputText value="#{eventoPesquisaMB.evento.hostMac}"/>
+                        <br />
+                        <h:outputText style="font-weight:bold;" value="Fonte: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.fonte}"/>
                         <h:outputText value=" - "/>
-                        <h:outputText value="Tipo: "/>
+                        <h:outputText style="font-weight:bold;" value="Tipo: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.eventoTipo.descricao}"/>
                         <h:outputText value=" - "/>
-                        <h:outputText value="Nível: "/>
+                        <h:outputText style="font-weight:bold;" value="Nível: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.eventoNivel.descricao}"/>
                         <br />
-                        <h:outputText value="Palavras-Chave: "/>
+                        <h:outputText style="font-weight:bold;" value="Palavras-Chave: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.palavrasChave}"/>
                         <br />
-                        <h:outputText value="Entidade: "/>
+                        <h:outputText style="font-weight:bold;" value="Entidade: "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.entidade.codigo}"/>
                         <h:outputText value=" - "/>
                         <h:outputText value="#{eventoPesquisaMB.evento.entidade.cadastroNacional}"/>
@@ -232,7 +238,7 @@
                         <h:outputText value="#{eventoPesquisaMB.evento.entidade.nome}"/>
                         <br />
                         <br />
-                        <h:outputText value="Mensagem: "/>
+                        <h:outputText style="font-weight:bold;" value="Mensagem: "/>
                         <br />
                         <h:outputText value="#{eventoPesquisaMB.evento.mensagem}"/>
                         <br />
@@ -266,13 +272,21 @@
                             <h:outputText value="#{bean.ocorrenciaDtHr}">
                                 <f:convertDateTime type="time" pattern="HH:mm:ss" timeZone="GMT-03:00"/>
                             </h:outputText>
+                            <b>Usuário Sistema: </b>
+
+                            <h:outputText value="#{bean.sysUser}"/>
+                        </p>
+                        <p>
                             <b>Usuário do Host: </b>
                             <h:outputText value="#{bean.hostUser}"/>
                             <b>IP do Host: </b>
                             <h:outputText value="#{bean.hostIp}"/>
                             <b>Nome do Host: </b>
                             <h:outputText value="#{bean.hostName}"/>
+                            <b>MAC do Host: </b>
+                            <h:outputText value="#{bean.hostMac}"/>
                         </p>
+
                         <p>
                             <b>Fonte: </b>
                             <h:outputText value="#{bean.fonte}"/>

@@ -27,12 +27,11 @@ import javax.inject.Named;
 public enum EventoTermoPesquisa implements Serializable {
 
     etpTudo("Tudo", Boolean.TRUE), etpEventoMensagem("Mensagem do Evento", Boolean.TRUE), etpHostName("Nome do Host", Boolean.TRUE),
-    etpHostUser("Usuário do Host", Boolean.TRUE), etpHostIp("IP do Host", Boolean.TRUE), etpFonte("Fonte", Boolean.TRUE),
+    etpHostUser("Usuário do Host", Boolean.TRUE), etpHostMac("MAC do Host", Boolean.TRUE), etpSysUser("Usuário Sistema", Boolean.TRUE),
+    etpHostIp("IP do Host", Boolean.TRUE), etpFonte("Fonte", Boolean.TRUE),
     etpNome("Nome do Evento", Boolean.TRUE), etpOcorrenciaDtHr("Data/Hora Ocorrência", Boolean.TRUE), etpPalavrasChave("Palavras-Chave", Boolean.TRUE),
     etpEntidade("Entidade", Boolean.FALSE), etpEventoNivel("Evento Nível", Boolean.FALSE), etpEventoTipo("Evento Tipo", Boolean.FALSE);
-    
     private static final long serialVersionUID = 1L;
-    
     private String nome;
     private Boolean modoBasico;
 
@@ -48,7 +47,7 @@ public enum EventoTermoPesquisa implements Serializable {
     public Boolean getModoBasico() {
         return modoBasico;
     }
-    
+
     public String getLuceneIndex() {
         switch (this) {
             case etpTudo:
@@ -59,6 +58,10 @@ public enum EventoTermoPesquisa implements Serializable {
                 return Constantes.INDICE_EVENTO_HOSTNAME;
             case etpHostUser:
                 return Constantes.INDICE_EVENTO_HOSTUSER;
+            case etpHostMac:
+                return Constantes.INDICE_EVENTO_HOSTMAC;
+            case etpSysUser:
+                return Constantes.INDICE_EVENTO_SYSUSER;
             case etpHostIp:
                 return Constantes.INDICE_EVENTO_HOSTIP;
             case etpFonte:

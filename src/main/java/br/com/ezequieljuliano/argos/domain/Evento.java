@@ -48,6 +48,12 @@ public class Evento implements Serializable {
     @Indexed
     private String hostUser;
     
+    @Indexed
+    private String hostMac;
+    
+    @Indexed
+    private String sysUser;
+    
     private String mensagem;
     
     private String fonte;
@@ -102,6 +108,22 @@ public class Evento implements Serializable {
         this.hostUser = hostUser;
     }
 
+    public String getHostMac() {
+        return hostMac;
+    }
+
+    public void setHostMac(String hostMac) {
+        this.hostMac = hostMac;
+    }
+
+    public String getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(String sysUser) {
+        this.sysUser = sysUser;
+    }
+    
     public String getMensagem() {
         return mensagem;
     }

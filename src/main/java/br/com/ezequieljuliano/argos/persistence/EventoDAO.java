@@ -77,7 +77,6 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
             QueryWrapperFilter queryWrapperFilter = new QueryWrapperFilter(bqFilter);
             this.luceneFilter = queryWrapperFilter;
         }
-        //Adciona termos da pesquisa (QueryPrincipal AND QueryTermos(TERMO OU TERMO ...) 
         BooleanQuery booleanQuery = new BooleanQuery();
         booleanQuery.add(eventoPesquisaFiltro.getBooleanQuery(), BooleanClause.Occur.MUST);
         return luceneExecQuery(booleanQuery);
@@ -111,18 +110,23 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         document.add(new StringField(Constantes.INDICE_EVENTO_ID, obj.getId(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_MENSAGEM, obj.getMensagem(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES)); 
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTMAC, obj.getHostMac(), Field.Store.YES));
+        document.add(new TextField(Constantes.INDICE_EVENTO_SYSUSER, obj.getSysUser(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_FONTE, obj.getFonte(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_NOME, obj.getNome(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_OCORRENCIADTHR, Data.timestampToString(obj.getOcorrenciaDtHr()), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_PALAVRASCHAVE, obj.getPalavrasChave(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADEID, obj.getEntidade().getId(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_ENTIDADECODIGO, (String.valueOf(obj.getEntidade().getCodigo())), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADENOME, obj.getEntidade().getNome(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_ENTIDADECADASTRONACIONAL, obj.getEntidade().getCadastroNacional(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_NIVELID, obj.getEventoNivel().getId(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_NIVELCODIGO, String.valueOf(obj.getEventoNivel().getCodigo()), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_NIVELDESCRICAO, obj.getEventoNivel().getDescricao(), Field.Store.YES));
         document.add(new StringField(Constantes.INDICE_EVENTO_TIPOID, obj.getEventoTipo().getId(), Field.Store.YES));
+        document.add(new StringField(Constantes.INDICE_EVENTO_TIPOCODIGO, String.valueOf(obj.getEventoTipo().getCodigo()), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_TIPODESCRICAO, obj.getEventoTipo().getDescricao(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_TUDO, getLuceneContentString(obj), Field.Store.YES));
         return document;
@@ -141,6 +145,8 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         stringBuilder.append(obj.getHostName()).append(newLineCharacter);
         stringBuilder.append(obj.getHostIp()).append(newLineCharacter);
         stringBuilder.append(obj.getHostUser()).append(newLineCharacter);
+        stringBuilder.append(obj.getHostMac()).append(newLineCharacter);
+        stringBuilder.append(obj.getSysUser()).append(newLineCharacter); 
         stringBuilder.append(obj.getMensagem()).append(newLineCharacter);
         stringBuilder.append(obj.getFonte()).append(newLineCharacter);
         stringBuilder.append(obj.getNome()).append(newLineCharacter);

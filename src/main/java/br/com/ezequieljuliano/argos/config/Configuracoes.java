@@ -68,4 +68,8 @@ public class Configuracoes {
     public Boolean getEmailSSL() {
         return Boolean.parseBoolean(properties.getProperty("email.ssl"));
     }
+    
+    public String getAppUrl(){
+        return properties.getProperty("app.url");
+    }
 }

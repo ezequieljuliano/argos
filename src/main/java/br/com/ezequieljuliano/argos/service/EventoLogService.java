@@ -16,6 +16,7 @@
 
 package br.com.ezequieljuliano.argos.service;
 
+import br.com.ezequieljuliano.argos.business.EntidadeBC;
 import br.com.ezequieljuliano.argos.business.EventoBC;
 import br.com.ezequieljuliano.argos.business.EventoNivelBC;
 import br.com.ezequieljuliano.argos.business.EventoTipoBC;
@@ -28,6 +29,8 @@ import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.exception.LogServiceException;
 import br.com.ezequieljuliano.argos.service.to.EventoLogReturnTO;
 import br.com.ezequieljuliano.argos.service.to.EventoLogTO;
+import br.gov.frameworkdemoiselle.util.Strings;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -52,23 +55,26 @@ public class EventoLogService {
     
     @Inject
     private EventoBC eventoBC;
+    
+    @Inject
+    private EntidadeBC entidadeBC;
 
     @POST
     @Path("/{apiKey}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public EventoLogReturnTO efetuarLogging(@PathParam("apiKey") String apiKey, EventoLogTO evento) {
+    public EventoLogReturnTO efetuarLogging(@PathParam("apiKey") String apiKey, EventoLogTO log) {
         try {
             //Pega o usuário
             Usuario usuario = getUsuarioByApiKey(apiKey);
             //Pega a Entidade
-            Entidade entidade = getEntidadeByUsuario(usuario);
+            Entidade entidade = getEntidadeByUsuarioAndCadastroNacional(usuario, log.getCadastroNacional());
             //Pega o Evento Nível
-            EventoNivel eventoNivel = getEventoNivelByCodigo(evento.getEventoNivelCodigo());
+            EventoNivel eventoNivel = getEventoNivelByCodigo(log.getEventoNivelCodigo());
             //Pega Evento Tipo
-            EventoTipo eventoTipo = getEventoTipoByCodigo(evento.getEventoTipoCodigo());
+            EventoTipo eventoTipo = getEventoTipoByCodigo(log.getEventoTipoCodigo());
             //Insere os logs no sistema
-            armazenarEventoLog(evento, entidade, eventoNivel, eventoTipo, usuario);
+            armazenarEventoLog(log, entidade, eventoNivel, eventoTipo, usuario);
         } catch (LogServiceException ex) {
             return new EventoLogReturnTO(ex.getLogEx().getCodigo(), ex.getLogEx().getDescricao());
         }
@@ -82,6 +88,8 @@ public class EventoLogService {
             evento.setHostName(log.getHostName());
             evento.setHostIp(log.getHostIp());
             evento.setHostUser(log.getHostUser());
+            evento.setHostMac(log.getHostMac());
+            evento.setSysUser(log.getSysUser());
             evento.setMensagem(log.getMensagem());
             evento.setFonte(log.getFonte());
             evento.setNome(log.getNome());
@@ -110,13 +118,29 @@ public class EventoLogService {
         return usuario;
     }
 
-    private Entidade getEntidadeByUsuario(Usuario usuario) throws LogServiceException {
+    private Entidade getEntidadeByUsuarioAndCadastroNacional(Usuario usuario, String cadastroNacional) throws LogServiceException {
+        //Cria a variável que vai pegar a entidade
+        Entidade entidade = null;
+        //Se veio com cadastro nacional busca todas as entidades do usuário
+        //E seleciona a de mesmo cadastro nacional
+        if (!Strings.isEmpty(cadastroNacional)) {
+            List<Entidade> entidades = entidadeBC.findByUsuario(usuario);
+            for (Entidade ent : entidades) {
+                if (ent.getCadastroNacional().equals(cadastroNacional)) {
+                    entidade = ent;
+                    break;
+                }
+            }
+        }
+        //Se não encontrou nenhuma entidade pega a vinculada ao usuário
+        if (entidade == null) {
+            entidade = usuario.getEntidade();
+        }
         //Verifica se o usuário possui entidade vinculada
-        Entidade entidade = usuario.getEntidade();
         if (entidade == null) {
             throw new LogServiceException(EventoLogExceptionTipo.logExUsuarioSemEntidade);
         }
-        //Verifica se a entidade não está inativa
+        //Verifica se a entidade vinculada não está inativa
         if (entidade.isInativo()) {
             throw new LogServiceException(EventoLogExceptionTipo.logExEntidadeInativa);
         }

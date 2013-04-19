@@ -148,7 +148,7 @@ public class UsuarioBC extends GenericBC<Usuario, String, UsuarioDAO> {
                 .de(config.getEmailUser(), "Sistema de Logging Argos")
                 .para(bean.getEmail())
                 .comAssunto("Dados de Login no Sistema Argos")
-                .comMensagem("Seu cadastro está concluído, para acessar o sistema use o e-mail " + bean.getEmail() + " e a senha "
+                .comMensagem("Seu cadastro está concluído, para acessar o sistema acesse o link " + config.getAppUrl() + " com o usuário " + bean.getUserName() + " e a senha "
                 + novaSenha + " para enviar logs use a ApiKey " + bean.getApiKey())
                 .enviar();
     }
