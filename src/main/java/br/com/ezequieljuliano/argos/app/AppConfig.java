@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package br.com.ezequieljuliano.argos.app;
 
+import br.com.ezequieljuliano.argos.constant.Constantes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -23,8 +23,13 @@ import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import com.mongodb.Mongo;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 
 @Configuration
 public class AppConfig {
@@ -58,7 +63,46 @@ public class AppConfig {
      */
     public @Bean
     Directory getDirectory() {
-        Directory directory = new RAMDirectory();
-        return directory;
+        return getDirDisco(null);
+    }
+
+    /*
+     * Verifica se o sistema operacional é Windows
+     */
+    private static boolean isWindows() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return (os.indexOf("win") >= 0);
+    }
+
+    /*
+     * Abre o diretório do disco rígido
+     */
+    private Directory getDirDisco(File file) {
+        if (file == null) {
+            file = getNewFile();
+        }
+        if (isWindows()) {
+            try {
+                return FSDirectory.open(file); // Abre Diretorio em ambientes Windows
+            } catch (IOException ex) {
+                throw new RuntimeException("Erro ao criar diretório do Lucene", ex);
+            }
+        } else {
+            try {
+                return NIOFSDirectory.open(file); // Abre Diretorio em ambientes Unix
+            } catch (IOException ex) {
+                throw new RuntimeException("Erro ao criar diretório do Lucene", ex);
+            }
+        }
+    }
+
+    private File getNewFile() {
+        //Abre ou cria o diretório em disco rígido
+        File file = new File(Constantes.getLuceneIndexDirectory());
+        //Se o diretório não exitir cria ele
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 }
