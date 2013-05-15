@@ -34,20 +34,24 @@
                 <h:outputText value="#{usuarioMB.usuarioLogado.userName}" />
                 <h:outputText value=" e seu e-mail é " />
                 <h:outputText value="#{usuarioMB.usuarioLogado.email}" />
-               <p:commandButton value="Sair" action="#{securityContext.logout()}" image="ui-icon-closethick"/>
+                <p:commandButton value="Sair" action="#{securityContext.logout()}" image="ui-icon-closethick"/>                
             </h:panelGrid>
         </p:panel> 
 
         <p:growl id="messages" globalOnly="true" autoUpdate="true" />
 
-        <p:ajaxStatus style="width:16px;height:16px;">
-            <f:facet name="start">
-            </f:facet>
-
-            <f:facet name="complete">
-                <h:outputText value="" />
-            </f:facet>
-        </p:ajaxStatus>
         <link type="text/css" rel="stylesheet" href="css/aristo/skin.css" />
+
+        <!--modal ajax status here-->
+        <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide();"/>  
+        <p:dialog modal="true" widgetVar="statusDialog" header="Aguarde um momento..."   
+                  draggable="false" closable="false" resizable="false">  
+            <p:panel>
+                <p:graphicImage url="images/carregando.gif" style="vertical-align: middle;"/>
+                <h2 style="display: inline; margin-left: 15px;">Carregando...</h2>
+            </p:panel> 
+        </p:dialog>
+        <!--modal ajax status end-->
+
     </h:body>
 </html>

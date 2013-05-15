@@ -70,6 +70,10 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
         return getDAO().findByPesquisaFiltro(filtro);
     }
 
+    public List<Evento> findUltimosEventos(Usuario usuario, Integer limit) {
+        return getDAO().findUltimosEventos(usuario, limit);
+    }
+
     private void enviarEmailComNotificacaoParaUsuario(Evento evento, Usuario usuario) {
         if (getDAO().possuiTermosDeNotificacao(evento, usuario)) {
             try {

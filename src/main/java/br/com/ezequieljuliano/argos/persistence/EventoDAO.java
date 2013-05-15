@@ -39,6 +39,9 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -51,11 +54,18 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
     private static final long serialVersionUID = 1L;
     
     private int numHitsResults = 100;
-    
     private Filter luceneFilter = null;
     
     @Autowired
     private EntidadeDAO entidadeDAO;
+
+    public List<Evento> findUltimosEventos(Usuario usuario, Integer limit) {
+        List<Entidade> entidades = entidadeDAO.findByUsuario(usuario);
+        Query query = new Query(Criteria.where("entidade").in(entidades));
+        query.with(new Sort(Sort.Direction.DESC, "ocorrenciaDtHr"));
+        query.limit(limit);
+        return getMongoOperations().find(query, Evento.class);
+    }
 
     public List<Evento> findByPesquisaFiltro(EventoPesquisaFiltro eventoPesquisaFiltro) {
         //Limpa o filtro padrão de restrição caso houver
@@ -110,7 +120,7 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         document.add(new StringField(Constantes.INDICE_EVENTO_ID, obj.getId(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_MENSAGEM, obj.getMensagem(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_HOSTNAME, obj.getHostName(), Field.Store.YES));
-        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES)); 
+        document.add(new TextField(Constantes.INDICE_EVENTO_HOSTUSER, obj.getHostUser(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_HOSTMAC, obj.getHostMac(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_SYSUSER, obj.getSysUser(), Field.Store.YES));
         document.add(new TextField(Constantes.INDICE_EVENTO_HOSTIP, obj.getHostIp(), Field.Store.YES));
@@ -146,7 +156,7 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         stringBuilder.append(obj.getHostIp()).append(newLineCharacter);
         stringBuilder.append(obj.getHostUser()).append(newLineCharacter);
         stringBuilder.append(obj.getHostMac()).append(newLineCharacter);
-        stringBuilder.append(obj.getSysUser()).append(newLineCharacter); 
+        stringBuilder.append(obj.getSysUser()).append(newLineCharacter);
         stringBuilder.append(obj.getMensagem()).append(newLineCharacter);
         stringBuilder.append(obj.getFonte()).append(newLineCharacter);
         stringBuilder.append(obj.getNome()).append(newLineCharacter);
@@ -177,7 +187,7 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     @Override
     public int getLuceneNumHits() {
-       return getNumHitsResults();
+        return getNumHitsResults();
     }
 
     public int getNumHitsResults() {
@@ -187,5 +197,4 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
     public void setNumHitsResults(int numHitsResults) {
         this.numHitsResults = numHitsResults;
     }
- 
 }

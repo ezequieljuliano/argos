@@ -35,14 +35,16 @@
 
         <p:growl id="messages" globalOnly="true" />
 
-        <p:ajaxStatus style="width:16px;height:16px;">
-            <f:facet name="start">
-                <h:outputText value="Carregando..." />
-            </f:facet>
+        <!--modal ajax status here-->
+        <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide();"/>  
+        <p:dialog modal="true" widgetVar="statusDialog" header="Aguarde um momento..."   
+                  draggable="false" closable="false" resizable="false">  
+            <p:panel>
+                <p:graphicImage url="images/carregando.gif" style="vertical-align: middle;"/>
+                <h2 style="display: inline; margin-left: 15px;">Carregando...</h2>
+            </p:panel> 
+        </p:dialog>
+        <!--modal ajax status end-->
 
-            <f:facet name="complete">
-                <h:outputText value="" />
-            </f:facet>
-        </p:ajaxStatus>
     </h:body>
 </html>

@@ -6,7 +6,7 @@
 
     <groupId>br.com.ezequieljuliano</groupId>
     <artifactId>Argos</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>war</packaging>
  
     <name>Argos</name>
