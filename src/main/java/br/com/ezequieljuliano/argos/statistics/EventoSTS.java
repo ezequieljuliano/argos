@@ -33,6 +33,10 @@ public class EventoSTS {
         this.eventos = eventos;
     }
 
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
     public List<EventoNivelObjSTS> getProcessNiveis() {
         List<EventoNivelObjSTS> list = new ArrayList<EventoNivelObjSTS>();
         for (Evento evento : this.eventos) {

@@ -26,6 +26,7 @@ import br.com.ezequieljuliano.argos.util.EmailSender;
 import br.com.ezequieljuliano.argos.util.VelocityTemplate;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,6 +74,10 @@ public class EventoBC extends GenericBC<Evento, String, EventoDAO> {
     public List<Evento> findUltimosEventos(Usuario usuario, Integer limit) {
         return getDAO().findUltimosEventos(usuario, limit);
     }
+    
+     public List<Evento> findByUsuarioAndPeriodo(Usuario usuario, Date inicio, Date fim) {
+         return getDAO().findByUsuarioAndPeriodo(usuario, inicio, fim);
+     }
 
     private void enviarEmailComNotificacaoParaUsuario(Evento evento, Usuario usuario) {
         if (getDAO().possuiTermosDeNotificacao(evento, usuario)) {

@@ -41,7 +41,7 @@ public class Data {
         return calendar.getTime();
     }
 
-    public Date firstTimeOfDay(Date date) {
+    public static Date firstTimeOfDay(Date date) {
         GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, calendar.getMinimum(Calendar.HOUR_OF_DAY));
@@ -106,10 +106,17 @@ public class Data {
 
     }
 
-    public Date decreaseMonthsFrom(Date date, Integer monthsToDecrease) {
+    public static Date decreaseMonthsFrom(Date date, Integer monthsToDecrease) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(firstTimeOfDay(date));
         calendar.add(Calendar.MONTH, -monthsToDecrease);
+        return calendar.getTime();
+    }
+    
+    public static Date decreaseDaysFrom(Date date, Integer daysToDecrease) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(firstTimeOfDay(date));
+        calendar.add(Calendar.DAY_OF_MONTH, -daysToDecrease);
         return calendar.getTime();
     }
 

@@ -23,6 +23,7 @@ import br.com.ezequieljuliano.argos.domain.Usuario;
 import br.com.ezequieljuliano.argos.domain.UsuarioPerfil;
 import br.com.ezequieljuliano.argos.domain.UsuarioTermoPesquisa;
 import br.com.ezequieljuliano.argos.util.Data;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +53,6 @@ import org.springframework.stereotype.Repository;
 public class EventoDAO extends GenericLuceneDAO<Evento, String> {
 
     private static final long serialVersionUID = 1L;
-    
     private int numHitsResults = 100;
     private Filter luceneFilter = null;
     
@@ -64,6 +64,16 @@ public class EventoDAO extends GenericLuceneDAO<Evento, String> {
         Query query = new Query(Criteria.where("entidade").in(entidades));
         query.with(new Sort(Sort.Direction.DESC, "ocorrenciaDtHr"));
         query.limit(limit);
+        return getMongoOperations().find(query, Evento.class);
+    }
+
+    public List<Evento> findByUsuarioAndPeriodo(Usuario usuario, Date inicio, Date fim) {
+        Criteria criteriaPeriodo = new Criteria().andOperator(
+                Criteria.where("ocorrenciaDtHr").gte(inicio),
+                Criteria.where("ocorrenciaDtHr").lte(fim));
+        List<Entidade> entidades = entidadeDAO.findByUsuario(usuario);
+        Query query = new Query(Criteria.where("entidade").in(entidades).andOperator(criteriaPeriodo));
+        query.with(new Sort(Sort.Direction.DESC, "ocorrenciaDtHr"));
         return getMongoOperations().find(query, Evento.class);
     }
 

@@ -26,10 +26,12 @@ import br.com.ezequieljuliano.argos.statistics.EventoObjSTS;
 import br.com.ezequieljuliano.argos.statistics.EventoSTS;
 import br.com.ezequieljuliano.argos.statistics.EventoSysUserObjSTS;
 import br.com.ezequieljuliano.argos.statistics.EventoTipoObjSTS;
+import br.com.ezequieljuliano.argos.util.Data;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.stereotype.ViewController;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -62,12 +64,14 @@ public class DashboardMB {
     private PieChartModel pieFontes;
     private PieChartModel pieSysUsers;
     private DashboardTipo dashboardTipo = DashboardTipo.dtGraficoEvolucao;
-    private Integer dashboarLimit = 100;
     private ArrayList<SelectItem> listDashboardTipos;
+    private Date dataIni = Data.decreaseDaysFrom(new Date(), 3);
+    private Date dataFim = new Date();
+    
 
     @PostConstruct
     public void inicializar() {
-        eventoSTS = new EventoSTS(eventoBC.findUltimosEventos(sessionAttributes.getUsuario(), dashboarLimit));
+        eventoSTS = new EventoSTS(eventoBC.findByUsuarioAndPeriodo(sessionAttributes.getUsuario(), dataIni, dataFim));
         createPieNiveis();
         createPieTipos();
         createPieHosts();
@@ -76,6 +80,22 @@ public class DashboardMB {
         createLinearEvolucao();
     }
 
+    public Date getDataIni() {
+        return dataIni;
+    }
+
+    public void setDataIni(Date dataIni) {
+        this.dataIni = dataIni;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
+    }
+    
     public PieChartModel getPieNiveis() {
         return pieNiveis;
     }
@@ -119,10 +139,6 @@ public class DashboardMB {
         this.dashboardTipo = dashboardTipo;
     }
 
-    public Integer getDashboarLimit() {
-        return dashboarLimit;
-    }
-
     public List<SelectItem> getListDashboardTipos() {
         if (this.listDashboardTipos == null) {
             this.listDashboardTipos = new ArrayList<SelectItem>();
@@ -133,12 +149,8 @@ public class DashboardMB {
         return listDashboardTipos;
     }
 
-    public void setDashboarLimit(Integer dashboarLimit) {
-        this.dashboarLimit = dashboarLimit;
-    }
-
     public void definirDashboard() {
-        if ((dashboardTipo == null) || (dashboarLimit <= 0)) {
+        if (dashboardTipo == null) {
             messageContext.add("Selecione um tipo e informe o número máximo de resultados!", SeverityType.ERROR);
         } else {
             inicializar();
@@ -174,7 +186,7 @@ public class DashboardMB {
     }
 
     public Integer getMaxY() {
-        return dashboarLimit;
+        return eventoSTS.getEventos().size();
     }
 
     private void createPieNiveis() {
