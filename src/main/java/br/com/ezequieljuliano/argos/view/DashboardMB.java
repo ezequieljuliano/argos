@@ -38,6 +38,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -65,12 +66,16 @@ public class DashboardMB {
     private PieChartModel pieSysUsers;
     private DashboardTipo dashboardTipo = DashboardTipo.dtGraficoEvolucao;
     private ArrayList<SelectItem> listDashboardTipos;
-    private Date dataIni = Data.decreaseDaysFrom(new Date(), 3);
+    private Date dataIni = Data.decreaseDaysFrom(new Date(), 5);
     private Date dataFim = new Date();
     
 
     @PostConstruct
-    public void inicializar() {
+    public void aposConstruir() {
+        startDashboard();
+    }
+
+    private void startDashboard() {
         eventoSTS = new EventoSTS(eventoBC.findByUsuarioAndPeriodo(sessionAttributes.getUsuario(), dataIni, dataFim));
         createPieNiveis();
         createPieTipos();
@@ -80,6 +85,10 @@ public class DashboardMB {
         createLinearEvolucao();
     }
 
+    public Boolean isEmptyEventos(){
+        return eventoSTS.getEventos().isEmpty();
+    }
+    
     public Date getDataIni() {
         return dataIni;
     }
@@ -150,10 +159,10 @@ public class DashboardMB {
     }
 
     public void definirDashboard() {
-        if (dashboardTipo == null) {
-            messageContext.add("Selecione um tipo e informe o número máximo de resultados!", SeverityType.ERROR);
+        if ((dashboardTipo == null) || (dataIni == null) || (dataFim == null)) {
+            messageContext.add("Selecione um tipo e informe as datas inicial e final!", SeverityType.ERROR);
         } else {
-            inicializar();
+           startDashboard();
         }
     }
 
@@ -231,7 +240,7 @@ public class DashboardMB {
 
     private void createLinearEvolucao() {
         linearEvolucao = new CartesianChartModel();
-        ChartSeries serie = new ChartSeries();
+        ChartSeries serie = new LineChartSeries(); 
         serie.setLabel("Logs");
         List<EventoEvolucaoObjSTS> list = eventoSTS.getProcessEvolucao();
         for (int i = list.size() - 1; i >= 0; i--) {

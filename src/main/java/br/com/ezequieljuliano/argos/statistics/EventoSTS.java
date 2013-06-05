@@ -87,11 +87,11 @@ public class EventoSTS {
         for (Evento evento : this.eventos) {
             String descHost = evento.getHostIp();
             EventoHostObjSTS host = new EventoHostObjSTS(descHost);
-            if (list.size() < sizeExib) {
-                if (list.contains(host)) {
-                    host = list.get(list.indexOf(host));
-                    host.incrementar();
-                } else {
+            if (list.contains(host)) {
+                host = list.get(list.indexOf(host));
+                host.incrementar();
+            } else {
+                if (list.size() < sizeExib) {
                     list.add(host);
                 }
             }
@@ -104,11 +104,11 @@ public class EventoSTS {
         for (Evento evento : this.eventos) {
             String descFonte = evento.getFonte();
             EventoFonteObjSTS fonte = new EventoFonteObjSTS(descFonte);
-            if (list.size() < sizeExib) {
-                if (list.contains(fonte)) {
-                    fonte = list.get(list.indexOf(fonte));
-                    fonte.incrementar();
-                } else {
+            if (list.contains(fonte)) {
+                fonte = list.get(list.indexOf(fonte));
+                fonte.incrementar();
+            } else {
+                if (list.size() < sizeExib) {
                     list.add(fonte);
                 }
             }
@@ -121,11 +121,11 @@ public class EventoSTS {
         for (Evento evento : this.eventos) {
             String descUser = evento.getSysUser();
             EventoSysUserObjSTS user = new EventoSysUserObjSTS(descUser);
-            if (list.size() < sizeExib) {
-                if (list.contains(user)) {
-                    user = list.get(list.indexOf(user));
-                    user.incrementar();
-                } else {
+            if (list.contains(user)) {
+                user = list.get(list.indexOf(user));
+                user.incrementar();
+            } else {
+                if (list.size() < sizeExib) {
                     list.add(user);
                 }
             }

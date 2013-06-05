@@ -11,7 +11,7 @@
 
                     <p:selectOneMenu style="width: 350px" value="#{dashboardMB.dashboardTipo}">  
                         <f:selectItems value="#{dashboardMB.listDashboardTipos}" />
-                        <p:ajax event="change" update=":frm:pnDashboard" process="@this"/>
+                        <p:ajax event="change" update=":frm" process="@this"/>
                     </p:selectOneMenu> 
 
                     <h:outputText value="Período:" />
@@ -19,16 +19,16 @@
                     <h:outputText value="Até" />
                     <p:calendar timeZone="GMT-03:00" pattern="dd/MM/yyyy" value="#{dashboardMB.dataFim}" showOn="button" />
 
-                    <p:commandButton value="Pesquisar" action="#{dashboardMB.definirDashboard()}" image="ui-icon ui-icon-circle-zoomin" update=":frm:pnDashboard" />
+                    <p:commandButton value="Pesquisar" action="#{dashboardMB.definirDashboard()}" image="ui-icon ui-icon-circle-zoomin" update=":frm" />
                 </h:panelGrid>
             </p:panel>
 
             <br /> 
 
-            <p:panel id="pnDashboard">
+            <p:panel rendered="#{!dashboardMB.isEmptyEventos()}" id="pnDashboard">
 
                 <p:panel rendered="#{dashboardMB.dashboardTipoIsGraficoEvolucao()}" id="evolucao" header="Evolução Diária de Eventos (Logs)">  
-                    <p:lineChart value="#{dashboardMB.linearEvolucao}" legendPosition="w" zoom="true" animate="true"  
+                    <p:lineChart value="#{dashboardMB.linearEvolucao}" legendPosition="w"  
                                  minY="0" maxY="#{dashboardMB.maxY}" style="height:330px" /> 
                 </p:panel> 
 
