@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm" rendered="#{securityMB.userLoggedIsAdmin()}" prependId="false">
+
+            <p:toolbar id="menu">
+                <p:toolbarGroup align="left">
+                    <p:commandButton title="Voltar" value="Voltar" action="#{entityMB.redirectListView()}" immediate="true" ajax="false" 
+                                     image="ui-icon ui-icon-arrowthick-1-w"/>
+
+                    <p:commandButton title="Novo" value="Novo" icon="ui-icon-document" action="#{entityMB.redirectEditView(null)}"
+                                     actionListener="#{entityMB.clearEditView()}" ajax="false" rendered="#{not entityMB.insertMode}"  />
+
+                    <p:commandButton title="Salvar" value="Salvar" icon="ui-icon-document" 
+                                     action="#{entityMB.save()}" ajax="false" update=":frm"/>
+
+                    <p:commandButton value="Inativar" action="#{entityMB.inactivate()}" 
+                                     ajax="false"
+                                     rendered="#{not entityMB.insertMode and entityMB.bean.active}" image="ui-icon ui-icon-circle-close" update=":frm"/>
+
+                    <p:commandButton value="Ativar" action="#{entityMB.activate()}"
+                                     ajax="false"
+                                     rendered="#{not entityMB.insertMode and not entityMB.bean.active}" image="ui-icon ui-icon-circle-check" update=":frm"/>
+
+                    <p:commandButton title="Deletar" value="Deletar" icon="ui-icon-trash" onclick="confirmation.show()"
+                                     rendered="#{not entityMB.insertMode}" type="button" immediate="true" ajax="false" />
+
+                    <p:confirmDialog message="Tem certeza que deseja deletar o registro selecionado?" showEffect="bounce" hideEffect="explode"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{entityMB.delete()}" immediate="true" />
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button" />
+                    </p:confirmDialog>
+
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <br />
+
+            <p:fieldset legend="Entidade Geradora de Logs">
+                <h:panelGrid id="fields" columns="3">
+                    <h:outputLabel value="Identificador: " for="id" styleClass="text-input" />
+                    <h:outputText id="id" value="#{entityMB.bean.id}" />
+                    <p:message for="id" />
+
+                    <h:outputLabel value="Nome*: " for="name" styleClass="text-input" />
+                    <h:inputText id="name" value="#{entityMB.bean.name}" title="Nome" style="width: 250px" required="true" />
+                    <p:message for="name" />
+
+                    <h:outputLabel value="Chave Externa*: " for="externalKey" styleClass="text-input" />
+                    <h:inputText id="externalKey" value="#{entityMB.bean.externalKey}" title="Chave Externa" style="width: 250px" required="true" />
+                    <p:message for="externalKey" />
+
+                    <h:outputLabel value="Entidade Origem: " for="parent" styleClass="text-input" />
+                    <p:selectOneMenu id="parent" value="#{entityMB.bean.parent}" converter="entityConverter" panelStyle="width:250px"
+                                     effect="fade" var="e" style="width: 250px"  filter="true" filterMatchMode="startsWith">  
+                        <f:selectItem itemLabel="Selecione..." itemValue="" />  
+                        <f:selectItems value="#{entityMB.parents}" var="entity" itemLabel="#{entity.name}" itemValue="#{entity}"/>  
+
+                        <p:column>  
+                            #{e.name} - #{e.externalKey} - #{e.situation.description}
+                        </p:column>   
+                    </p:selectOneMenu>  
+                    <p:message for="parent" />
+                </h:panelGrid>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

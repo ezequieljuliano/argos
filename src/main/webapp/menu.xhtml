@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Início" url="/index.jsf" rendered="#{securityMB.userIsLogged()}" icon="ui-icon-home"/>
+
+            <p:submenu label="Configurações" rendered="#{securityMB.userLoggedIsAdmin()}" icon="ui-icon-wrench">
+
+                <p:submenu label="Logs - Níveis" rendered="#{securityMB.userLoggedIsAdmin()}" icon="ui-icon-folder-open">
+                    <p:menuitem value="Novo" action="#{levelMB.redirectEditView(null)}" actionListener="#{levelMB.clearEditView()}" icon="ui-icon-plusthick" />
+                    <p:menuitem value="Listar" action="#{levelMB.redirectListView()}" actionListener="#{levelMB.clearListView()}" icon="ui-icon-clipboard" />
+                </p:submenu>
+
+                <p:submenu label="Logs - Marcadores" rendered="#{securityMB.userLoggedIsAdmin()}" icon="ui-icon-folder-open">
+                    <p:menuitem value="Novo" action="#{markerMB.redirectEditView(null)}" actionListener="#{markerMB.clearEditView()}" icon="ui-icon-plusthick" />
+                    <p:menuitem value="Listar" action="#{markerMB.redirectListView()}" actionListener="#{markerMB.clearListView()}" icon="ui-icon-clipboard" />
+                </p:submenu>
+
+                <p:submenu label="Logs - Entidades" rendered="#{securityMB.userLoggedIsAdmin()}" icon="ui-icon-folder-open">
+                    <p:menuitem value="Novo" action="#{entityMB.redirectEditView(null)}" actionListener="#{entityMB.clearEditView()}" icon="ui-icon-plusthick" />
+                    <p:menuitem value="Listar" action="#{entityMB.redirectListView()}" actionListener="#{entityMB.clearListView()}" icon="ui-icon-clipboard" />
+                </p:submenu>
+
+                <p:submenu label="Usuários" rendered="#{securityMB.userLoggedIsAdmin()}" icon="ui-icon-folder-open">
+                    <p:menuitem value="Novo" action="#{userMB.redirectEditView(null)}" actionListener="#{userMB.clearEditView()}" icon="ui-icon-plusthick" />
+                    <p:menuitem value="Listar" action="#{userMB.redirectListView()}" actionListener="#{userMB.clearListView()}" icon="ui-icon-clipboard" />
+                </p:submenu>
+
+            </p:submenu>
+
+            <p:menuitem value="Sair" action="#{securityMB.logout()}" ajax="false" rendered="#{securityMB.userIsLogged()}" icon="ui-icon-closethick" />
+        </p:menubar>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,55 @@
+<html xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <f:view contentType="text/html" locale="#currentLocale" />
+
+    <h:head>
+        <title>ARGOS - Gestão de Logs</title>
+        <link type="text/css" rel="stylesheet" href="css/default.css" />
+        <style type="text/css">*{font-size: 12px}</style>
+    </h:head>
+
+    <h:body style="background-color:#f1f1f1">
+        <div id="content">
+            <div id="header">
+                <h:panelGrid columns="2" columnClasses="logo,menu" style="width: 100%;">
+                    <div id="logo">
+                        <a href="index.jsf"><img src="images/logo.png" border="0" /></a>
+                    </div>
+                    <div id="menu">
+                        <ui:include src="/menu.xhtml" />
+                    </div>
+                </h:panelGrid>
+            </div>
+            <div id="content">
+                <ui:insert name="body" />
+            </div>
+            <p:spacer style="display: block;" height="5" />
+            <div id="footer">
+                <p:panel>
+                    <h:outputText value="ARGOS - Gestão de Logs - Copyright © 2014" styleClass="text-input" />
+                </p:panel> 
+            </div>
+        </div>
+
+        <p:growl id="messages" globalOnly="true" />
+
+        <!--modal ajax status here-->
+        <div id="footer" style="position: fixed; bottom: 0px; right: 0px; width: 100%;">
+            <p:ajaxStatus>
+                <f:facet name="start">
+                    <p:panel>
+                        <p:graphicImage url="images/loading.gif" style="vertical-align: middle;"/>
+                        <h2 style="display: inline; margin-left: 15px;">Carregando...</h2>
+                    </p:panel>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+        </div>
+        <!--modal ajax status end-->
+
+    </h:body>
+</html>

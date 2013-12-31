@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm" rendered="#{securityMB.userLoggedIsAdmin()}">
+
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+
+                    <p:commandButton title="Novo" value="Novo" icon="ui-icon-document" action="#{userMB.redirectEditView(null)}"
+                                     actionListener="#{userMB.clearListView()}" ajax="false" />
+
+                    <p:commandButton title="Deletar" value="Deletar Selecionados" icon="ui-icon-trash" onclick="confirmation.show()"
+                                     type="button" immediate="true" ajax="false" />
+
+                    <p:confirmDialog message="Tem certeza que deseja deletar o registro selecionado?" showEffect="bounce" hideEffect="explode"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{userMB.deleteSelection()}" actionListener="#{userMB.clearListView()}"/>
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button"/>
+                    </p:confirmDialog>
+
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <br />
+
+            <p:fieldset legend="Usuário">
+                <p:dataTable id="list" var="bean" value="#{userMB.resultList}" widgetVar="beans"
+                             emptyMessage="Não existem registros para exibir" 
+                             paginator="true" rows="10">
+
+                    <f:facet name="header">  
+                        <p:outputPanel style="display: block; text-align: right">  
+                            <h:outputText style="width: 25%" value="Pesquisar em todos os campos: " />  
+                            <p:inputText style="width: 25%"  id="globalFilter" onkeyup="beans.filter()" />  
+                        </p:outputPanel> 
+                    </f:facet>  
+
+                    <p:column style="width:1%;">
+                        <h:selectBooleanCheckbox value="#{userMB.selection[bean.id]}" />
+                    </p:column>
+
+                    <p:column style="width:1%;">
+                        <p:commandButton title="Editar Registro" icon="ui-icon-pencil" action="#{userMB.redirectEditView(bean.id)}"
+                                         actionListener="#{userMB.clearEditView()}" ajax="false" style="width: 20px; height: 20px;" />
+                    </p:column>
+
+                    <p:column style="width:5%;" 
+                              sortBy="#{bean.id}"
+                              filterBy="#{bean.id}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Identificador</f:facet>
+                        <h:outputText value="#{bean.id}" />
+                    </p:column>
+
+                    <p:column style="width:20%;"
+                              sortBy="#{bean.userName}"
+                              filterBy="#{bean.userName}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Nome de Usuário</f:facet>
+                        <h:outputText value="#{bean.userName}" />
+                    </p:column>
+
+                    <p:column style="width:23%;"
+                              sortBy="#{bean.email}"
+                              filterBy="#{bean.email}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">E-mail</f:facet>
+                        <h:outputText value="#{bean.email}" />
+                    </p:column>
+
+                    <p:column style="width:15%;"
+                              sortBy="#{bean.identifierKey}"
+                              filterBy="#{bean.identifierKey}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Chave Id.</f:facet>
+                        <h:outputText value="#{bean.identifierKey}" />
+                    </p:column>
+
+                    <p:column style="width:40%;"
+                              sortBy="#{bean.entity.name}"
+                              filterBy="#{bean.entity.name}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Entidade</f:facet>
+                        <h:outputText value="#{bean.entity.name}" />
+                    </p:column>
+
+                    <p:column style="width:5%;"
+                              sortBy="#{bean.situation}"
+                              filterBy="#{bean.situation}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Situação</f:facet>
+                        <h:outputText value="#{bean.situation.description}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

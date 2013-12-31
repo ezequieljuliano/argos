@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm" rendered="#{securityMB.userLoggedIsAdmin()}" prependId="false">
+
+            <p:toolbar id="menu">
+                <p:toolbarGroup align="left">
+                    <p:commandButton title="Voltar" value="Voltar" action="#{userMB.redirectListView()}" immediate="true" ajax="false" 
+                                     image="ui-icon ui-icon-arrowthick-1-w"/>
+
+                    <p:commandButton title="Novo" value="Novo" icon="ui-icon-document" action="#{userMB.redirectEditView(null)}"
+                                     actionListener="#{userMB.clearEditView()}" ajax="false" rendered="#{not userMB.insertMode}"  />
+
+                    <p:commandButton title="Salvar" value="Salvar" icon="ui-icon-document" 
+                                     action="#{userMB.save()}" ajax="false" update=":frm">
+                    </p:commandButton>
+
+                    <p:commandButton value="Inativar" action="#{userMB.inactivate()}" 
+                                     ajax="false"
+                                     rendered="#{not userMB.insertMode and userMB.bean.active}" image="ui-icon ui-icon-circle-close" update=":frm"/>
+
+                    <p:commandButton value="Ativar" action="#{userMB.activate()}" 
+                                     ajax="false"
+                                     rendered="#{not userMB.insertMode and not userMB.bean.active}" image="ui-icon ui-icon-circle-check" update=":frm"/>
+
+                    <p:commandButton value="Gerar Nova Chave" action="#{userMB.generateIdentifierKey()}" 
+                                     title="Gerar Nova Chave" ajax="false"
+                                     rendered="#{not userMB.insertMode}"
+                                     image="ui-icon ui-icon-extlink" update=":frm"/>
+
+                    <p:commandButton value="Alterar Senha" onclick="dlgAlterPassword.show();
+                            return false;" rendered="#{not userMB.insertMode}" image="ui-icon ui-icon-key"/>
+
+                    <p:commandButton title="Deletar" value="Deletar" icon="ui-icon-trash" onclick="confirmation.show()"
+                                     rendered="#{not userMB.insertMode}" type="button" immediate="true" ajax="false" />
+
+                    <p:confirmDialog message="Tem certeza que deseja deletar o registro selecionado?" showEffect="bounce" hideEffect="explode"
+                                     header="Deletar Registro" severity="alert" widgetVar="confirmation">
+                        <h:commandButton value="Sim" action="#{userMB.delete()}" immediate="true" />
+                        <h:commandButton value="Não" onclick="confirmation.hide()" type="button" />
+                    </p:confirmDialog>
+
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <br />
+
+            <p:dialog position="center" header="Alterar Senha" widgetVar="dlgAlterPassword" modal="true" closable="true">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="pwd2" value="Nova Senha" />  
+                    <p:password id="pwd2" value="#{userMB.bean.passWord}" 
+                                feedback="true" redisplay="true"  
+                                promptLabel="Informe a senha" weakLabel="Senha fraca"
+                                goodLabel="Senha boa" strongLabel="Senha forte" size="40"/> 
+                </h:panelGrid> 
+                <p:commandButton value="Cancelar" ajax="false" onclick="dlgAlterPassword.hide()" image="ui-icon ui-icon-arrowreturn-1-w"  style="float: left;"/>
+                <p:commandButton value="Salvar" ajax="false" action="#{userMB.alterPassWord()}" image="ui-icon ui-icon-disk"  style="float: right;" update=":frm"/>
+            </p:dialog>
+
+            <p:fieldset legend="Usuário">
+                <h:panelGrid id="fields" columns="3">
+                    <h:outputLabel value="Identificador: " for="id" styleClass="text-input" />
+                    <h:outputText id="id" value="#{userMB.bean.id}" />
+                    <p:message for="id" />
+
+                    <h:outputLabel value="Nome de Usuário*: " for="userName" styleClass="text-input" />
+                    <h:inputText id="userName" value="#{userMB.bean.userName}" title="Nome de Usuário" style="width: 250px" 
+                                 onkeyup="this.value = this.value.toLowerCase()"
+                                 disabled="#{not userMB.insertMode}" required="true"/>
+                    <p:message for="userName" />
+
+                    <h:outputLabel for="pwd1" value="Senha*:" />  
+                    <p:password id="pwd1" value="#{userMB.bean.passWord}" 
+                                feedback="true" redisplay="true"  
+                                promptLabel="Informe a senha" weakLabel="Senha fraca"
+                                disabled="#{not userMB.insertMode}"
+                                style="width: 250px"
+                                goodLabel="Senha boa" strongLabel="Senha forte" required="true"/>
+                    <p:message for="pwd1"/>
+
+                    <h:outputLabel value="E-mail*: " for="email" styleClass="text-input" />
+                    <h:inputText id="email" value="#{userMB.bean.email}" title="E-mail" style="width: 350px" 
+                                 onkeyup="this.value = this.value.toLowerCase()"
+                                 disabled="#{not userMB.insertMode}" required="true"/>
+                    <p:message for="email" />
+
+                    <h:outputLabel value="Chave Identificadora: " for="identifierKey" styleClass="text-input" rendered="#{not userMB.insertMode}"/>
+                    <h:inputText id="identifierKey" value="#{userMB.bean.identifierKey}" 
+                                 title="Chave Identificadora" style="width: 350px" readonly="true"
+                                 rendered="#{not userMB.insertMode}"/>
+                    <p:message for="identifierKey" rendered="#{not userMB.insertMode}"/>
+
+                    <h:outputLabel value="Entidade: " for="entity" styleClass="text-input" />
+                    <p:selectOneMenu id="entity" value="#{userMB.bean.entity}" converter="entityConverter" panelStyle="width: 350px"
+                                     effect="fade" var="e" style="width: 350px"  filter="true" filterMatchMode="startsWith">  
+                        <f:selectItem itemLabel="Selecione..." itemValue="" />  
+                        <f:selectItems value="#{entityMB.resultList}" var="entity" itemLabel="#{entity.name}" itemValue="#{entity}"/>  
+
+                        <p:column>  
+                            #{e.name} - #{e.externalKey} - #{e.situation.description}
+                        </p:column>   
+                    </p:selectOneMenu>  
+                    <p:message for="entity" />
+
+                    <h:outputLabel value="Perfis*: " for="profile" styleClass="text-input" />
+                    <p:selectManyCheckbox value="#{userMB.bean.profiles}" converter="profileConverter" id="profile">
+                        <f:selectItems value="#{userMB.profiles}" var="profile" itemLabel="#{profile.description}" itemValue="#{profile}" />
+                    </p:selectManyCheckbox>
+                    <p:message for="profile" />
+
+                </h:panelGrid>
+            </p:fieldset>
+
+            <br />
+
+            <p:fieldset legend="Termos Considerados para Envio de Notificações" rendered="#{not userMB.insertMode}">
+
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
