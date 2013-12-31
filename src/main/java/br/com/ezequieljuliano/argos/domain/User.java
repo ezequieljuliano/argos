@@ -128,8 +128,8 @@ public class User implements Serializable {
         return terms;
     }
 
-    public void addTerm(Term term, String value) {
-        UserTerm ut = new UserTerm(term, value);
+    public void addTerm(Term term, FilterMatchMode filterMatchMode, String value) {
+        UserTerm ut = new UserTerm(term, filterMatchMode, value);
         terms.add(ut);
     }
 

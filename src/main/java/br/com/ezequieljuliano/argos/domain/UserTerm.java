@@ -21,13 +21,16 @@ public class UserTerm implements Serializable {
 
     private Term term;
 
+    private FilterMatchMode filterMatchMode;
+
     private String value;
 
     public UserTerm() {
     }
 
-    public UserTerm(Term term, String value) {
+    public UserTerm(Term term, FilterMatchMode filterMatchMode, String value) {
         this.term = term;
+        this.filterMatchMode = filterMatchMode;
         this.value = value;
     }
 
@@ -37,6 +40,14 @@ public class UserTerm implements Serializable {
 
     public void setTerm(Term term) {
         this.term = term;
+    }
+
+    public FilterMatchMode getFilterMatchMode() {
+        return filterMatchMode;
+    }
+
+    public void setFilterMatchMode(FilterMatchMode filterMatchMode) {
+        this.filterMatchMode = filterMatchMode;
     }
 
     public String getValue() {
