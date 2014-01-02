@@ -19,9 +19,9 @@ import java.io.Serializable;
 
 public class UserTerm implements Serializable {
 
-    private Term term;
+    private Term term = Term.fullText;
 
-    private FilterMatchMode filterMatchMode;
+    private FilterMatchMode filterMatchMode = FilterMatchMode.contains;
 
     private String value;
 

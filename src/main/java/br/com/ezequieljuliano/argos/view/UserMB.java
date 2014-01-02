@@ -16,8 +16,11 @@
 package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.UserBC;
+import br.com.ezequieljuliano.argos.domain.FilterMatchMode;
 import br.com.ezequieljuliano.argos.domain.Profile;
+import br.com.ezequieljuliano.argos.domain.Term;
 import br.com.ezequieljuliano.argos.domain.User;
+import br.com.ezequieljuliano.argos.domain.UserTerm;
 import br.com.ezequieljuliano.argos.exception.BusinessException;
 import br.com.ezequieljuliano.argos.template.StandardMB;
 import br.com.ezequieljuliano.argos.util.HashUtil;
@@ -34,6 +37,8 @@ public class UserMB extends StandardMB<User, String> {
 
     @Inject
     private UserBC bc;
+
+    private UserTerm userTerm;
 
     @Override
     protected List<User> handleResultList() {
@@ -160,6 +165,64 @@ public class UserMB extends StandardMB<User, String> {
         } catch (BusinessException ex) {
             addMessageContext(ex.getMessage(), SeverityType.WARN);
         }
+    }
+
+    public UserTerm getUserTerm() {
+        if (userTerm == null) {
+            userTerm = new UserTerm();
+        }
+        return userTerm;
+    }
+
+    public void setUserTerm(UserTerm userTerm) {
+        this.userTerm = userTerm;
+    }
+
+    public Term[] getTerms() {
+        return Term.values();
+    }
+
+    public FilterMatchMode[] getFiltersMatchMode() {
+        return FilterMatchMode.values();
+    }
+
+    public void addUserTerm() {
+        if (!Strings.isEmpty(getUserTerm().getValue())) {
+            if (isFullTextTerm() && !isContainsFilterMatchMode()) {
+                addMessageContext("Quando selecionado o Termo 'Tudo' o Modo deve ser 'Contém'!", SeverityType.WARN);
+            } else {
+                try {
+                    getBean().addTerm(getUserTerm());
+                    bc.validateAndSave(getBean());
+                    setUserTerm(null);
+                    addMessageContext("Termo adicionado e salvo com sucesso!", SeverityType.INFO);
+                } catch (BusinessException ex) {
+                    addMessageContext(ex.getMessage(), SeverityType.WARN);
+                }
+            }
+        } else {
+            addMessageContext("Você deve informar um valor para o termo!", SeverityType.WARN);
+        }
+    }
+
+    public void removeUserTerm(UserTerm ut) {
+        if (ut != null) {
+            try {
+                getBean().removeTerm(ut);
+                bc.validateAndSave(getBean());
+                addMessageContext("Termo removido com sucesso!", SeverityType.INFO);
+            } catch (BusinessException ex) {
+                addMessageContext(ex.getMessage(), SeverityType.WARN);
+            }
+        }
+    }
+
+    public boolean isFullTextTerm() {
+        return getUserTerm().getTerm() == Term.fullText;
+    }
+
+    public boolean isContainsFilterMatchMode() {
+        return getUserTerm().getFilterMatchMode() == FilterMatchMode.contains;
     }
 
 }

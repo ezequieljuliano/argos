@@ -39,6 +39,7 @@ public class Entity implements Serializable {
     private Entity parent;
 
     public Entity() {
+
     }
 
     public Entity(String name, String externalKey, Situation situation, Entity parent) {

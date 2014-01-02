@@ -105,6 +105,10 @@ public class Logger implements Serializable {
         this.fullText = this.toString();
     }
 
+    public String getFullText() {
+        return fullText;
+    }
+
     public Marker getMarker() {
         return marker;
     }

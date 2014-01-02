@@ -116,6 +116,51 @@
             <br />
 
             <p:fieldset legend="Termos Considerados para Envio de Notificações" rendered="#{not userMB.insertMode}">
+                <h:panelGrid id="fieldsTerms" columns="7">
+
+                    <h:outputLabel value="Termo: " for="term" styleClass="text-input" />
+                    <p:selectOneMenu id="term" value="#{userMB.userTerm.term}" effect="fade" converter="termConverter">  
+                        <f:selectItems value="#{userMB.terms}" var="t" itemLabel="#{t.description}" itemValue="#{t}"/>  
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="Modo de Filtro: " for="filterModeTerm" styleClass="text-input" />
+                    <p:selectOneMenu id="filterModeTerm" value="#{userMB.userTerm.filterMatchMode}" effect="fade" converter="filterMatchModeConverter">  
+                        <f:selectItems value="#{userMB.filtersMatchMode}" var="f" itemLabel="#{f.description}" itemValue="#{f}"/>  
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="Valor: " for="valueTerm" styleClass="text-input" />
+                    <h:inputText id="valueTerm" value="#{userMB.userTerm.value}" title="Valor" style="width: 200px" />
+
+                    <p:commandButton ajax="false" value="Incluir" action="#{userMB.addUserTerm()}" update=":frm" image="ui-icon-document"/>
+
+                </h:panelGrid>
+
+                <p:dataTable id="listTerms" var="userTerm" value="#{userMB.bean.terms}"
+                             emptyMessage="Não existem registros para exibir" 
+                             paginator="true" rows="10">
+
+                    <p:column style="width:1%;">
+                        <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{userMB.removeUserTerm(userTerm)}"
+                                         ajax="false" style="width: 20px; height: 20px;" />
+                    </p:column>
+
+                    <p:column style="width:25%;">
+                        <f:facet name="header">Termo</f:facet>
+                        <h:outputText value="#{userTerm.term.description}" />
+                    </p:column>
+
+                    <p:column style="width:25%;">
+                        <f:facet name="header">Modo de Filtro</f:facet>
+                        <h:outputText value="#{userTerm.filterMatchMode.description}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Valor</f:facet>
+                        <h:outputText value="#{userTerm.value}" />
+                    </p:column>
+
+
+                </p:dataTable>
 
             </p:fieldset>
 
