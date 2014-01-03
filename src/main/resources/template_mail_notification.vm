@@ -13,61 +13,61 @@
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Id:</span></strong></td>
 					<td style="text-align: left;">
-						<span style="font-family:arial,helvetica,sans-serif;">@id</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$id</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Ocorr&ecirc;ncia:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@occurrence</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$occurrence</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Host:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@host</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$host</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Palavras-Chave:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@keywords</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$keywords</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Propriet&aacute;rio:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@owner</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$owner</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Marcador:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@marker</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$marker</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">N&iacute;vel:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@level</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$level</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Entidade:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@entity</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$entity</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Usu&aacute;rio:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@user</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$user</span></td>
 				</tr>
 				<tr>
 					<td style="text-align: left;">
 						<strong><span style="font-family:arial,helvetica,sans-serif;">Mensagem:</span></strong></td>
 					<td>
-						<span style="font-family:arial,helvetica,sans-serif;">@message</span></td>
+						<span style="font-family:arial,helvetica,sans-serif;">$message</span></td>
 				</tr>
 			</tbody>
 		</table>

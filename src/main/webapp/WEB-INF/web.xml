@@ -50,24 +50,24 @@
         <param-value>redmond</param-value>
     </context-param>
         
-    <context-param>
-        <param-name>resteasy.scan</param-name>
-        <param-value>true</param-value>
-    </context-param>
-
+    <context-param>  
+        <param-name>resteasy.scan</param-name>  
+        <param-value>true</param-value>  
+    </context-param>  
+  
     <context-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/rest</param-value>
+        <param-value>/api</param-value>
     </context-param>
 
-    <servlet>
-        <servlet-name>Resteasy</servlet-name>
-        <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
-    </servlet>
-   
-    <servlet-mapping>
-        <servlet-name>Resteasy</servlet-name>
-        <url-pattern>/api/*</url-pattern>
+    <servlet>  
+        <servlet-name>Resteasy</servlet-name>  
+        <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>  
+    </servlet>  
+  
+    <servlet-mapping>  
+        <servlet-name>Resteasy</servlet-name>  
+        <url-pattern>/api/*</url-pattern>  
     </servlet-mapping>
 
 </web-app>

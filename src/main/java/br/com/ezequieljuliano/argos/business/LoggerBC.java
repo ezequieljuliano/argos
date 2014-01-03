@@ -35,37 +35,10 @@ public class LoggerBC extends StantardBC<Logger, String, LoggerDAO> {
     @Inject
     private ArgosMailConfig mailConfig;
 
-    private void sendEmailNotification(Logger logger) {
-        if (termsOfNotification(logger)) {
-            String emailMsg = new VelocityTemplate("template_mail_notification.vm")
-                    .set("@id", logger.getId())
-                    .set("@occurrence", DateUtil.dateTimeToString(logger.getOccurrence()))
-                    .set("@host", logger.getHost())
-                    .set("@keywords", logger.getKeywords())
-                    .set("@owner", logger.getOwner())
-                    .set("@marker", logger.getMarker())
-                    .set("@level", logger.getLevel())
-                    .set("@entity", logger.getEntity().getExternalKey() + " - " + logger.getEntity().getName())
-                    .set("@user", logger.getUser().getUserName() + " - " + logger.getUser().getEmail())
-                    .set("@message", logger.getMessage())
-                    .toString();
-            try {
-                new SendMail()
-                        .using(new Server()
-                                .hostName(mailConfig.getHostName())
-                                .port(mailConfig.getPort())
-                                .user(mailConfig.getUser())
-                                .passWord(mailConfig.getPassWord())
-                                .withSSL(mailConfig.isSSL()))
-                        .from(mailConfig.getUser(), "Argos - Logging")
-                        .to(logger.getUser().getEmail(), logger.getUser().getUserName())
-                        .subject("Argos - Novo LOG Relevante")
-                        .message(emailMsg)
-                        .send();
-            } catch (EmailException ex) {
-                java.util.logging.Logger.getLogger(UserBC.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    private void notification(Logger logger) {
+        SendNotification send = new SendNotification(logger);
+        Thread threadDoSendNotification = new Thread(send);
+        threadDoSendNotification.start();
     }
 
     @Override
@@ -77,13 +50,57 @@ public class LoggerBC extends StantardBC<Logger, String, LoggerDAO> {
     public Logger validateAndSave(Logger obj) throws BusinessException {
         Logger logger = save(obj);
         if (logger != null) {
-            sendEmailNotification(logger);
+            notification(logger);
         }
         return logger;
     }
 
     public boolean termsOfNotification(Logger logger) {
         return getDelegate().termsOfNotification(logger);
+    }
+
+    private class SendNotification implements Runnable {
+
+        private final Logger logger;
+
+        public SendNotification(Logger logger) {
+            this.logger = logger;
+        }
+
+        @Override
+        public void run() {
+            if (termsOfNotification(logger)) {
+                String emailMsg = new VelocityTemplate("template_mail_notification.vm")
+                        .set("id", logger.getId())
+                        .set("occurrence", DateUtil.dateTimeToString(logger.getOccurrence()))
+                        .set("host", logger.getHost())
+                        .set("keywords", logger.getKeywords())
+                        .set("owner", logger.getOwner())
+                        .set("marker", logger.getMarker().getName())
+                        .set("level", logger.getLevel().getName())
+                        .set("entity", logger.getEntity().getExternalKey() + " - " + logger.getEntity().getName())
+                        .set("user", logger.getUser().getUserName() + " - " + logger.getUser().getEmail())
+                        .set("message", logger.getMessage())
+                        .toString();
+                try {
+                    new SendMail()
+                            .using(new Server()
+                                    .hostName(mailConfig.getHostName())
+                                    .port(mailConfig.getPort())
+                                    .user(mailConfig.getUser())
+                                    .passWord(mailConfig.getPassWord())
+                                    .withSSL(mailConfig.isSSL()))
+                            .from(mailConfig.getUser(), "Argos - Logging")
+                            .to(logger.getUser().getEmail(), logger.getUser().getUserName())
+                            .subject("Argos - Novo LOG Relevante")
+                            .message(emailMsg)
+                            .send();
+                } catch (EmailException ex) {
+                    java.util.logging.Logger.getLogger(UserBC.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
     }
 
 }

@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = Logger.COLLECTION_NAME)
@@ -30,24 +31,34 @@ public class Logger implements Serializable {
     @Id
     private String id;
 
+    @Indexed
     private Date occurrence;
 
+    @Indexed
     private String host;
 
+    @Indexed
     private String keywords;
 
+    @Indexed
     private String owner;
 
+    @Indexed
     private String message;
 
+    @Indexed
     private String fullText;
 
+    @Indexed
     private Marker marker;
 
+    @Indexed
     private Level level;
 
+    @Indexed
     private Entity entity;
 
+    @Indexed
     private User user;
 
     public Logger() {
@@ -164,7 +175,6 @@ public class Logger implements Serializable {
     public String toString() {
         String separator = System.getProperty("line.separator");
         StringBuilder str = new StringBuilder();
-        str.append("Id: ").append(id).append(separator);
         str.append("Ocorrência: ").append(DateUtil.dateTimeToString(occurrence)).append(separator);
         str.append("Host: ").append(host).append(separator);
         str.append("Palavras-Chave: ").append(keywords).append(separator);

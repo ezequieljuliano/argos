@@ -19,32 +19,38 @@ import java.io.Serializable;
 
 public enum Term implements Serializable {
 
-    occurrence("Ocorrência Dt/Hr"),
-    host("Host"),
-    keywords("Palavras-Chave"),
-    owner("Proprietário"),
-    message("Mensagem"),
-    markerId("Marcador Id."),
-    markerName("Marcador Nome"),
-    levelId("Nível Id."),
-    levelName("Nível Nome"),
-    entityId("Entidade Id."),
-    entityExternalKey("Entidade Chave Externa"),
-    entityName("Entidade Nome"),
-    userId("Usuário Id."),
-    userName("Usuário Nome"),
-    userEmail("Usuário E-mail"),
-    userIdentifierKey("Usuário Chave Id."),
-    fullText("Tudo");
+    occurrence("Ocorrência Dt/Hr", "occurrence"),
+    host("Host", "host"),
+    keywords("Palavras-Chave", "keywords"),
+    owner("Proprietário", "owner"),
+    message("Mensagem", "message"),
+    markerId("Marcador Id.", "marker._id"),
+    markerName("Marcador Nome", "marker.name"),
+    levelId("Nível Id.", "level._id"),
+    levelName("Nível Nome", "level.name"),
+    entityId("Entidade Id.", "entity._id"),
+    entityExternalKey("Entidade Chave Externa", "entity.externalKey"),
+    entityName("Entidade Nome", "entity.name"),
+    userId("Usuário Id.", "user._id"),
+    userName("Usuário Nome", "user.name"),
+    userEmail("Usuário E-mail", "user.email"),
+    userIdentifierKey("Usuário Chave Id.", "user.identifierKey"),
+    fullText("Tudo", "fullText");
 
     private final String description;
+    private final String field;
 
-    private Term(String description) {
+    private Term(String description, String field) {
         this.description = description;
+        this.field = field;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public String getField() {
+        return field;
     }
 
 }

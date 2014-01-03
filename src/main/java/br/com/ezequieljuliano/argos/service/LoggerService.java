@@ -28,6 +28,7 @@ import br.com.ezequieljuliano.argos.domain.User;
 import br.com.ezequieljuliano.argos.exception.ResponseServiceException;
 import br.com.ezequieljuliano.argos.service.dto.LoggerDTO;
 import br.com.ezequieljuliano.argos.service.dto.ResponseDTO;
+import br.com.ezequieljuliano.argos.util.DateUtil;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
@@ -72,10 +73,10 @@ public class LoggerService {
             loggerSave.setHost(logger.getHost());
             loggerSave.setKeywords(logger.getKeywords());
             loggerSave.setMessage(logger.getMessage());
-            loggerSave.setOccurrence(logger.getOccurrence());
+            loggerSave.setOccurrence(DateUtil.stringToDateTime(logger.getOccurrence()));
             loggerSave.setOwner(logger.getOwner());
 
-            loggerBC.save(loggerSave);
+            loggerBC.validateAndSave(loggerSave);
         } catch (ResponseServiceException ex) {
             return new ResponseDTO(ex.getResponse().getCode(), ex.getResponse().getReason());
         } catch (Exception e) {
@@ -121,5 +122,4 @@ public class LoggerService {
         }
         return marker;
     }
-
 }

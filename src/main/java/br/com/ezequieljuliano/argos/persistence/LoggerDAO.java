@@ -20,6 +20,7 @@ import br.com.ezequieljuliano.argos.domain.UserTerm;
 import br.com.ezequieljuliano.argos.template.StandardDAO;
 import java.util.List;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,12 +28,24 @@ public class LoggerDAO extends StandardDAO<Logger, String> {
 
     public boolean termsOfNotification(Logger logger) {
         if (!logger.getUser().getTerms().isEmpty()) {
-            String searchString = "";
-            for (UserTerm userTerm : logger.getUser().getTerms()) {
-                searchString = searchString + userTerm.getTerm().getDescription() + ":" + userTerm.getValue() + " ";
-            }
             Criteria criteria = Criteria.where("_id").is(logger.getId());
-            List<Logger> loggers = findByFullText(Logger.COLLECTION_NAME, searchString, criteria, 100);
+            for (UserTerm userTerm : logger.getUser().getTerms()) {
+                switch (userTerm.getFilterMatchMode()) {
+                    case contains:
+                        criteria.and(userTerm.getTerm().getField()).regex(userTerm.getValue(), "m");
+                        break;
+                    case startsWith:
+                        criteria.and(userTerm.getTerm().getField()).regex('^' + userTerm.getValue(), "s");
+                        break;
+                    case equal:
+                        criteria.and(userTerm.getTerm().getField()).is(userTerm.getValue());
+                        break;
+                    case endsWith:
+                        criteria.and(userTerm.getTerm().getField()).regex(userTerm.getValue() + '$', "s");
+                        break;
+                }
+            }
+            List<Logger> loggers = getMongoOperations().find(Query.query(criteria), Logger.class);
             return !loggers.isEmpty();
         }
         return false;

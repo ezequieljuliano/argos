@@ -55,6 +55,11 @@ public class EntityBC extends StantardBC<Entity, String, EntityDAO> {
                 throw new BusinessException("Esta chave externa já foi cadastrada no sistema!");
             }
         }
+        if (obj.getParent() != null) {
+            if (obj.getId().equals(obj.getParent().getId())) {
+                throw new BusinessException("Não é possível auto-referenciar uma entidade!");
+            }
+        }
         return save(obj);
     }
 

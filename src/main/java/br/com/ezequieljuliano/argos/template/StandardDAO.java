@@ -47,7 +47,7 @@ public class StandardDAO<DomainClass, KeyType> {
         if (limit > 0) {
             textSearch.put("limit", limit);
         }
-        textSearch.put("project", new BasicDBObject("_id", 1));
+        //textSearch.put("project", new BasicDBObject("_id", 1));
         return getMongoOperations().executeCommand(textSearch);
     }
 

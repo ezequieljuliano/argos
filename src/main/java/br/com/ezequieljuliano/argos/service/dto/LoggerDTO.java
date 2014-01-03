@@ -15,13 +15,12 @@
  */
 package br.com.ezequieljuliano.argos.service.dto;
 
-import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class LoggerDTO {
 
-    private Date occurrence;
+    private String occurrence;
 
     private String host;
 
@@ -41,11 +40,11 @@ public class LoggerDTO {
 
     }
 
-    public Date getOccurrence() {
+    public String getOccurrence() {
         return occurrence;
     }
 
-    public void setOccurrence(Date occurrence) {
+    public void setOccurrence(String occurrence) {
         this.occurrence = occurrence;
     }
 
