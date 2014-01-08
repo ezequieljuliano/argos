@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -33,12 +34,16 @@ public class User implements Serializable {
     @Id
     private String id;
 
+    @Indexed
     private String userName;
 
+    @Indexed
     private String passWord;
 
+    @Indexed
     private String email;
 
+    @Indexed
     private String identifierKey;
 
     private List<Profile> profiles = new ArrayList<Profile>();
@@ -128,8 +133,8 @@ public class User implements Serializable {
         return terms;
     }
 
-    public void addTerm(Term term, FilterMatchMode filterMatchMode, String value) {
-        UserTerm ut = new UserTerm(term, filterMatchMode, value);
+    public void addTerm(LogicalOperator logicalOperator, Term term, FilterMatchMode filterMatchMode, String value) {
+        UserTerm ut = new UserTerm(logicalOperator, term, filterMatchMode, value);
         terms.add(ut);
     }
 

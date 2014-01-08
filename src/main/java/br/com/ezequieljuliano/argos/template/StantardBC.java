@@ -22,10 +22,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-public class StantardBC<DomainClass, KeyType, DelegateClass extends StandardDAO<DomainClass, KeyType>> implements Serializable  {
+public class StantardBC<DomainClass, KeyType, DelegateClass extends StandardDAO<DomainClass, KeyType>> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private Class<DelegateClass> delegateClass;
 
     private DelegateClass delegate;

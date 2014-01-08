@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.business.UserBC;
 import br.com.ezequieljuliano.argos.domain.FilterMatchMode;
+import br.com.ezequieljuliano.argos.domain.LogicalOperator;
 import br.com.ezequieljuliano.argos.domain.Profile;
 import br.com.ezequieljuliano.argos.domain.Term;
 import br.com.ezequieljuliano.argos.domain.User;
@@ -186,18 +187,30 @@ public class UserMB extends StandardMB<User, String> {
         return FilterMatchMode.values();
     }
 
+    public LogicalOperator[] getLogicalOperators() {
+        return LogicalOperator.values();
+    }
+
     public void addUserTerm() {
         if (!Strings.isEmpty(getUserTerm().getValue())) {
             if (isFullTextTerm() && !isContainsFilterMatchMode()) {
                 addMessageContext("Quando selecionado o Termo 'Tudo' o Modo deve ser 'Contém'!", SeverityType.WARN);
             } else {
-                try {
-                    getBean().addTerm(getUserTerm());
-                    bc.validateAndSave(getBean());
-                    setUserTerm(null);
-                    addMessageContext("Termo adicionado e salvo com sucesso!", SeverityType.INFO);
-                } catch (BusinessException ex) {
-                    addMessageContext(ex.getMessage(), SeverityType.WARN);
+                if (getBean().getTerms().isEmpty() && getUserTerm().getLogicalOperator() == LogicalOperator.orOperator) {
+                    addMessageContext("Quando não existem termos o 'Operador' deve ser 'E'!", SeverityType.WARN);
+                } else {
+                    if (getUserTerm().getTerm().isObjId() && getUserTerm().getFilterMatchMode() != FilterMatchMode.equal) {
+                        addMessageContext("Quando selecionado um Termo que é identificador você deve usar o Modo 'Igual'!", SeverityType.WARN);
+                    } else {
+                        try {
+                            getBean().addTerm(getUserTerm());
+                            bc.validateAndSave(getBean());
+                            setUserTerm(null);
+                            addMessageContext("Termo adicionado e salvo com sucesso!", SeverityType.INFO);
+                        } catch (BusinessException ex) {
+                            addMessageContext(ex.getMessage(), SeverityType.WARN);
+                        }
+                    }
                 }
             }
         } else {

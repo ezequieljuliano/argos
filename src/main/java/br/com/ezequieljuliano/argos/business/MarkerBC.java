@@ -42,7 +42,7 @@ public class MarkerBC extends StantardBC<Marker, String, MarkerDAO> {
         if (Strings.isEmpty(obj.getName())) {
             throw new BusinessException("O marcador deve possuir um nome!");
         }
-        if (obj.getParent() != null) {
+        if (!Strings.isEmpty(obj.getId()) && (obj.getParent() != null)) {
             if (obj.getId().equals(obj.getParent().getId())) {
                 throw new BusinessException("Não é possível auto-referenciar um marcador!");
             }

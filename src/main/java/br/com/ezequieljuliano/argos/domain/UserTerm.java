@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class UserTerm implements Serializable {
 
+    private LogicalOperator logicalOperator = LogicalOperator.andOperator;
+
     private Term term = Term.fullText;
 
     private FilterMatchMode filterMatchMode = FilterMatchMode.contains;
@@ -26,12 +28,22 @@ public class UserTerm implements Serializable {
     private String value;
 
     public UserTerm() {
+
     }
 
-    public UserTerm(Term term, FilterMatchMode filterMatchMode, String value) {
+    public UserTerm(LogicalOperator logicalOperator, Term term, FilterMatchMode filterMatchMode, String value) {
+        this.logicalOperator = logicalOperator;
         this.term = term;
         this.filterMatchMode = filterMatchMode;
         this.value = value;
+    }
+
+    public LogicalOperator getLogicalOperator() {
+        return logicalOperator;
+    }
+
+    public void setLogicalOperator(LogicalOperator logicalOperator) {
+        this.logicalOperator = logicalOperator;
     }
 
     public Term getTerm() {

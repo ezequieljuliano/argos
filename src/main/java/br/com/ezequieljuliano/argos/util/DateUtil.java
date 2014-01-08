@@ -18,7 +18,9 @@ package br.com.ezequieljuliano.argos.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -70,6 +72,22 @@ public class DateUtil {
         } catch (ParseException ex) {
             return null;
         }
+    }
+
+    public static Date firstTimeOfDay(Date date) {
+        GregorianCalendar calendar = new GregorianCalendar(Locale.getDefault());
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getMinimum(Calendar.HOUR_OF_DAY));
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    public static Date decreaseDaysFrom(Date date, Integer daysToDecrease) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(firstTimeOfDay(date));
+        calendar.add(Calendar.DAY_OF_MONTH, -daysToDecrease);
+        return calendar.getTime();
     }
 
 }

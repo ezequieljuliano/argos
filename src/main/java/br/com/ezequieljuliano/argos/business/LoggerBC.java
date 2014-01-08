@@ -17,6 +17,14 @@ package br.com.ezequieljuliano.argos.business;
 
 import br.com.ezequieljuliano.argos.config.ArgosMailConfig;
 import br.com.ezequieljuliano.argos.domain.Logger;
+import br.com.ezequieljuliano.argos.domain.User;
+import br.com.ezequieljuliano.argos.domain.UserTerm;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerEntityCount;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerHostCount;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerLevelCount;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerMarkerCount;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerOccurrenceCount;
+import br.com.ezequieljuliano.argos.domain.groupoperation.LoggerOwnerCount;
 import br.com.ezequieljuliano.argos.exception.BusinessException;
 import br.com.ezequieljuliano.argos.template.StantardBC;
 import br.com.ezequieljuliano.argos.persistence.LoggerDAO;
@@ -25,6 +33,8 @@ import br.com.ezequieljuliano.argos.util.SendMail;
 import br.com.ezequieljuliano.argos.util.SendMail.Server;
 import br.com.ezequieljuliano.argos.util.VelocityTemplate;
 import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import javax.inject.Inject;
 import org.apache.commons.mail.EmailException;
@@ -39,24 +49,6 @@ public class LoggerBC extends StantardBC<Logger, String, LoggerDAO> {
         SendNotification send = new SendNotification(logger);
         Thread threadDoSendNotification = new Thread(send);
         threadDoSendNotification.start();
-    }
-
-    @Override
-    public Logger save(Logger obj) {
-        obj.generateFullText();
-        return super.save(obj);
-    }
-
-    public Logger validateAndSave(Logger obj) throws BusinessException {
-        Logger logger = save(obj);
-        if (logger != null) {
-            notification(logger);
-        }
-        return logger;
-    }
-
-    public boolean termsOfNotification(Logger logger) {
-        return getDelegate().termsOfNotification(logger);
     }
 
     private class SendNotification implements Runnable {
@@ -100,7 +92,52 @@ public class LoggerBC extends StantardBC<Logger, String, LoggerDAO> {
                 }
             }
         }
+    }
 
+    @Override
+    public Logger save(Logger obj) {
+        obj.generateFullText();
+        return super.save(obj);
+    }
+
+    public Logger validateAndSave(Logger obj) throws BusinessException {
+        Logger logger = save(obj);
+        if (logger != null) {
+            notification(logger);
+        }
+        return logger;
+    }
+
+    public boolean termsOfNotification(Logger logger) {
+        return getDelegate().termsOfNotification(logger);
+    }
+
+    public List<Logger> findByUserAndTerms(User user, List<UserTerm> terms, long limit) {
+        return getDelegate().findByUserAndTerms(user, terms, limit);
+    }
+
+    public List<LoggerMarkerCount> groupByMarkerUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByMarkerUsingUserAndOccurrence(user, startDate, endDate);
+    }
+
+    public List<LoggerLevelCount> groupByLevelUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByLevelUsingUserAndOccurrence(user, startDate, endDate);
+    }
+
+    public List<LoggerEntityCount> groupByEntityUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByEntityUsingUserAndOccurrence(user, startDate, endDate);
+    }
+
+    public List<LoggerHostCount> groupByHostUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByHostUsingUserAndOccurrence(user, startDate, endDate);
+    }
+
+    public List<LoggerOwnerCount> groupByOwnerUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByOwnerUsingUserAndOccurrence(user, startDate, endDate);
+    }
+
+    public List<LoggerOccurrenceCount> groupByOccurrenceUsingUserAndOccurrence(User user, Date startDate, Date endDate) {
+        return getDelegate().groupByOccurrenceUsingUserAndOccurrence(user, startDate, endDate);
     }
 
 }

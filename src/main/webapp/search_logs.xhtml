@@ -1,0 +1,195 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/main.xhtml">
+
+    <ui:define name="body">
+        <h:form id="frm" rendered="#{securityMB.userIsLogged()}" prependId="false">
+
+            <p:toolbar id="menu">
+                <p:toolbarGroup align="left">
+                    <p:commandButton title="Voltar" value="Voltar" action="/index.jsf?faces-redirect=true" immediate="true" ajax="false" 
+                                     image="ui-icon ui-icon-arrowthick-1-w"/>
+
+                    <p:commandButton title="Pesquisar com Termos Informados" value="Pesquisar com Termos Informados" icon="ui-icon-search" 
+                                     action="#{searchLogsMB.executeSearch()}" ajax="false" update=":frm"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <br />
+
+            <p:fieldset legend="Termos de Pesquisa" id="termsOfSearch">
+                <h:panelGrid id="fieldsTerms" columns="9">
+
+                    <h:outputLabel value="Operador: " for="operator" styleClass="text-input" />
+                    <p:selectOneMenu id="operator" value="#{searchLogsMB.userTerm.logicalOperator}" effect="fade" converter="logicalOperatorConverter">  
+                        <f:selectItems value="#{searchLogsMB.logicalOperators}" var="lo" itemLabel="#{lo.description}" itemValue="#{lo}"/>  
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="Termo: " for="term" styleClass="text-input" />
+                    <p:selectOneMenu id="term" value="#{searchLogsMB.userTerm.term}" effect="fade" converter="termConverter">  
+                        <f:selectItems value="#{searchLogsMB.terms}" var="t" itemLabel="#{t.description}" itemValue="#{t}"/>  
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="Modo de Filtro: " for="filterModeTerm" styleClass="text-input" />
+                    <p:selectOneMenu id="filterModeTerm" value="#{searchLogsMB.userTerm.filterMatchMode}" effect="fade" converter="filterMatchModeConverter">  
+                        <f:selectItems value="#{searchLogsMB.filtersMatchMode}" var="f" itemLabel="#{f.description}" itemValue="#{f}"/>  
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="Valor: " for="valueTerm" styleClass="text-input" />
+                    <h:inputText id="valueTerm" value="#{searchLogsMB.userTerm.value}" title="Valor" style="width: 200px" />
+
+                    <p:commandButton ajax="false" value="Incluir" action="#{searchLogsMB.addUserTerm()}" update=":frm:termsOfSearch" image="ui-icon-document"/>
+
+                </h:panelGrid>
+
+                <p:dataTable id="listTerms" var="userTerm" value="#{searchLogsMB.userTermList}"
+                             emptyMessage="Não existem registros para exibir" 
+                             paginator="true" rows="10">
+
+                    <p:column style="width:1%;">
+                        <p:commandLink update=":frm:listTerms" title="Excluir" action="#{searchLogsMB.removeUserTerm(userTerm)}">  
+                            <h:outputText styleClass="ui-icon ui-icon-trash" style="margin:0 auto;" />   
+                        </p:commandLink>  
+                    </p:column>
+
+                    <p:column style="width:5%;">
+                        <f:facet name="header">Operador</f:facet>
+                        <h:outputText value="#{userTerm.logicalOperator.description}" />
+                    </p:column>
+
+                    <p:column style="width:20%;">
+                        <f:facet name="header">Termo</f:facet>
+                        <h:outputText value="#{userTerm.term.description}" />
+                    </p:column>
+
+                    <p:column style="width:20%;">
+                        <f:facet name="header">Modo de Filtro</f:facet>
+                        <h:outputText value="#{userTerm.filterMatchMode.description}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Valor</f:facet>
+                        <h:outputText value="#{userTerm.value}" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:fieldset>
+
+            <br />
+
+            <p:dialog header="Detalhes do Log" widgetVar="logDialog" 
+                      modal="true" closable="true" resizable="true" 
+                      showEffect="explode" hideEffect="explode" position="center center">  
+                <p:outputPanel id="logDetail" style="text-align:center;">  
+                    <h:panelGrid  columns="2" cellpadding="5">  
+
+                        <h:outputLabel for="logId" value="Identificador: " />  
+                        <h:outputText id="logId" value="#{searchLogsMB.logDetail.id}" />  
+
+                        <h:outputLabel for="logOccurrence" value="Ocorrência: " />  
+                        <h:outputText id="logOccurrence" value="#{searchLogsMB.logDetail.occurrence}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00"/>
+                        </h:outputText> 
+
+                        <h:outputLabel for="logHost" value="Host: " />  
+                        <h:outputText id="logHost" value="#{searchLogsMB.logDetail.host}" />  
+
+                        <h:outputLabel for="logKeywords" value="Palavras-Chave: " />  
+                        <h:outputText id="logKeywords" value="#{searchLogsMB.logDetail.keywords}" /> 
+
+                        <h:outputLabel for="logOwner" value="Proprietário: " />  
+                        <h:outputText id="logOwner" value="#{searchLogsMB.logDetail.owner}" />  
+
+                        <h:outputLabel for="logMessage" value="Mensagem: " />  
+                        <h:outputText id="logMessage" value="#{searchLogsMB.logDetail.message}" /> 
+
+                        <h:outputLabel for="logMarker" value="Marcador: " />  
+                        <h:outputText id="logMarker" value="#{searchLogsMB.logDetail.marker.toString()}" />
+
+                        <h:outputLabel for="logMarkerParent" value="Marcador Origem: " />  
+                        <h:outputText id="logMarkerParent" value="#{searchLogsMB.logDetail.marker.parent.toString()}" /> 
+
+                        <h:outputLabel for="logLevel" value="Nível " />  
+                        <h:outputText id="logLevel" value="#{searchLogsMB.logDetail.level.toString()}" />
+
+                        <h:outputLabel for="logEntity" value="Entidade: " />  
+                        <h:outputText id="logEntity" value="#{searchLogsMB.logDetail.entity.toString()}" /> 
+
+                        <h:outputLabel for="logEntityParent" value="Entidade Origem: " />  
+                        <h:outputText id="logEntityParent" value="#{searchLogsMB.logDetail.entity.parent.toString()}" /> 
+
+                    </h:panelGrid>  
+                </p:outputPanel>  
+            </p:dialog> 
+
+            <p:fieldset legend="Resultado da Pesquisa" id="listOfLogs" rendered="#{not searchLogsMB.emptyLogs}">
+                <p:dataTable id="list" var="log" value="#{searchLogsMB.logs}" widgetVar="logs"
+                             emptyMessage="Não existem registros para exibir" 
+                             paginator="true" rows="10">
+
+                    <f:facet name="header">  
+                        <p:outputPanel style="display: block; text-align: right">  
+                            <h:outputText style="width: 25%" value="Filtrar Resultado por: " />  
+                            <p:inputText style="width: 25%"  id="globalFilter" onkeyup="logs.filter()" />  
+                        </p:outputPanel> 
+                    </f:facet>  
+
+                    <p:column style="width:1%;">
+                        <p:commandLink onclick="logDialog.show();" update=":frm:logDetail" title="Detalhes do Log" style="width: 20px; height: 20px;">  
+                            <h:outputText styleClass="ui-icon ui-icon-newwin" style="margin:0 auto;" />   
+                            <f:setPropertyActionListener value="#{log}"   
+                                                         target="#{searchLogsMB.logDetail}" />  
+                        </p:commandLink>  
+                    </p:column>
+
+                    <p:column style="width:9%;"
+                              sortBy="#{log.occurrence}"
+                              filterBy="#{log.occurrence}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Ocorrência</f:facet>
+                        <h:outputText value="#{log.occurrence}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" timeZone="GMT-03:00"/>
+                        </h:outputText> 
+                    </p:column>
+
+                    <p:column style="width:10%;"
+                              sortBy="#{log.host}"
+                              filterBy="#{log.host}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Host</f:facet>
+                        <h:outputText value="#{log.host}" />
+                    </p:column>
+
+                    <p:column style="width:10%;"
+                              sortBy="#{log.owner}"
+                              filterBy="#{log.owner}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Proprietário</f:facet>
+                        <h:outputText value="#{log.owner}" />
+                    </p:column>
+
+                    <p:column style="width:20%;"
+                              sortBy="#{log.marker.name}"
+                              filterBy="#{log.marker.name}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Marcador</f:facet>
+                        <h:outputText value="#{log.marker.name}" />
+                    </p:column>
+
+                    <p:column style="width:20%;"
+                              sortBy="#{log.level.name}"
+                              filterBy="#{log.level.name}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Nível</f:facet>
+                        <h:outputText value="#{log.level.name}" />
+                    </p:column>
+
+                    <p:column style="width:30%;"
+                              sortBy="#{log.entity.name}"
+                              filterBy="#{log.entity.name}" filterMatchMode="contains" filterStyle="width: 100%">
+                        <f:facet name="header">Entidade</f:facet>
+                        <h:outputText value="#{log.entity.name}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

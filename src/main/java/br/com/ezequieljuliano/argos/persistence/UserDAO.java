@@ -15,15 +15,21 @@
  */
 package br.com.ezequieljuliano.argos.persistence;
 
+import br.com.ezequieljuliano.argos.domain.Entity;
 import br.com.ezequieljuliano.argos.domain.User;
 import br.com.ezequieljuliano.argos.template.StandardDAO;
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDAO extends StandardDAO<User, String> {
+
+    @Autowired
+    private EntityDAO entityDAO;
 
     public List<User> findByUserName(String userName) {
         Query query = new Query(Criteria.where("userName").regex(userName, "i"));
@@ -53,6 +59,12 @@ public class UserDAO extends StandardDAO<User, String> {
     public User findByUserNameAndPassWord(String userName, String passWord) {
         Query query = new Query(Criteria.where("userName").is(userName).and("passWord").is(passWord));
         return getMongoOperations().findOne(query, User.class);
+    }
+
+    public List<Entity> findEntitysTreeByUser(User user) {
+        List<Entity> entitys = new ArrayList<Entity>();
+        entityDAO.findEntitysTree(user.getEntity(), entitys);
+        return entitys;
     }
 
 }

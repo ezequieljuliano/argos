@@ -17,6 +17,7 @@ package br.com.ezequieljuliano.argos.view;
 
 import br.com.ezequieljuliano.argos.domain.Profile;
 import br.com.ezequieljuliano.argos.domain.User;
+import br.com.ezequieljuliano.argos.security.AppCredential;
 import br.gov.frameworkdemoiselle.message.MessageContext;
 import br.gov.frameworkdemoiselle.message.SeverityType;
 import br.gov.frameworkdemoiselle.security.SecurityContext;
@@ -34,6 +35,9 @@ public class SecurityMB implements Serializable {
 
     @Inject
     private MessageContext messageContext;
+
+    @Inject
+    private AppCredential credential;
 
     public User getUser() {
         if (user == null) {
@@ -66,6 +70,10 @@ public class SecurityMB implements Serializable {
 
     public void logout() {
         securityContext.logout();
+    }
+
+    public User getAccreditedUser() {
+        return credential.getUser();
     }
 
 }

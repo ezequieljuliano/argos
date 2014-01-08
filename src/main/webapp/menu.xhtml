@@ -30,7 +30,16 @@
 
             </p:submenu>
 
+            <p:menuitem value="Pesquisar Logs" url="/search_logs.jsf" rendered="#{securityMB.userIsLogged()}" icon="ui-icon-search" />
+
             <p:menuitem value="Sair" action="#{securityMB.logout()}" ajax="false" rendered="#{securityMB.userIsLogged()}" icon="ui-icon-closethick" />
+
+            <f:facet name="options">  
+                <h:panelGrid columns="2">
+                    <h:outputText styleClass="ui-icon ui-icon-person" style="margin:0 auto;" /> 
+                    <h:outputText value="#{securityMB.accreditedUser.userName} | #{securityMB.accreditedUser.email}"/>
+                </h:panelGrid>                
+            </f:facet>  
         </p:menubar>
     </h:form>
 

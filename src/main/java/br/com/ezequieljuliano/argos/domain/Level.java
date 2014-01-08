@@ -18,6 +18,7 @@ package br.com.ezequieljuliano.argos.domain;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = Level.COLLECTION_NAME)
@@ -28,6 +29,7 @@ public class Level implements Serializable {
     @Id
     private String id;
 
+    @Indexed
     private String name;
 
     public Level() {
@@ -51,6 +53,11 @@ public class Level implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " - " + getName();
     }
 
     @Override

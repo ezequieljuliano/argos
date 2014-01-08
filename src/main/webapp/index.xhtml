@@ -4,9 +4,54 @@
 
     <ui:define name="body">
         <h:form id="frm" rendered="#{securityMB.userIsLogged()}">
-            <p:panel id="pnInitial" header="Bem-Vindo ao ARGOS - Utilize o Dashboard para Obter Informações de Logs">
+
+            <p:panel id="initialPanel" header="Bem-Vindo ao ARGOS - Utilize o Dashboard para Obter Informações de Logs">
+
+                <h:panelGrid id="panels1" columns="5">
+                    <h:outputText value="Período:" />
+                    <p:calendar pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" value="#{dashboardMB.startDate}" showOn="button" />
+
+                    <h:outputText value="Até" />
+                    <p:calendar pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" value="#{dashboardMB.endDate}" showOn="button" />
+
+                    <p:commandButton value="Gerar Dashboard" ajax="false" action="#{dashboardMB.generateDashboard()}" image="ui-icon-circle-zoomin" update=":frm" />                    
+                </h:panelGrid>   
+
+
+                <h:panelGrid id="panels2" columns="2" style="width: 100%">
+                    <p:panel id="host" header="% por Hosts">  
+                        <p:pieChart value="#{dashboardMB.pieChartHost}" 
+                                    legendPosition="w" showDataLabels="true" sliceMargin="10"/>   
+                    </p:panel>  
+
+                    <p:panel id="evolution" header="Evolução Temporária">  
+                        <p:lineChart value="#{dashboardMB.cartesianChartEvolution}" legendPosition="ne"
+                                     minY="0" maxY="#{dashboardMB.cartesianMaxY}" 
+                                     xaxisLabel="Tempos" yaxisLabel="Quantidade de Logs"/> 
+                    </p:panel>  
+                </h:panelGrid>
+
+                <h:panelGrid id="panels3" columns="3" style="width: 100%">
+
+                    <p:panel id="marker" header="% por Marcadores">  
+                        <p:pieChart value="#{dashboardMB.pieChartMarker}" 
+                                    legendPosition="w" showDataLabels="true" sliceMargin="10"/>  
+                    </p:panel>  
+
+                    <p:panel id="level" header="% por Níveis">  
+                        <p:pieChart value="#{dashboardMB.pieChartLevel}" 
+                                    legendPosition="w" showDataLabels="true" sliceMargin="10"/>  
+                    </p:panel>  
+
+                    <p:panel id="entity" header="% por Entidades">  
+                        <p:pieChart value="#{dashboardMB.pieChartEntity}" 
+                                    legendPosition="w" showDataLabels="true" sliceMargin="10"/>   
+                    </p:panel>  
+
+                </h:panelGrid>
 
             </p:panel>
+
         </h:form>
     </ui:define>
 

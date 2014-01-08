@@ -18,6 +18,7 @@ package br.com.ezequieljuliano.argos.domain;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,8 +30,10 @@ public class Entity implements Serializable {
     @Id
     private String id;
 
+    @Indexed
     private String name;
 
+    @Indexed
     private String externalKey;
 
     private Situation situation = Situation.active;
@@ -99,6 +102,11 @@ public class Entity implements Serializable {
 
     public void setParent(Entity parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " - " + getExternalKey() + " - " + getName();
     }
 
     @Override

@@ -116,7 +116,12 @@
             <br />
 
             <p:fieldset legend="Termos Considerados para Envio de Notificações" rendered="#{not userMB.insertMode}">
-                <h:panelGrid id="fieldsTerms" columns="7">
+                <h:panelGrid id="fieldsTerms" columns="9">
+
+                    <h:outputLabel value="Operador: " for="operator" styleClass="text-input" />
+                    <p:selectOneMenu id="operator" value="#{userMB.userTerm.logicalOperator}" effect="fade" converter="logicalOperatorConverter">  
+                        <f:selectItems value="#{userMB.logicalOperators}" var="lo" itemLabel="#{lo.description}" itemValue="#{lo}"/>  
+                    </p:selectOneMenu> 
 
                     <h:outputLabel value="Termo: " for="term" styleClass="text-input" />
                     <p:selectOneMenu id="term" value="#{userMB.userTerm.term}" effect="fade" converter="termConverter">  
@@ -144,12 +149,17 @@
                                          ajax="false" style="width: 20px; height: 20px;" />
                     </p:column>
 
-                    <p:column style="width:25%;">
+                    <p:column style="width:5%;">
+                        <f:facet name="header">Operador</f:facet>
+                        <h:outputText value="#{userTerm.logicalOperator.description}" />
+                    </p:column>
+
+                    <p:column style="width:20%;">
                         <f:facet name="header">Termo</f:facet>
                         <h:outputText value="#{userTerm.term.description}" />
                     </p:column>
 
-                    <p:column style="width:25%;">
+                    <p:column style="width:20%;">
                         <f:facet name="header">Modo de Filtro</f:facet>
                         <h:outputText value="#{userTerm.filterMatchMode.description}" />
                     </p:column>

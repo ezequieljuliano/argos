@@ -31,11 +31,11 @@ public class AppAuthenticator implements Authenticator {
     private UserBC userBC;
 
     @Inject
-    private SecurityMB loginMB;
+    private SecurityMB securityMB;
 
     @Override
     public void authenticate() throws Exception {
-        br.com.ezequieljuliano.argos.domain.User user = userBC.findByUserNameAndPassWord(loginMB.getUser().getUserName(), loginMB.getUser().getPassWord());
+        br.com.ezequieljuliano.argos.domain.User user = userBC.findByUserNameAndPassWord(securityMB.getUser().getUserName(), securityMB.getUser().getPassWord());
         if (user == null) {
             throw new SecurityException("Verifique suas crdenciais de acesso! Não foi possível fazer o login no sistema.");
         }

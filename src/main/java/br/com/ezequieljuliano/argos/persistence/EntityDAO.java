@@ -40,4 +40,14 @@ public class EntityDAO extends StandardDAO<Entity, String> {
         return getMongoOperations().find(query, Entity.class);
     }
 
+    public void findEntitysTree(Entity entity, List<Entity> entitysTree) {
+        if (entity != null) {
+            entitysTree.add(entity);
+            List<Entity> parents = findByParent(entity);
+            for (Entity e : parents) {
+                findEntitysTree(e, entitysTree);
+            }
+        }
+    }
+
 }

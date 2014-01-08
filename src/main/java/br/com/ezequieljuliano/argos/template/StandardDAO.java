@@ -47,7 +47,6 @@ public class StandardDAO<DomainClass, KeyType> {
         if (limit > 0) {
             textSearch.put("limit", limit);
         }
-        //textSearch.put("project", new BasicDBObject("_id", 1));
         return getMongoOperations().executeCommand(textSearch);
     }
 
@@ -55,6 +54,7 @@ public class StandardDAO<DomainClass, KeyType> {
         Set<ObjectId> objectIds = new HashSet<ObjectId>();
         BasicDBList resultList = (BasicDBList) commandResult.get("results");
         if (resultList == null) {
+            System.out.println(mongoFullTextSearchErrorMessage());
             return objectIds;
         }
         Iterator<Object> it = resultList.iterator();
@@ -117,6 +117,10 @@ public class StandardDAO<DomainClass, KeyType> {
 
     public void removeAll() {
         getMongoOperations().remove(new Query(), getDomainClass());
+    }
+
+    private String mongoFullTextSearchErrorMessage() {
+        return "### MongoDB Full Text Search does not work properly - cannot retrieve any results.";
     }
 
 }

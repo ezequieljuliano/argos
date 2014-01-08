@@ -18,6 +18,7 @@ package br.com.ezequieljuliano.argos.domain;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,10 +26,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Marker implements Serializable {
 
     public static final String COLLECTION_NAME = "Marker";
-    
+
     @Id
     private String id;
 
+    @Indexed
     private String name;
 
     @DBRef
@@ -64,6 +66,11 @@ public class Marker implements Serializable {
 
     public void setParent(Marker parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " - " + getName();
     }
 
     @Override

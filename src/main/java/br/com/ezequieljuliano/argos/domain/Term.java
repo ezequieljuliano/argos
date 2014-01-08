@@ -19,30 +19,32 @@ import java.io.Serializable;
 
 public enum Term implements Serializable {
 
-    occurrence("Ocorrência Dt/Hr", "occurrence"),
-    host("Host", "host"),
-    keywords("Palavras-Chave", "keywords"),
-    owner("Proprietário", "owner"),
-    message("Mensagem", "message"),
-    markerId("Marcador Id.", "marker._id"),
-    markerName("Marcador Nome", "marker.name"),
-    levelId("Nível Id.", "level._id"),
-    levelName("Nível Nome", "level.name"),
-    entityId("Entidade Id.", "entity._id"),
-    entityExternalKey("Entidade Chave Externa", "entity.externalKey"),
-    entityName("Entidade Nome", "entity.name"),
-    userId("Usuário Id.", "user._id"),
-    userName("Usuário Nome", "user.name"),
-    userEmail("Usuário E-mail", "user.email"),
-    userIdentifierKey("Usuário Chave Id.", "user.identifierKey"),
-    fullText("Tudo", "fullText");
+    occurrence("Ocorrência Dt/Hr", "occurrence", false),
+    host("Host", "host", false),
+    keywords("Palavras-Chave", "keywords", false),
+    owner("Proprietário", "owner", false),
+    message("Mensagem", "message", false),
+    markerId("Marcador Id.", "marker._id", true),
+    markerName("Marcador Nome", "marker.name", false),
+    levelId("Nível Id.", "level._id", true),
+    levelName("Nível Nome", "level.name", false),
+    entityId("Entidade Id.", "entity._id", true),
+    entityExternalKey("Entidade Chave Externa", "entity.externalKey", false),
+    entityName("Entidade Nome", "entity.name", false),
+    userId("Usuário Id.", "user._id", true),
+    userName("Usuário Nome", "user.name", false),
+    userEmail("Usuário E-mail", "user.email", false),
+    userIdentifierKey("Usuário Chave Id.", "user.identifierKey", false),
+    fullText("Tudo", "fullText", false);
 
     private final String description;
     private final String field;
+    private final boolean objId;
 
-    private Term(String description, String field) {
+    private Term(String description, String field, boolean objId) {
         this.description = description;
         this.field = field;
+        this.objId = objId;
     }
 
     public String getDescription() {
@@ -51,6 +53,10 @@ public enum Term implements Serializable {
 
     public String getField() {
         return field;
+    }
+
+    public boolean isObjId() {
+        return objId;
     }
 
 }
